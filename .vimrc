@@ -51,14 +51,25 @@ Plugin 'scrooloose/nerdtree'
 let NERDTreeQuitOnOpen = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-nnoremap <leader>nt :NERDTree<CR>
+nmap <F11> :NERDTree<CR>
 
 "vim-cpp-enhanced-hilight
 Plugin 'octol/vim-cpp-enhanced-highlight'
 
+"chromatica
+"Plugin 'arakashic/chromatica.nvim'
+"let g:chromatica#enable_at_startup=1
+"let g:chromatica#responsive_mode=1
+
 "autoclose
-"Plugin 'townk/vim-autoclose'
 Plugin 'Raimondi/delimitMate'
+let delimitMate_expand_cr = 2
+let delimitMate_expand_space = 1
+
+"tagbar
+Plugin 'majutsushi/tagbar'
+nmap<F10> :TagbarToggle<CR>
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -122,7 +133,7 @@ set showcmd
 
 "buffer madness
 "open a new empty buffer
-nmap <leader>t :enew<CR>
+nmap <leader>bn :enew<CR>
 
 "move to next buffer
 nmap <F8> :bnext<CR>
@@ -135,3 +146,5 @@ nmap <leader>bq :bp <BAR> bd #<CR>
 
 " Show all open buffers and their status
 nmap <leader>bl :ls<CR>
+
+set timeoutlen=2500
