@@ -26,12 +26,12 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_server_python_interpreter = '/usr/bin/python2'
 let g:ycm_max_num_identifier_candidates = 8
 let g:ycm_always_populate_location_list = 1
-map <F9> :YcmCompleter FixIt<CR>
+map <leader>fi :YcmCompleter FixIt<CR>
 
 "ListToggle
 Plugin 'Valloric/ListToggle'
-let g:lt_location_list_toggle_map = '<leader>y'
-let g:lt_quickfix_list_toggle_map = '<leader>q'
+let g:lt_location_list_toggle_map = '<leader>yc'
+let g:lt_quickfix_list_toggle_map = '<leader>qf'
 let g:lt_height = 7
 "vim-colorschemes
 Plugin 'flazz/vim-colorschemes'
@@ -51,7 +51,7 @@ Plugin 'scrooloose/nerdtree'
 let NERDTreeQuitOnOpen = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-nmap <F11> :NERDTree<CR>
+nmap <leader>nt :NERDTree<CR>
 
 "vim-cpp-enhanced-hilight
 Plugin 'octol/vim-cpp-enhanced-highlight'
@@ -68,7 +68,7 @@ let delimitMate_expand_space = 1
 
 "tagbar
 Plugin 'majutsushi/tagbar'
-nmap<F10> :TagbarToggle<CR>
+nmap<leader>tb :TagbarToggle<CR>
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -117,7 +117,6 @@ set smarttab
 set autoindent
 set smartindent
 set showmatch
-set ttimeoutlen=5
 set indentexpr=
 
 
@@ -147,4 +146,4 @@ nmap <leader>bq :bp <BAR> bd #<CR>
 " Show all open buffers and their status
 nmap <leader>bl :ls<CR>
 
-set timeoutlen=2500
+set timeoutlen=5000
