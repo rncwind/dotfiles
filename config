@@ -10,7 +10,7 @@ gaps outer 5
 
 #fuck titlebars
 new_window 1pixel
-new_float pixel 5
+new_float pixel 1
 
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
@@ -23,7 +23,7 @@ set $right semicolon
 floating_modifier Mod1
 
 #auto-float
-for_window [class="Keepassx2"] floating enable
+#for_window [class="Keepassx2"] floating enable
 for_window [class="Steam" title="Settings"] floating enable
 
 # start a terminal
@@ -156,6 +156,21 @@ mode "resize" {
 
 bindsym Mod1+r mode "resize"
 
+mode "gaps" {
+    bindsym Up              gaps outer current plus 5
+    bindsym Down            gaps outer current minus 5
+    bindsym Right           gaps inner current plus 5
+    bindsym Left            gaps inner current minus 5
+
+    bindsym Mod1+Shift+d    gaps inner current set 0; gaps outer current set 0;
+    bindsym Mod1+Shift+r    gaps inner current set 10; gaps outer current set 5;
+    
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym Mod1+Shift+g mode "gaps"
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
@@ -164,13 +179,28 @@ bar {
 	tray_output primary
 	colors{
 		background #222222
+        statusline #e8e9ca 
+        focused_workspace   #7a378b #7a378b #ffffff
 	}
 }
 bindsym --release Mod1+b bar mode toggle
 
+#colours n shit
+client.focused          #000000 #FF0000 #ffffff #FF0000  #581569 
+
 #startup shit
-exec --no-startup-id xset s off -dpms &
-exec redshift &
-exec compton -d &
-exec keepassx2 
-exec udiskie &
+exec --no-startup-id xset s off -dpms
+exec redshift
+exec udiskie
+exec mpd
+exec --no-startup-id compton --config ~/.config/compton.conf -b 
+exec feh --bg-fill ~/img/wall/letslovelain.png ~/img/wall/Cosmic_cat_wall.png ~/img/wall/1503130360935.jpg 
+
+assign [class="discord"] 3
+
+workspace 1 output DVI-I-1
+workspace 2 output HDMI-1
+workspace 3 output DVI-D-1
+
+#startup shit for workspaces
+exec --no-startup-id i3-msg 'workspace 1; exec /usr/bin/firefox;workspace 4; exec keepassx2; workspace 3; exec /usr/bin/discord'
