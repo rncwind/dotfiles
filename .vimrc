@@ -1,28 +1,11 @@
-:inoremap <C-j> <Esc>/[)}"'\]>]<CR>:nohl<CR>a
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
+"git bois
 Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-
-"Plugin 'Shougo/deoplete.nvim'
-"Plugin 'zchee/deoplete-clang'
-"let g:deoplete#enable_at_startup = 1
-"let g:deoplete#sources#clang#libclang_path = "usr/lib/libclang.so"
 
 "YCM
 Plugin 'Valloric/YouCompleteMe'
@@ -38,6 +21,7 @@ Plugin 'Valloric/ListToggle'
 let g:lt_location_list_toggle_map = '<leader>yc'
 let g:lt_quickfix_list_toggle_map = '<leader>qf'
 let g:lt_height = 7
+
 "vim-colorschemes
 Plugin 'flazz/vim-colorschemes'
 
@@ -47,7 +31,6 @@ Plugin 'vim-airline/vim-airline-themes'
 let g:airline_powerline_fonts = 1
 let g:airline_theme='hybridline'
 let g:airline_powerline_fonts = 1
-
 let g:airline#extensions#tabline#enabled = 1
 
 "NERDTree
@@ -64,13 +47,7 @@ let g:cpp_class_scope_highlight = 1
 let g:cpp_experimental_template_highlight = 1
 let g:cpp_class_decl_highlight = 1
 
-"chromatica
-"Plugin 'arakashic/chromatica.nvim'
-"let g:chromatica#enable_at_startup=1
-"let g:chromatica#responsive_mode=1
-"let g:chromatica#highlight_feature_level=1
-
-"autoclose
+"autoclose brackets and braces
 Plugin 'Raimondi/delimitMate'
 let delimitMate_expand_cr = 2
 let delimitMate_expand_space = 1
@@ -87,33 +64,59 @@ let g:livepreview_previewer = 'okular'
 "indent-line
 Plugin 'Yggdroot/indentLine'
 
+"latex shit
 Plugin 'lervag/vimtex'
 let g:tex_conceal = ""
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+"-------------------------------------------------------------
 
-"------------------------------------------------------------------"
+"-------------------------100 char meme-------------------------
+match ErrorMsg '\%>100v.\+'
+
+"set colorscheme
+colorscheme monokain
+
+"-------------------------buffer madness-------------------------
+"open a new empty buffer
+nmap <leader>bn :enew<CR>
+"move to next buffer
+nmap <leader>ll :bnext<CR>
+"move to prev buffer
+nmap <leader>hh :bprevious<CR>
+"close current buffer and move to prev
+nmap <leader>bq :bp <BAR> bd #<CR>
+" Show all open buffers and their status
+nmap <leader>bl :ls<CR>
+
+"-------------------------YCM Keybinds-------------------------
+"type deduction hotkey
+nmap <leader>dt :YcmCompleter GetType<CR>
+"goto definition
+nmap <leader>gtd :YcmCompleter GoToDefinition<CR>
+
+"Enable spell checker
+nmap <leader>sc :setlocal spell spelllang=en_gb<CR>
+
+"-------------------------tex stuff-------------------------
+let Tex_FoldedSections=""
+let Tex_FoldedEnvironments=""
+let Tex_FoldedMisc=""
+
+set timeoutlen=5000
+set updatetime=1000
+
+"-------------------------General Bullshit-------------------------
 "disable vi compat
 set nocompatible
 
 "enable sytax hilights
 set t_Co=256
 syntax on
-
-"set lazyredraw
+filetype plugin indent on    " enable plguns based on fieltype
+set ttyfast
+set lazyredraw
 
 "enable line nos
 set number
@@ -122,67 +125,47 @@ set guioptions+=a
 "set clipboard to X11 clipboard
 set clipboard=unnamedplus
 
-"auto {}
-"inoremap { {<CR><BS>}<Esc>ko
-
 "smart comments
 set comments=sl:/*,mb:\ *,elx:\ */
 
-"tab and indent shit
-set expandtab
-set tabstop=4 "4 spaces = tab
-set softtabstop=4 "see above
-set shiftwidth=4
+set expandtab                   "spaces == tabs
+set tabstop=4                   "4 spaces = tab
+set softtabstop=4               "see above
+set shiftwidth=4                ">> indents by 4
 set smarttab
-set autoindent
+set autoindent                  "indent based on prev line
 set smartindent
 set showmatch
 set indentexpr=
 
-"100 char meme
-match ErrorMsg '\%>100v.\+'
+set backspace=indent,eol,start  "Make backspace work as you would expect.
+set hidden                      "Switch between buffers without having to save first.
+set laststatus=2                "Always show statusline.
+set display=lastline            "Show as much as possible of the last line.
 
-"set folding to use syntax
-"inoremap <leader>fo zo
-"inoremap <leader>fc zc
-"inoremap <leader>ft za
-"nnoremap <leader>fo zo
-"nnoremap <leader>fc zc
-"nnoremap <leader>ft za
+set incsearch                   "incrimental search
+set hlsearch                    "keep searches hilighted
 
+set report=0                    "always report changed lines
 
-"set colorscheme
-colorscheme monokain
-"autocmd vimenter * NERDTree
+set showcmd                     "show currently typed command
 
-"nerdtree bullshit
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-set showcmd
+"Show non-printable characters.
+set list                        
+if has('multi_byte') && &encoding ==# 'utf-8'
+  let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±'
+else
+  let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:.'
+endif
 
-"buffer madness
-"open a new empty buffer
-nmap <leader>bn :enew<CR>
-
-"move to next buffer
-nmap <F8> :bnext<CR>
-
-"move to prev buffer
-nmap <F7> :bprevious<CR>
-
-"close current buffer and move to prev
-nmap <leader>bq :bp <BAR> bd #<CR>
-
-" Show all open buffers and their status
-nmap <leader>bl :ls<CR>
-
-"Enable spell checker
-nmap <leader>sc :setlocal spell spelllang=en_gb<CR>
-
-let Tex_FoldedSections=""
-let Tex_FoldedEnvironments=""
-let Tex_FoldedMisc=""
-
-set timeoutlen=5000
-set updatetime=1000
+" Put all temporary files under the same directory.
+" https://github.com/mhinz/vim-galore#handling-backup-swap-undo-and-viminfo-files
+set backup
+set backupdir   =$HOME/.vim/files/backup/
+set backupext   =-vimbackup
+set backupskip  =
+set directory   =$HOME/.vim/files/swap//
+set updatecount =100
+set undofile
+set undodir     =$HOME/.vim/files/undo/
+set viminfo     ='100,n$HOME/.vim/files/info/viminfo
