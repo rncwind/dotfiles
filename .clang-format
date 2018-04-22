@@ -1,0 +1,18 @@
+﻿---
+BasedOnStyle: LLVM
+AccessModifierOffset: '-4'
+AllowShortBlocksOnASingleLine: 'false'
+AllowShortFunctionsOnASingleLine: Inline
+AlwaysBreakAfterDefinitionReturnType: TopLevel
+AlwaysBreakTemplateDeclarations: 'true'
+BreakBeforeBraces: Linux
+ColumnLimit: '100'
+Cpp11BracedListStyle: 'true'
+DerivePointerAlignment: 'true'
+IndentCaseLabels: 'true'
+IndentWidth: '4'
+PointerAlignment: Left
+Standard: Cpp11
+TabWidth: '4'
+
+...
