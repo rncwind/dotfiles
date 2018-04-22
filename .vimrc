@@ -1,4 +1,16 @@
-" set the runtime path to include Vundle and initialize
+" ------------WARNING--------------
+" THIS VIMRC IS OUT OF DATE.
+" I USE EMACS AS MY DAILY DRIVER
+" VIM IS NOW USED FOR QUICK EDITS
+" PLEASE BE AWARE OF THIS. I NO
+" LONGER WILL KEEP THIS VIMRC
+" IN A CONSTANT STATE OF FLUX
+" IT WAS SHIT IN THE FIRST PLACE
+" ------------WARNING--------------
+
+
+
+"" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " let Vundle manage Vundle, required
