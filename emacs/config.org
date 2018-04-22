@@ -1,0 +1,150 @@
+THIS IS A WORK IN PROGRESS
+THIS CONFIG FILE IS NOT SUITABLE FOR ACTIVE USAGE
+IT IS IN SOURCE CONTROL FOR PRODUCTIVITY REASONS
+DO NOT SOURCE IT AS A DAILY DRIVER
+* Misc
+** change yes-or-no to y-or-n
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+** Fix emacs shitty default scrolling
+#+BEGIN_SRC emacs-lisp
+  (setq scroll-conservatively 100)
+#+END_SRC
+** Disable ring bell so i dont shit my pants
+#+BEGIN_SRC emacs-lisp
+  (setq ring-bell-function 'ignore) 
+#+END_SRC
+** Enable line hilight
+#+BEGIN_SRC emacs-lisp
+  (when window-system (global-hl-line-mode t))
+#+END_SRC
+** Disable backups and autosaves
+#+BEGIN_SRC emacs-lisp
+  (setq make-backup-file nil)
+  (setq auto-save-default nil)
+#+END_SRC
+* GUI Bullshit
+** Disable toolbar
+#+BEGIN_SRC emacs-lisp
+(tool-bar-mode -1)
+#+END_SRC
+** Disable menu bar
+#+BEGIN_SRC emacs-lisp
+(menu-bar-mode -1)
+#+END_SRC
+** Disable scroll bar
+#+BEGIN_SRC emacs-lisp
+(scroll-bar-mode -1)
+#+END_SRC
+** Disable default emacs startup screen
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+#+END_SRC
+* Dashboard
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook)
+    (setq dashboard-items '((recents . 10)))
+    (setq dashboard-banner-logo-title "Structure And Interepretation of Riced Text Editors"))
+#+END_SRC
+* Modeline
+** spaceline
+#+BEGIN_SRC emacs-lisp
+  (use-package spaceline
+    :ensure t
+    :config
+    (require 'spaceline-config)
+    (setq-default powerline-default-seperator (quote arrow-fade))
+    (spaceline-spacemacs-theme))
+#+END_SRC
+* Org
+** Org Bullets
+   Add some pretty bullet points instead of *s everywhere
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+#+END_SRC
+* Evil
+** Disable integration for evil collection
+  #+BEGIN_SRC emacs-lisp
+  (setq evil-want-integration nil)
+  #+END_SRC
+** evil-leader
+   Use evil leader. map leader on <SPC>
+#+BEGIN_SRC emacs-lisp
+(use-package evil-leader
+  :ensure t
+  :init (setq evil-leader/in-all-states t) (global-evil-leader-mode)
+  :config (evil-leader/set-leader "<SPC>"))
+#+END_SRC
+** evil itself
+   Use evil mode, becuase i'm a martian
+#+BEGIN_SRC emacs-lisp
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode 1))
+#+END_SRC
+** evil-escape
+Because sometimes, you dont know waht else to do
+#+BEGIN_SRC emacs-lisp
+(use-package evil-escape
+  :ensure t
+  :init
+  (evil-escape-mode))
+#+END_SRC
+** evil-collection
+#+BEGIN_SRC emacs-lisp
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+#+END_SRC
+* QOL
+** which-key
+   Enable which-key, becuase everyone forgets things sometimes
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :ensure t
+  :init (which-key-mode))
+#+END_SRC
+* Helm
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+    :ensure t
+    :config
+    ;; Keybinds
+    (evil-leader/set-key
+      "ff" 'helm-find-files
+      "bb" 'helm-mini)
+    (setq helm-autoresize-max-height 0
+          helm-autoresize-min-height 20
+          helm-buffers-fuzzy-matching t
+          helm-recentf-fuzzy-match t
+          helm-imenu-fuzzy-math t)
+    :init
+    (helm-mode 1))
+#+END_SRC
+* Config edit/reload
+** Edit
+#+BEGIN_SRC emacs-lisp
+  (defun config-visit ()
+    (interactive)
+    (find-file "~/.emacs.d/config.org"))
+  (evil-leader/set-key
+    "fee" 'config-visit)
+#+END_SRC
+** Reload Config
+#+BEGIN_SRC emacs-lisp
+  (defun config-reload ()
+    (interactive)
+    (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+  (evil-leader/set-key
+    "feR" 'config-reload)
+#+END_SRC
