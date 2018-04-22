@@ -1,1 +1,0 @@
-/home/patchouli/.i3/
