@@ -29,7 +29,7 @@
     ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(package-selected-packages
    (quote
-    (org-bullets evil-leader spacemacs-theme evil which-key use-package))))
+    (linum-off linum-relative linum-relitive rainbow-delimiters rainbow-mode org-bullets evil-leader spacemacs-theme evil which-key use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

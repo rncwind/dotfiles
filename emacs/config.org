@@ -3,6 +3,7 @@ THIS CONFIG FILE IS NOT SUITABLE FOR ACTIVE USAGE
 IT IS IN SOURCE CONTROL FOR PRODUCTIVITY REASONS
 DO NOT SOURCE IT AS A DAILY DRIVER
 * Misc
+  Small misc tweaks and packages that dont need their own category
 ** change yes-or-no to y-or-n
 #+BEGIN_SRC emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -24,24 +25,34 @@ DO NOT SOURCE IT AS A DAILY DRIVER
   (setq make-backup-file nil)
   (setq auto-save-default nil)
 #+END_SRC
-* GUI Bullshit
-** Disable toolbar
+** Enable line numbers
+#+BEGIN_SRC emacs-lisp
+  ;;Use linum-off as a lazy way of disabling stuff in a bunch of modes that dont need it
+  (use-package linum-off
+    :ensure t)
+  (global-linum-mode t)
+#+END_SRC
+* Rice
+  The Structure And Interpretation Of Riced Text Editors
+** GUI Bullshit
+*** Disable toolbar
 #+BEGIN_SRC emacs-lisp
 (tool-bar-mode -1)
 #+END_SRC
-** Disable menu bar
+*** Disable menu bar
 #+BEGIN_SRC emacs-lisp
 (menu-bar-mode -1)
 #+END_SRC
-** Disable scroll bar
+*** Disable scroll bar
 #+BEGIN_SRC emacs-lisp
 (scroll-bar-mode -1)
 #+END_SRC
-** Disable default emacs startup screen
+*** Disable default emacs startup screen
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t)
 #+END_SRC
-* Dashboard
+** Dashboard
+   Dashboard is great. It looks nice and it's convinient.
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
     :ensure t
@@ -50,8 +61,8 @@ DO NOT SOURCE IT AS A DAILY DRIVER
     (setq dashboard-items '((recents . 10)))
     (setq dashboard-banner-logo-title "Structure And Interepretation of Riced Text Editors"))
 #+END_SRC
-* Modeline
 ** spaceline
+   The default emacs modeline is horrible. Powerline is lacking. Spaceline is good
 #+BEGIN_SRC emacs-lisp
   (use-package spaceline
     :ensure t
@@ -61,6 +72,7 @@ DO NOT SOURCE IT AS A DAILY DRIVER
     (spaceline-spacemacs-theme))
 #+END_SRC
 * Org
+  Org is amazing. Config and packages for it go here. If you dont like org, i dont want to be your freind
 ** Org Bullets
    Add some pretty bullet points instead of *s everywhere
 #+BEGIN_SRC emacs-lisp
@@ -70,33 +82,32 @@ DO NOT SOURCE IT AS A DAILY DRIVER
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
 #+END_SRC
 * Evil
+  I use evil mode becuase i still firmly beleive that modal editing is the best editing experience and i want to keep that in emacs
 ** Disable integration for evil collection
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (setq evil-want-integration nil)
-  #+END_SRC
+#+END_SRC
 ** evil-leader
    Use evil leader. map leader on <SPC>
 #+BEGIN_SRC emacs-lisp
-(use-package evil-leader
-  :ensure t
-  :init (setq evil-leader/in-all-states t) (global-evil-leader-mode)
-  :config (evil-leader/set-leader "<SPC>"))
+  (use-package evil-leader
+    :ensure t
+    :init (setq evil-leader/in-all-states t) (global-evil-leader-mode)
+    :config (evil-leader/set-leader "<SPC>"))
 #+END_SRC
 ** evil itself
-   Use evil mode, becuase i'm a martian
 #+BEGIN_SRC emacs-lisp
-(use-package evil
-  :ensure t
-  :config
-  (evil-mode 1))
+  (use-package evil
+    :ensure t
+    :config
+    (evil-mode 1))
 #+END_SRC
 ** evil-escape
-Because sometimes, you dont know waht else to do
 #+BEGIN_SRC emacs-lisp
-(use-package evil-escape
-  :ensure t
-  :init
-  (evil-escape-mode))
+  (use-package evil-escape
+    :ensure t
+    :init
+    (evil-escape-mode))
 #+END_SRC
 ** evil-collection
 #+BEGIN_SRC emacs-lisp
@@ -106,7 +117,39 @@ Because sometimes, you dont know waht else to do
   :config
   (evil-collection-init))
 #+END_SRC
+** Window keybinds
+*** Splits
+#+BEGIN_SRC emacs-lisp
+  (evil-leader/set-key
+    "w/" 'evil-window-vsplit)
+  (evil-leader/set-key
+    "w-" 'evil-window-split)
+#+END_SRC
+*** Deletes
+#+BEGIN_SRC emacs-lisp
+  (evil-leader/set-key
+    "wd" 'evil-window-delete)
+  (evil-leader/set-key
+    "wx" 'kill-buffer-and-window)
+  (evil-leader/set-key
+    "wo" 'delete-other-windows)
+#+END_SRC
+*** Moves
+#+BEGIN_SRC emacs-lisp
+  (define-key evil-normal-state-map
+    (kbd "C-w <left>") 'evil-window-left)
+
+  (define-key evil-normal-state-map
+    (kbd "C-w <right>") 'evil-window-right)
+
+  (define-key evil-normal-state-map
+    (kbd "C-w <up>") 'evil-window-up)
+
+  (define-key evil-normal-state-map
+    (kbd "C-w <down>") 'evil-window-down)
+#+END_SRC
 * QOL
+  Quality of life packages and other miscelany that i find useful
 ** which-key
    Enable which-key, becuase everyone forgets things sometimes
 #+BEGIN_SRC emacs-lisp
@@ -114,24 +157,57 @@ Because sometimes, you dont know waht else to do
   :ensure t
   :init (which-key-mode))
 #+END_SRC
+** rainbow-mode
+   Visualise colours inside text
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-mode
+    :ensure t)
+#+END_SRC
 * Helm
+  Helm is an autocompletion engine and then some. I use it for a *lot* of stuff
+** Helm itself
 #+BEGIN_SRC emacs-lisp
   (use-package helm
     :ensure t
     :config
-    ;; Keybinds
-    (evil-leader/set-key
-      "ff" 'helm-find-files
-      "bb" 'helm-mini)
-    (setq helm-autoresize-max-height 0
-          helm-autoresize-min-height 20
+    (setq helm-autoresize-max-height 25
+          helm-autoresize-min-height 5
           helm-buffers-fuzzy-matching t
           helm-recentf-fuzzy-match t
           helm-imenu-fuzzy-math t)
     :init
-    (helm-mode 1))
+    (helm-mode 1)
+    (helm-autoresize-mode 1))
+#+END_SRC
+
+** Keybinds
+#+BEGIN_SRC emacs-lisp
+  (evil-leader/set-key
+        "ff" 'helm-find-files
+        "bb" 'helm-buffers-list
+        "hm" 'helm-mini
+        "hk" 'helm-show-kill-ring)
+#+END_SRC
+* General Programming
+** rainbow-delimiters
+   Colour delimiters
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t)
+
+  (add-hook 'prog-mode-hook
+    #'rainbow-delimiters-mode)
+#+END_SRC
+** linum-relitive
+#+BEGIN_SRC emacs-lisp
+  (use-package linum-relative
+    :ensure t)
+
+  (add-hook 'prog-mode-hook
+            #'linum-relative-mode)
 #+END_SRC
 * Config edit/reload
+  Anything that's meta-config related (Editing config, re sourcing it etc etc)
 ** Edit
 #+BEGIN_SRC emacs-lisp
   (defun config-visit ()
