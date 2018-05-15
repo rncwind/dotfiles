@@ -418,7 +418,14 @@ you should place your code here."
   ;;Check buffer for spelling errors
   (spacemacs/set-leader-keys-for-major-mode 'latex-mode
     "Sb" 'flyspell-buffer
-    "Sh" 'flyspell-correct-helm)
+    "Sh" 'flyspell-correct-helm
+    "Sc" 'flyspell-correct-next
+    "Sn" 'flyspell-goto-next-error)
+
+
+  ;;----------------------------
+  ;;------------Lisp------------
+  ;;----------------------------
 
   ;;--------------------------
   ;;-----------Misc-----------

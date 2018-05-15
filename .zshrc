@@ -8,7 +8,7 @@ source $ZSH/oh-my-zsh.sh
 
 #MPD bullshit
 mpd
-export MPD_HOST="~/.mpd/socket"
+export MPD_HOST="/home/patchouli/.mpd/socket"
 mpdscribble
 
 # Cozy emacs client alias
