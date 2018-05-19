@@ -13,6 +13,7 @@ mpdscribble
 
 # Cozy emacs client alias
 alias emc="emacsclient -n"
+alias mkj="make -j8"
 
 # Devkitpro exports for 3ds dev
 export DEVKITPRO=/opt/devkitpro

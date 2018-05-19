@@ -1,7 +1,28 @@
-THIS IS A WORK IN PROGRESS
-THIS CONFIG FILE IS NOT SUITABLE FOR ACTIVE USAGE
-IT IS IN SOURCE CONTROL FOR PRODUCTIVITY REASONS
-DO NOT SOURCE IT AS A DAILY DRIVER
+* Rincewind's Emacs
+** Disclaimer
+This emacs config is constantly in a state of flux. I would not reccomend sourcing it
+as a daily driver without providing your own stable base. As much as i hate the phrase I
+"Move Fast And Break Things"
+** Some notes
+This emacs config makes exensive use of both evil mode and use package.
+
+This config also makes usage of org mode babel to extract the emacs lisp from this very same
+org mode file and use that. This feature alone is one of the key things that made me drop vim.
+
+I personally am a mostly C/C++ and lisp developer, as such a lot of this config is geared towards
+my own specific workflow for these languages.
+
+I am also a student; as such, there is a fair bit
+of org mode config, as well as LaTeX and markdown for prose and notes respectivley.
+
+There are also probably a few other language-specific setups in this config file that i use
+less frequently. They include languages like bash/zsh, ruby and assembley.
+** Inspiration
+I would like to thank daedreth for his emacs config (https://github.com/daedreth/UncleDavesEmacs/)
+which inspired me to use org mode for my config, as well as for putting up with my dumb beginner questions.
+
+I would also like to thank hlissner for his Doom Emacs config, which also inspired me to switch from
+vim to emacs with his wonderfull and very, very evil config. https://github.com/hlissner/doom-emacs
 * Misc
   Small misc tweaks and packages that dont need their own category
 ** change yes-or-no to y-or-n
@@ -12,7 +33,7 @@ DO NOT SOURCE IT AS A DAILY DRIVER
 #+BEGIN_SRC emacs-lisp
   (setq scroll-conservatively 100)
 #+END_SRC
-** Disable ring bell so i dont shit my pants
+** Disable ring bell because it's spooky
 #+BEGIN_SRC emacs-lisp
   (setq ring-bell-function 'ignore) 
 #+END_SRC
@@ -31,6 +52,20 @@ DO NOT SOURCE IT AS A DAILY DRIVER
   (use-package linum-off
     :ensure t)
   (global-linum-mode t)
+#+END_SRC
+** Enforce UTF-8
+   Because it's CURRENT YEAR
+#+BEGIN_SRC emacs-lisp
+  (setq locale-coding-system 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+#+END_SRC
+** Disable startup screen since we use Dashboard
+   No point displaying it and causing a small overhead if we dont use it!
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t)
 #+END_SRC
 * Rice
   The Structure And Interpretation Of Riced Text Editors
@@ -71,15 +106,14 @@ DO NOT SOURCE IT AS A DAILY DRIVER
     (setq-default powerline-default-seperator (quote arrow-fade))
     (spaceline-spacemacs-theme))
 #+END_SRC
-* Org
-  Org is amazing. Config and packages for it go here. If you dont like org, i dont want to be your freind
-** Org Bullets
-   Add some pretty bullet points instead of *s everywhere
+** Diminish
+   Diminish is a useful package that hides entrys on the minor mode line. Use package has built in support for it
 #+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :ensure t
-    :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+  (use-package diminish
+    :ensure t)
+
+  ;; Hide some things that dont have their own packages
+  (diminish 'undo-tree-mode)
 #+END_SRC
 * Evil
   I use evil mode becuase i still firmly beleive that modal editing is the best editing experience and i want to keep that in emacs
@@ -88,7 +122,7 @@ DO NOT SOURCE IT AS A DAILY DRIVER
   (setq evil-want-integration nil)
 #+END_SRC
 ** evil-leader
-   Use evil leader. map leader on <SPC>
+   Use evil leader to replicate Leader Key functionality. Leader is mapped on <SPC>
 #+BEGIN_SRC emacs-lisp
   (use-package evil-leader
     :ensure t
@@ -96,6 +130,7 @@ DO NOT SOURCE IT AS A DAILY DRIVER
     :config (evil-leader/set-leader "<SPC>"))
 #+END_SRC
 ** evil itself
+   Load evil mode
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :ensure t
@@ -103,13 +138,16 @@ DO NOT SOURCE IT AS A DAILY DRIVER
     (evil-mode 1))
 #+END_SRC
 ** evil-escape
+   Add an escape on all modes by hitting fd in quick succession
 #+BEGIN_SRC emacs-lisp
   (use-package evil-escape
     :ensure t
+    :diminish evil-escape-mode
     :init
     (evil-escape-mode))
 #+END_SRC
 ** evil-collection
+   A bunch of community contributed sane keybinds for many, many modes
 #+BEGIN_SRC emacs-lisp
 (use-package evil-collection
   :after evil
@@ -118,6 +156,7 @@ DO NOT SOURCE IT AS A DAILY DRIVER
   (evil-collection-init))
 #+END_SRC
 ** Window keybinds
+   Some keybindings for window management
 *** Splits
 #+BEGIN_SRC emacs-lisp
   (evil-leader/set-key
@@ -148,14 +187,36 @@ DO NOT SOURCE IT AS A DAILY DRIVER
   (define-key evil-normal-state-map
     (kbd "C-w <down>") 'evil-window-down)
 #+END_SRC
+* Org
+  Org is amazing. Config and packages for it go here. If you dont like org, i dont want to be your freind
+** Org Bullets
+   Add some pretty bullet points instead of *s everywhere
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+#+END_SRC
+** Add evil source editing
+   A few evil keybinds to make editing source for this config easier and more vim-y
+#+BEGIN_SRC emacs-lisp
+  ;; Edit current org source block
+  (evil-leader/set-key-for-mode
+    'org-mode "es" 'org-edit-special)
+
+  ;; Exit org source mode
+  (evil-define-minor-mode-key
+    'normal 'org-src-mode " q" 'org-edit-src-exit)
+#+END_SRC
 * QOL
   Quality of life packages and other miscelany that i find useful
 ** which-key
    Enable which-key, becuase everyone forgets things sometimes
 #+BEGIN_SRC emacs-lisp
-(use-package which-key
-  :ensure t
-  :init (which-key-mode))
+  (use-package which-key
+    :ensure t
+    :diminish which-key-mode
+    :init (which-key-mode))
 #+END_SRC
 ** rainbow-mode
    Visualise colours inside text
@@ -163,12 +224,20 @@ DO NOT SOURCE IT AS A DAILY DRIVER
   (use-package rainbow-mode
     :ensure t)
 #+END_SRC
+** async
+   Allow for async processes in emacs. Useful
+#+BEGIN_SRC emacs-lisp
+  (use-package async
+    :ensure t
+    :init (dired-async-mode 1))
+#+END_SRC
 * Helm
   Helm is an autocompletion engine and then some. I use it for a *lot* of stuff
 ** Helm itself
 #+BEGIN_SRC emacs-lisp
   (use-package helm
     :ensure t
+    :diminish helm-mode
     :config
     (setq helm-autoresize-max-height 25
           helm-autoresize-min-height 5
@@ -188,9 +257,25 @@ DO NOT SOURCE IT AS A DAILY DRIVER
         "hm" 'helm-mini
         "hk" 'helm-show-kill-ring)
 #+END_SRC
+* Projectile
+Projectile is a project manager in emacs. It's amazing
+** Enable projectile and make it global
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :init
+    (projectile-mode 1))
+#+END_SRC
+** Projectile keybindings
+*** Make
+#+BEGIN_SRC emacs-lisp
+  (evil-leader/set-key
+    "pm" 'projectile-compile-project)
+#+END_SRC
 * General Programming
+  This section is for small programming enhancements
 ** rainbow-delimiters
-   Colour delimiters
+   Colour delimiters, makes using lisp much more cozy
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
     :ensure t)
@@ -199,6 +284,7 @@ DO NOT SOURCE IT AS A DAILY DRIVER
     #'rainbow-delimiters-mode)
 #+END_SRC
 ** linum-relitive
+   Relative line numbers are blessed for vim and evil mode.
 #+BEGIN_SRC emacs-lisp
   (use-package linum-relative
     :ensure t)
