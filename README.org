@@ -1,0 +1,15 @@
+* Rincewind's Dotfiles
+This is a collection of my dotfiles.
+** Rice
+My rice is currently rather static, and probably will remain such for a fair while longer as i am
+rather satisfied with the state it is.
+
+If you're looking at these dotfiles to /Steal His Look/. I use URXVT and i3wm.
+** Dev and Editors
+These dotfiles are geared towards C/C++ and Lisp development as they are the languages i use most.
+
+Editor dotfiles are very much in a state of flux. My old stable spacemacs config is usable,
+my vimrc is out of date since i mostly use it for quick edits.
+
+My emacs folder contains both my init.el which is rather spartan and serves to bootstrap
+the remainder of my config, and my actual configuration which is written in org mode.
