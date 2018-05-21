@@ -13,6 +13,8 @@ mpdscribble
 
 # Cozy emacs client alias
 alias emc="emacsclient -n"
+
+# Shortcut to make with all cores
 alias mkj="make -j8"
 
 # Devkitpro exports for 3ds dev

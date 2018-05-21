@@ -1,3 +1,13 @@
+;; Fix Garbage Collection
+(setq gc-cons-threshold 402653184
+gc-cons-percentage 0.6)
+
+(defun startup/reset-gc ()
+  (setq gc-cons-threshold 16777216
+	gc-cons-percentage 0.1))
+
+(add-hook 'emacs-startup-hook 'startup/reset-gc)
+
 ;; Setup package manager and add melpa
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -29,7 +39,7 @@
     ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(package-selected-packages
    (quote
-    (linum-off linum-relative linum-relitive rainbow-delimiters rainbow-mode org-bullets evil-leader spacemacs-theme evil which-key use-package))))
+    (org-evil evil-magit magit slime-company slime company-irony-c-headers rtags irony company-irony company-c-headers shackle company flycheck yasnippet delight hungry-delete diminish linum-relative linum-relitive rainbow-delimiters rainbow-mode org-bullets evil-leader spacemacs-theme evil which-key use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

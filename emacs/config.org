@@ -23,98 +23,6 @@ which inspired me to use org mode for my config, as well as for putting up with 
 
 I would also like to thank hlissner for his Doom Emacs config, which also inspired me to switch from
 vim to emacs with his wonderfull and very, very evil config. https://github.com/hlissner/doom-emacs
-* Misc
-  Small misc tweaks and packages that dont need their own category
-** change yes-or-no to y-or-n
-#+BEGIN_SRC emacs-lisp
-  (defalias 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
-** Fix emacs shitty default scrolling
-#+BEGIN_SRC emacs-lisp
-  (setq scroll-conservatively 100)
-#+END_SRC
-** Disable ring bell because it's spooky
-#+BEGIN_SRC emacs-lisp
-  (setq ring-bell-function 'ignore) 
-#+END_SRC
-** Enable line hilight
-#+BEGIN_SRC emacs-lisp
-  (when window-system (global-hl-line-mode t))
-#+END_SRC
-** Disable backups and autosaves
-#+BEGIN_SRC emacs-lisp
-  (setq make-backup-file nil)
-  (setq auto-save-default nil)
-#+END_SRC
-** Enable line numbers
-#+BEGIN_SRC emacs-lisp
-  ;;Use linum-off as a lazy way of disabling stuff in a bunch of modes that dont need it
-  (use-package linum-off
-    :ensure t)
-  (global-linum-mode t)
-#+END_SRC
-** Enforce UTF-8
-   Because it's CURRENT YEAR
-#+BEGIN_SRC emacs-lisp
-  (setq locale-coding-system 'utf-8)
-  (set-terminal-coding-system 'utf-8)
-  (set-keyboard-coding-system 'utf-8)
-  (set-selection-coding-system 'utf-8)
-  (prefer-coding-system 'utf-8)
-#+END_SRC
-** Disable startup screen since we use Dashboard
-   No point displaying it and causing a small overhead if we dont use it!
-#+BEGIN_SRC emacs-lisp
-  (setq inhibit-startup-message t)
-#+END_SRC
-* Rice
-  The Structure And Interpretation Of Riced Text Editors
-** GUI Bullshit
-*** Disable toolbar
-#+BEGIN_SRC emacs-lisp
-(tool-bar-mode -1)
-#+END_SRC
-*** Disable menu bar
-#+BEGIN_SRC emacs-lisp
-(menu-bar-mode -1)
-#+END_SRC
-*** Disable scroll bar
-#+BEGIN_SRC emacs-lisp
-(scroll-bar-mode -1)
-#+END_SRC
-*** Disable default emacs startup screen
-#+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-message t)
-#+END_SRC
-** Dashboard
-   Dashboard is great. It looks nice and it's convinient.
-#+BEGIN_SRC emacs-lisp
-  (use-package dashboard
-    :ensure t
-    :config
-    (dashboard-setup-startup-hook)
-    (setq dashboard-items '((recents . 10)))
-    (setq dashboard-banner-logo-title "Structure And Interepretation of Riced Text Editors"))
-#+END_SRC
-** spaceline
-   The default emacs modeline is horrible. Powerline is lacking. Spaceline is good
-#+BEGIN_SRC emacs-lisp
-  (use-package spaceline
-    :ensure t
-    :config
-    (require 'spaceline-config)
-    (setq-default powerline-default-seperator (quote arrow-fade))
-    (spaceline-spacemacs-theme))
-#+END_SRC
-** Diminish
-   Diminish is a useful package that hides entrys on the minor mode line. Use package has built in support for it
-#+BEGIN_SRC emacs-lisp
-  (use-package diminish
-    :ensure t)
-
-  ;; Hide some things that dont have their own packages
-  (diminish 'undo-tree-mode)
-#+END_SRC
 * Evil
   I use evil mode becuase i still firmly beleive that modal editing is the best editing experience and i want to keep that in emacs
 ** Disable integration for evil collection
@@ -169,7 +77,7 @@ vim to emacs with his wonderfull and very, very evil config. https://github.com/
   (evil-leader/set-key
     "wd" 'evil-window-delete)
   (evil-leader/set-key
-    "wx" 'kill-buffer-and-window)
+    "wq" 'kill-buffer-and-window)
   (evil-leader/set-key
     "wo" 'delete-other-windows)
 #+END_SRC
@@ -187,29 +95,31 @@ vim to emacs with his wonderfull and very, very evil config. https://github.com/
   (define-key evil-normal-state-map
     (kbd "C-w <down>") 'evil-window-down)
 #+END_SRC
-* Org
-  Org is amazing. Config and packages for it go here. If you dont like org, i dont want to be your freind
-** Org Bullets
-   Add some pretty bullet points instead of *s everywhere
+** Buffer keybinds
 #+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :ensure t
-    :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+  (evil-leader/set-key
+    "bd" 'kill-this-buffer)
+  (evil-leader/set-key
+    "bq" 'kill-buffer-and-window)
 #+END_SRC
-** Add evil source editing
-   A few evil keybinds to make editing source for this config easier and more vim-y
+** Help Keybinds
 #+BEGIN_SRC emacs-lisp
-  ;; Edit current org source block
-  (evil-leader/set-key-for-mode
-    'org-mode "es" 'org-edit-special)
-
-  ;; Exit org source mode
-  (evil-define-minor-mode-key
-    'normal 'org-src-mode " q" 'org-edit-src-exit)
+  (evil-leader/set-key
+    "hdv" 'describe-variable)
+  (evil-leader/set-key
+    "hdf" 'describe-function)
 #+END_SRC
-* QOL
+** Global keboard-escape-quit
+   This is just a little tweak becuase i dont use escape for anything aside from mashing to quit stuff
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+#+END_SRC
+* QOL/Emacs core
   Quality of life packages and other miscelany that i find useful
+** Start emacs in server mode
+#+BEGIN_SRC emacs-lisp
+  (server-start)
+#+END_SRC
 ** which-key
    Enable which-key, becuase everyone forgets things sometimes
 #+BEGIN_SRC emacs-lisp
@@ -231,6 +141,49 @@ vim to emacs with his wonderfull and very, very evil config. https://github.com/
     :ensure t
     :init (dired-async-mode 1))
 #+END_SRC
+** Shackle
+   Stuff like helm are not well behaved (at least, in the way i want) shackle lets me hack around it
+#+BEGIN_SRC emacs-lisp
+  (use-package shackle
+    :ensure t)
+#+END_SRC
+** Show cursor position
+   Org, latex and other modes disable relative-linum, this allows us to always have our cursor position in all modes
+#+BEGIN_SRC emacs-lisp
+  (setq line-number-mode t)
+  (setq column-number-mode t)
+#+END_SRC
+* Org
+  Org is amazing. Config and packages for it go here. If you dont like org, i dont want to be your freind
+** Org Bullets
+   Add some pretty bullet points instead of *s everywhere
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+#+END_SRC
+** org-evil
+#+BEGIN_SRC emacs-lisp
+  (use-package org-evil
+    :ensure t)
+#+END_SRC
+** Add evil source editing
+   A few evil keybinds to make editing source for this config easier and more vim-y
+#+BEGIN_SRC emacs-lisp
+  ;; Edit current org source block
+  (evil-leader/set-key-for-mode
+    'org-mode "es" 'org-edit-special)
+
+  ;; Exit org source mode
+  (evil-define-minor-mode-key
+    'normal 'org-src-mode " q" 'org-edit-src-exit)
+#+END_SRC
+** Emacs lisp src template
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-structure-template-alist
+                 '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+#+END_SRC
 * Helm
   Helm is an autocompletion engine and then some. I use it for a *lot* of stuff
 ** Helm itself
@@ -239,16 +192,16 @@ vim to emacs with his wonderfull and very, very evil config. https://github.com/
     :ensure t
     :diminish helm-mode
     :config
-    (setq helm-autoresize-max-height 25
-          helm-autoresize-min-height 5
-          helm-buffers-fuzzy-matching t
-          helm-recentf-fuzzy-match t
-          helm-imenu-fuzzy-math t)
+    (setq helm-autoresize-max-height 0   ;; Required
+          helm-autoresize-min-height 25  ;; Default to 25% frame size
+          helm-buffers-fuzzy-matching t  ;; Fuzzy match buffer list
+          helm-recentf-fuzzy-match t     ;; Fuzzy match recent list
+          helm-imenu-fuzzy-match t       ;; Fuzzy match imenu
+          helm-split-window-inside-p t)  ;; Prevent helm from taking over buffers 
     :init
     (helm-mode 1)
     (helm-autoresize-mode 1))
 #+END_SRC
-
 ** Keybinds
 #+BEGIN_SRC emacs-lisp
   (evil-leader/set-key
@@ -256,6 +209,20 @@ vim to emacs with his wonderfull and very, very evil config. https://github.com/
         "bb" 'helm-buffers-list
         "hm" 'helm-mini
         "hk" 'helm-show-kill-ring)
+
+  ;; Switch tab and return's usage
+  (define-key helm-map (kbd "TAB") #'helm-execute-persistent-action)
+  (define-key helm-map (kbd "<tab>") #'helm-execute-persistent-action)
+  (define-key helm-map (kbd "C-z") #'helm-select-action)
+#+END_SRC
+** Shackle helm
+Helm likes to take over splits. Shackle is a workaround to fix this and force it to
+open a new buffer on the bottom of the screen. This does however break stuff that requires
+a full frame. But i dont use any of that. Taken from https://emacs.stackexchange.com/questions/14253/how-to-stop-helm-deleting-vertical-split-when-opening-helm-buffer
+#+BEGIN_SRC emacs-lisp
+  (setq helm-display-function #'pop-to-buffer)
+  (setq shackle-rules '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :ratio 0.25)))
+  (shackle-mode)
 #+END_SRC
 * Projectile
 Projectile is a project manager in emacs. It's amazing
@@ -263,6 +230,7 @@ Projectile is a project manager in emacs. It's amazing
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
+    :delight '(:eval (concat " " (projectile-project-name)))
     :init
     (projectile-mode 1))
 #+END_SRC
@@ -273,28 +241,195 @@ Projectile is a project manager in emacs. It's amazing
     "pm" 'projectile-compile-project)
 #+END_SRC
 * General Programming
-  This section is for small programming enhancements
-** rainbow-delimiters
+** yasnippet
+Snippets == Good. Yasnippet is actually probably one of the best snippet toolkits i've ever used and made me start using them a lot more
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :delight (yas-minor-mode "YAS"))
+#+END_SRC
+** Flycheck
+God damn. Flycheck is *fucking amazing*. This along with Rtags/Company was the final nail in vim's coffin for me
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :delight (flycheck-mode "FC"))
+#+END_SRC
+** Company-mode
+As stated with flycheck, company is amazing. It's a great autocompletion system. It's a bit heavy
+(compared to AC that is) but that's not a major concern for me.
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :delight (company-mode "C")
+    :config
+    (setq company-minimum-prefix-length 3)
+    (delete 'company-backends 'company-clang))
+#+END_SRC
+** Magit
+Apparently this will revolutionise the way i use git. Let's find out
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t)
+  (use-package evil-magit
+    :ensure t)
+#+END_SRC
+** Programming Conviniences
+   This section is a bunch of small stuff that makes programming in emacs /just/ that bit nicer
+*** rainbow-delimiters
    Colour delimiters, makes using lisp much more cozy
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
-    :ensure t)
-
-  (add-hook 'prog-mode-hook
-    #'rainbow-delimiters-mode)
+    :ensure t
+    :config
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
-** linum-relitive
+*** linum-relitive
    Relative line numbers are blessed for vim and evil mode.
 #+BEGIN_SRC emacs-lisp
   (use-package linum-relative
+    :ensure t
+    :config
+    (setq linum-relative-current-symbol "")
+    (add-hook 'prog-mode-hook 'linum-relative-mode))
+#+END_SRC
+*** Subword mode
+   Makes camelcase a sepperator for jumps
+#+BEGIN_SRC emacs-lisp
+  (global-subword-mode 1)
+#+END_SRC
+*** Show Paren Mode
+#+BEGIN_SRC emacs-lisp
+  (show-paren-mode 1)
+#+END_SRC
+*** Hungry Delete
+Hungry deletion because emacs doesn't do it by default
+#+BEGIN_SRC emacs-lisp
+  (use-package hungry-delete
+    :ensure t
+    :delight
+    :config
+      (global-hungry-delete-mode))
+#+END_SRC
+*** Electric mode
+#+BEGIN_SRC emacs-lisp
+  (setq electric-pair-pairs '(
+                             (?\{ . ?\})
+                             (?\( . ?\))
+                             (?\[ . ?\])
+                             (?\" . ?\")
+                             ))
+
+  (electric-pair-mode t)
+#+END_SRC
+* C/C++
+** Enable yas
+Since i dont use yas as a global mode, add it as a hook on loading C/C++
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'c++-mode-hook 'yas-minor-mode)
+  (add-hook 'c-mode-hook 'yas-minor-mode)
+#+END_SRC
+** C/C++ Flycheck Settings
+Set my C++ language standard, as well as -Wall.
+Also add hooks on C/C++ mode to load flycheck
+   #+BEGIN_SRC emacs-lisp
+     (setq flycheck-clang-language-standard "c++2a")
+     (setq flycheck-clang-warnings '("-Wall"))
+     (add-hook 'c++-mode-hook 'flycheck-mode)
+     (add-hook 'c-mode-hook 'flycheck-mode)
+   #+END_SRC
+** Company Irony
+Uses company-c-headers to add header completion to company
+Enables irony-mode as a clang backend
+#+BEGIN_SRC emacs-lisp
+  (use-package irony
+    :ensure t
+    :config
+    (add-hook 'c++-mode-hook 'irony-mode)
+    (add-hook 'c-mode-hook 'irony-mode)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+
+  (use-package company-irony
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-irony))
+
+  (use-package company-irony-c-headers
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-irony-c-headers))
+
+  #+END_SRC
+** Rtags
+Again, this is one of those packages that cemented the reason to switch to emacs in my mind.
+Rtags is fucking bae
+#+BEGIN_SRC emacs-lisp
+  (use-package rtags
     :ensure t)
 
-  (add-hook 'prog-mode-hook
-            #'linum-relative-mode)
+  (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
+  (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
 #+END_SRC
-* Config edit/reload
+* lisps
+** Slime
+#+BEGIN_SRC emacs-lisp
+  (use-package slime
+    :ensure t
+    :config
+    (setq inferior-lisp-program "/usr/bin/sbcl")
+    (setq slime-contribs '(slime-fancy)))
+#+END_SRC
+** Company
+#+BEGIN_SRC emacs-lisp
+  (use-package slime-company
+    :ensure t
+    :init
+    (require 'company)
+    (slime-setup '(slime-fancy slime-company)))
+
+  (add-hook 'lisp-mode-hook 'company-mode)
+  (add-hook 'emacs-lisp-mode-hook 'company-mode)
+#+END_SRC
+** yas
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)
+  (add-hook 'lisp-mode-hook 'yas-minor-mode)
+#+END_SRC
+* Misc
+  Small misc tweaks and packages that dont need their own category
+** change yes-or-no to y-or-n
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+** Fix emacs shitty default scrolling
+#+BEGIN_SRC emacs-lisp
+  (setq scroll-conservatively 100)
+#+END_SRC
+** Disable ring bell because it's spooky
+#+BEGIN_SRC emacs-lisp
+  (setq ring-bell-function 'ignore) 
+#+END_SRC
+** Enable line hilight
+#+BEGIN_SRC emacs-lisp
+  (when window-system (global-hl-line-mode t))
+#+END_SRC
+** Disable backups and autosaves
+#+BEGIN_SRC emacs-lisp
+  (setq make-backup-file nil)
+  (setq auto-save-default nil)
+#+END_SRC
+** Enforce UTF-8
+   Because it's CURRENT YEAR
+#+BEGIN_SRC emacs-lisp
+  (setq locale-coding-system 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+#+END_SRC
+** Config edit/reload
   Anything that's meta-config related (Editing config, re sourcing it etc etc)
-** Edit
+*** Edit
 #+BEGIN_SRC emacs-lisp
   (defun config-visit ()
     (interactive)
@@ -302,7 +437,7 @@ Projectile is a project manager in emacs. It's amazing
   (evil-leader/set-key
     "fee" 'config-visit)
 #+END_SRC
-** Reload Config
+*** Reload Config
 #+BEGIN_SRC emacs-lisp
   (defun config-reload ()
     (interactive)
@@ -310,3 +445,68 @@ Projectile is a project manager in emacs. It's amazing
   (evil-leader/set-key
     "feR" 'config-reload)
 #+END_SRC
+* Rice
+  The Structure And Interpretation Of Riced Text Editors
+** GUI Bullshit
+*** Disable toolbar
+#+BEGIN_SRC emacs-lisp
+(tool-bar-mode -1)
+#+END_SRC
+*** Disable menu bar
+#+BEGIN_SRC emacs-lisp
+(menu-bar-mode -1)
+#+END_SRC
+*** Disable scroll bar
+#+BEGIN_SRC emacs-lisp
+(scroll-bar-mode -1)
+#+END_SRC
+*** Disable default emacs startup screen
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+#+END_SRC
+** Dashboard
+   Dashboard is great. It looks nice and it's convinient.
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook)
+    (setq dashboard-items '((recents . 10)))
+    (setq dashboard-startup-banner "~/.emacs.d/logo.png")
+    (setq dashboard-banner-logo-title "Structure And Interepretation of Riced Text Editors"))
+#+END_SRC
+** spaceline
+   The default emacs modeline is horrible. Powerline is lacking. Spaceline is good
+#+BEGIN_SRC emacs-lisp
+  (use-package spaceline
+    :ensure t
+    :config
+    (require 'spaceline-config)
+    (setq-default powerline-default-seperator (quote arrow-fade))
+    (spaceline-spacemacs-theme))
+#+END_SRC
+** Diminish
+   Diminish is a useful package that hides entrys on the minor mode line. Use package has built in support for it
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish
+    :ensure t)
+#+END_SRC
+*** Diminishes
+    Diminish a bunch of things that dont have use-package diminishes
+#+BEGIN_SRC emacs-lisp
+  (diminish 'undo-tree-mode)
+  (diminish 'subword-mode)
+  (diminish 'linum-relative-mode)
+  (diminish 'abbrev-mode)
+#+END_SRC
+** Delight
+Diminish is cool and all, but delight has better support for name replacements
+#+BEGIN_SRC emacs-lisp
+  (use-package delight
+    :ensure t)
+#+END_SRC
+** Prevent Cursor Blinking
+#+BEGIN_SRC emacs-lisp
+  (blink-cursor-mode 0)
+#+END_SRC
+
