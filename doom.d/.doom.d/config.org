@@ -1,0 +1,50 @@
+* General Keybinds
+** Windows
+*** Move
+#+BEGIN_SRC emacs-lisp
+(map!
+ :ne "C-w <right>" #'evil-window-right
+ :ne "C-w <left>"  #'evil-window-left
+ :ne "C-w <up>"    #'evil-window-up
+ :ne "C-w <down>"  #'evil-window-down
+ )
+#+END_SRC
+*** Splits
+#+BEGIN_SRC emacs-lisp
+(map!
+ (:leader
+   (:desc "window" :prefix "w"
+     :desc "vsplit" :nv "/" #'evil-window-vsplit
+     :desc "hsplit" :nv "-" #'evil-window-split)))
+#+END_SRC
+*** Deletes
+#+BEGIN_SRC emacs-lisp
+(map!
+ (:leader
+   (:desc "window" :prefix "w"
+     :desc "Delete window" :n "d" #'evil-window-delete
+     :desc "Kill Win+Buf"  :n "q" #'kill-buffer-and-window)))
+#+END_SRC
+** Buffers
+#+BEGIN_SRC emacs-lisp
+(map!
+ (:leader
+   (:desc "buffer" :prefix "b"
+     :desc "Kill Buffer" :n "d" #'kill-this-buffer
+     :desc "Kill buffer" :n "q" #'kill-this-buffer)))
+#+END_SRC
+* Helm
+** Override doom buffer list
+#+BEGIN_SRC emacs-lisp
+(map!
+ (:leader
+   (:desc "buffer" :prefix "b"
+     :desc "Helm buffer list" :n "b" #'helm-buffers-list)))
+#+END_SRC
+* General Programming
+** improve nlinum
+#+BEGIN_SRC emacs-lisp
+(add-hook 'prog-mode-hook 'nlinum-relative-mode)
+(setq nlinum-relative-redisplay-delay 0)
+(setq nlinum-relative-current-symbol "")
+#+END_SRC
