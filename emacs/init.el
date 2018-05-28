@@ -39,7 +39,7 @@ gc-cons-percentage 0.6)
     ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(package-selected-packages
    (quote
-    (org-evil evil-magit magit slime-company slime company-irony-c-headers rtags irony company-irony company-c-headers shackle company flycheck yasnippet delight hungry-delete diminish linum-relative linum-relitive rainbow-delimiters rainbow-mode org-bullets evil-leader spacemacs-theme evil which-key use-package))))
+    (clang-format column-enforce-mode highlight-indent-guides hilight-indent-guides hilight-indent-guides-mode auctex markdown-mode robe enh-ruby-mode org-evil evil-magit magit slime-company slime company-irony-c-headers rtags irony company-irony company-c-headers shackle company flycheck yasnippet delight hungry-delete diminish linum-relative linum-relitive rainbow-delimiters rainbow-mode org-bullets evil-leader spacemacs-theme evil which-key use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
