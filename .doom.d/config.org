@@ -1,3 +1,8 @@
+* Rincewind's Doom
+** Why Doom?
+Doom emacs is what i wanted when i first installed spacemacs.
+Doom emacs is what i wanted to make when i started my own config
+Doom emacs (with a few personal tweaks) is pretty much the editor i've always wanted
 * General Keybinds
 ** Windows
 *** Move
@@ -13,7 +18,7 @@
 #+BEGIN_SRC emacs-lisp
 (map!
  (:leader
-   (:desc "window" :prefix "w"
+   (:prefix "w"
      :desc "vsplit" :nv "/" #'evil-window-vsplit
      :desc "hsplit" :nv "-" #'evil-window-split)))
 #+END_SRC
@@ -21,7 +26,7 @@
 #+BEGIN_SRC emacs-lisp
 (map!
  (:leader
-   (:desc "window" :prefix "w"
+   (:prefix "w"
      :desc "Delete window" :n "d" #'evil-window-delete
      :desc "Kill Win+Buf"  :n "q" #'kill-buffer-and-window)))
 #+END_SRC
@@ -29,22 +34,60 @@
 #+BEGIN_SRC emacs-lisp
 (map!
  (:leader
-   (:desc "buffer" :prefix "b"
+   (:prefix "b"
      :desc "Kill Buffer" :n "d" #'kill-this-buffer
      :desc "Kill buffer" :n "q" #'kill-this-buffer)))
+#+END_SRC
+** Open config.org
+#+BEGIN_SRC emacs-lisp
+(defun rncwind-visit-config ()
+  (interactive)
+  (find-file "~/.doom.d/config.org"))
+
+(map! (:leader (:prefix "h"
+                 :desc "Open config.org" :n "C" #'rncwind-visit-config)))
+#+END_SRC
+** Reload config.org
+#+BEGIN_SRC emacs-lisp
+(defun rncwind-reload-config ()
+  (interactive)
+  (org-babel-load-file (expand-file-name "~/.doom.d/config.org")))
+
+(map! (:leader (:prefix "h"
+                 :desc "Reload config.org" :n "R" #'rncwind-reload-config)))
 #+END_SRC
 * Helm
 ** Override doom buffer list
 #+BEGIN_SRC emacs-lisp
 (map!
  (:leader
-   (:desc "buffer" :prefix "b"
+   (:prefix "b"
      :desc "Helm buffer list" :n "b" #'helm-buffers-list)))
 #+END_SRC
-* General Programming
-** improve nlinum
+** Find Files and Helm Mini
 #+BEGIN_SRC emacs-lisp
-(add-hook 'prog-mode-hook 'nlinum-relative-mode)
-(setq nlinum-relative-redisplay-delay 0)
-(setq nlinum-relative-current-symbol "")
+(map! (:leader (:prefix "f"
+                 :desc "Find File" :n "f" #'helm-find-files
+                 :desc "Helm Mini" :n "m" #'helm-mini)))
 #+END_SRC
+* General Programming
+** Use Emacs 26 line numbers
+#+BEGIN_SRC emacs-lisp
+(setq-default doom-line-numbers-style 'relative)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+END_SRC
+* C/C++
+** irony and rtags
+#+BEGIN_SRC emacs-lisp
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+#+END_SRC
+** Default compiler options
+#+BEGIN_SRC emacs-lisp
+(setq-default +cc-default-compiler-options
+              '((c-mode   "-std=c11" nil)
+                (c++-mode "-std=c++17" nil)))
+#+END_SRC
+* Ruby
+* Lisps
+* Haskell

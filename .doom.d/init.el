@@ -74,6 +74,6 @@
        ;; a Spacemacs-inspired keybinding scheme, a custom yasnippet library,
        ;; and additional ex commands for evil-mode. Use it as a reference for
        ;; your own modules.
-       (default +bindings +snippets +evil-commands))
+       (default +bindings +snippets +evil-commands)
+       (org-babel-load-file (expand-file-name "~/.doom.d/config.org")))
 
-(org-babel-load-file (expand-file-name "~/.doom.d/config.org"))

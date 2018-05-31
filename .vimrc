@@ -8,31 +8,11 @@
 " IT WAS SHIT IN THE FIRST PLACE
 " ------------WARNING--------------
 
-
-
 "" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
-"git bois
-Plugin 'tpope/vim-fugitive'
-
-"YCM
-Plugin 'Valloric/YouCompleteMe'
-let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_server_python_interpreter = '/usr/bin/python2'
-let g:ycm_max_num_identifier_candidates = 8
-let g:ycm_always_populate_location_list = 1
-map <leader>fi :YcmCompleter FixIt<CR>
-
-"ListToggle
-Plugin 'Valloric/ListToggle'
-let g:lt_location_list_toggle_map = '<leader>yc'
-let g:lt_quickfix_list_toggle_map = '<leader>qf'
-let g:lt_height = 7
 
 "vim-colorschemes
 Plugin 'flazz/vim-colorschemes'
@@ -64,21 +44,10 @@ Plugin 'Raimondi/delimitMate'
 let delimitMate_expand_cr = 2
 let delimitMate_expand_space = 1
 
-"tagbar
-Plugin 'majutsushi/tagbar'
-nmap<leader>tb :TagbarToggle<CR>
-
-"LaTeX previeW
-Plugin 'xuhdev/vim-latex-live-preview'
-nmap <leader>lp :LLPStartPreview<CR>
-let g:livepreview_previewer = 'okular'
 
 "indent-line
 Plugin 'Yggdroot/indentLine'
 
-"latex shit
-Plugin 'lervag/vimtex'
-let g:tex_conceal = ""
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -101,24 +70,7 @@ nmap <leader>hh :bprevious<CR>
 nmap <leader>bq :bp <BAR> bd #<CR>
 " Show all open buffers and their status
 nmap <leader>bl :ls<CR>
-
-"-------------------------YCM Keybinds-------------------------
-"type deduction hotkey
-nmap <leader>dt :YcmCompleter GetType<CR>
-"goto definition
-nmap <leader>gtd :YcmCompleter GoToDefinition<CR>
-
-"Enable spell checker
-nmap <leader>sc :setlocal spell spelllang=en_gb<CR>
-
-"-------------------------tex stuff-------------------------
-let Tex_FoldedSections=""
-let Tex_FoldedEnvironments=""
-let Tex_FoldedMisc=""
-
-set timeoutlen=5000
-set updatetime=1000
-
+"
 "-------------------------General Bullshit-------------------------
 "disable vi compat
 set nocompatible
