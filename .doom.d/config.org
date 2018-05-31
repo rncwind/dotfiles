@@ -56,20 +56,6 @@ Doom emacs (with a few personal tweaks) is pretty much the editor i've always wa
 (map! (:leader (:prefix "h"
                  :desc "Reload config.org" :n "R" #'rncwind-reload-config)))
 #+END_SRC
-* Helm
-** Override doom buffer list
-#+BEGIN_SRC emacs-lisp
-(map!
- (:leader
-   (:prefix "b"
-     :desc "Helm buffer list" :n "b" #'helm-buffers-list)))
-#+END_SRC
-** Find Files and Helm Mini
-#+BEGIN_SRC emacs-lisp
-(map! (:leader (:prefix "f"
-                 :desc "Find File" :n "f" #'helm-find-files
-                 :desc "Helm Mini" :n "m" #'helm-mini)))
-#+END_SRC
 * General Programming
 ** Use Emacs 26 line numbers
 #+BEGIN_SRC emacs-lisp
