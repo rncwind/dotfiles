@@ -56,11 +56,30 @@ Doom emacs (with a few personal tweaks) is pretty much the editor i've always wa
 (map! (:leader (:prefix "h"
                  :desc "Reload config.org" :n "R" #'rncwind-reload-config)))
 #+END_SRC
+* Misc Tweaks
+** Set font
+#+BEGIN_SRC emacs-lisp
+(setq doom-font (font-spec :family "hack" :size 12)
+      doom-variable-pitch-font (font-spec :family "Noto Sans")
+      doom-unicode-font (font-spec :family "hack" :size 12)
+      doom-big-font (font-spec :family "hack" :size 19))
+#+END_SRC
 * General Programming
 ** Use Emacs 26 line numbers
 #+BEGIN_SRC emacs-lisp
 (setq-default doom-line-numbers-style 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+END_SRC
+* Ivy
+** <leader>ff find file keybind
+#+BEGIN_SRC emacs-lisp
+(map! (:leader (:prefix "f"
+                 :desc "Find File" :nv "f" #'counsel-find-file)))
+#+END_SRC
+** Switch buffers
+#+BEGIN_SRC emacs-lisp
+(map! (:leader (:prefix "b"
+                 :desc "Switch Buffer" :nv "b" #'ivy-switch-buffer)))
 #+END_SRC
 * C/C++
 ** irony and rtags
