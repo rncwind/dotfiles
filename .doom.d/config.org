@@ -3,7 +3,22 @@
 Doom emacs is what i wanted when i first installed spacemacs.
 Doom emacs is what i wanted to make when i started my own config
 Doom emacs (with a few personal tweaks) is pretty much the editor i've always wanted
+** Who is this for?
+Mostly myself.
+I am a CS Student, my main languages are C and C++ most of the time. I also like to
+use ruby as my general "Glue" language for short scripts and the like.
+
+I am currently learning lisp, and very much enjoy writing it, i feel it may take ruby's place at some point.
+
+I also am currently learning Hasekll becuase monads are fun.
+
+I write as much prose as i have to write as LaTeX documents, and take my lecture notes in org-mode.
+** How does this config work? Where's your config.el?
+I use org-mode and org-babel to extract the code from the very document you are reading now. All of the codeblocks are
+"Untangled" by org at bootup time. This adds a bit to the startup time of emacs, but only about 0.4 seconds, this is a fine tradeoff
+as far as i'm concerened. I'd rather have maintainable configs than go through dotfile bankruptcy
 * General Keybinds
+Keybinds for managing windows, Buffers and meta-config related functions
 ** Windows
 *** Move
 #+BEGIN_SRC emacs-lisp
@@ -57,31 +72,39 @@ Doom emacs (with a few personal tweaks) is pretty much the editor i've always wa
                  :desc "Reload config.org" :n "R" #'rncwind-reload-config)))
 #+END_SRC
 * Misc Tweaks
+Various tweaks that don't need their own section
 ** Set font
 #+BEGIN_SRC emacs-lisp
-(setq doom-font (font-spec :family "hack" :size 12)
+(setq doom-font (font-spec :family "hack" :size 14)
       doom-variable-pitch-font (font-spec :family "Noto Sans")
-      doom-unicode-font (font-spec :family "hack" :size 12)
-      doom-big-font (font-spec :family "hack" :size 19))
+      doom-unicode-font (font-spec :family "hack")
+      doom-big-font (font-spec :family "hack" :size 20))
 #+END_SRC
 * General Programming
+General tweaks but for programming
 ** Use Emacs 26 line numbers
 #+BEGIN_SRC emacs-lisp
 (setq-default doom-line-numbers-style 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+END_SRC
 * Ivy
+Apparently better than helm. I'm trying it out
 ** <leader>ff find file keybind
 #+BEGIN_SRC emacs-lisp
-(map! (:leader (:prefix "f"
-                 :desc "Find File" :nv "f" #'counsel-find-file)))
+(map! :after ivy-mode
+      :leader
+      (:prefix "f"
+        :desc "Find File" :nv "f" #'counsel-find-file))
 #+END_SRC
 ** Switch buffers
 #+BEGIN_SRC emacs-lisp
-(map! (:leader (:prefix "b"
-                 :desc "Switch Buffer" :nv "b" #'ivy-switch-buffer)))
+(map! :after ivy-mode
+      :leader 
+      (:prefix "b"
+        :desc "Switch Buffer" :nv "b" #'ivy-switch-buffer))
 #+END_SRC
 * C/C++
+My main squeeze. Package config for irony/ctags. As well as other general QOL type things
 ** irony and rtags
 #+BEGIN_SRC emacs-lisp
 (add-hook 'c++-mode-hook 'irony-mode)
@@ -93,6 +116,18 @@ Doom emacs (with a few personal tweaks) is pretty much the editor i've always wa
               '((c-mode   "-std=c11" nil)
                 (c++-mode "-std=c++17" nil)))
 #+END_SRC
+** Clang-format
+#+BEGIN_SRC emacs-lisp
+(map! :after cc-mode
+      :map c++-mode-map
+      :localleader
+      (:desc "clang-format" :prefix "f"
+        :desc "clang-format Buffer" :n "b" #'clang-format-buffer
+        :desc "clang-format Region" :n "r" #'clang-format-region))
+#+END_SRC
 * Ruby
+Becuase if i'm not using c or lisp, i dont care about speed and want something to make me happy
 * Lisps
+((((lisp))))
 * Haskell
+A monad is just a monoid in the category of endofunctors, what's the probleⅿ?
