@@ -1,7 +1,9 @@
 * Rincewind's Doom
 ** Why Doom?
 Doom emacs is what i wanted when i first installed spacemacs.
+
 Doom emacs is what i wanted to make when i started my own config
+
 Doom emacs (with a few personal tweaks) is pretty much the editor i've always wanted
 ** Who is this for?
 Mostly myself.
@@ -14,9 +16,11 @@ I also am currently learning Hasekll becuase monads are fun.
 
 I write as much prose as i have to write as LaTeX documents, and take my lecture notes in org-mode.
 ** How does this config work? Where's your config.el?
-I use org-mode and org-babel to extract the code from the very document you are reading now. All of the codeblocks are
-"Untangled" by org at bootup time. This adds a bit to the startup time of emacs, but only about 0.4 seconds, this is a fine tradeoff
-as far as i'm concerened. I'd rather have maintainable configs than go through dotfile bankruptcy
+I use org-mode and org-babel to extract the code from the very document you are reading now.
+All of the codeblocks are "Untangled" by org at bootup time. This adds a bit to the startup
+time of emacs, but only about 0.4 seconds, this is a fine tradeoff as far as i'm
+concerened.
+I'd rather have maintainable configs than go through dotfile bankruptcy
 * General Keybinds
 Keybinds for managing windows, Buffers and meta-config related functions
 ** Windows
@@ -26,8 +30,7 @@ Keybinds for managing windows, Buffers and meta-config related functions
  :ne "C-w <right>" #'evil-window-right
  :ne "C-w <left>"  #'evil-window-left
  :ne "C-w <up>"    #'evil-window-up
- :ne "C-w <down>"  #'evil-window-down
- )
+ :ne "C-w <down>"  #'evil-window-down)
 #+END_SRC
 *** Splits
 #+BEGIN_SRC emacs-lisp
@@ -91,15 +94,13 @@ General tweaks but for programming
 Apparently better than helm. I'm trying it out
 ** <leader>ff find file keybind
 #+BEGIN_SRC emacs-lisp
-(map! :after ivy-mode
-      :leader
+(map! :leader
       (:prefix "f"
         :desc "Find File" :nv "f" #'counsel-find-file))
 #+END_SRC
 ** Switch buffers
 #+BEGIN_SRC emacs-lisp
-(map! :after ivy-mode
-      :leader 
+(map! :leader 
       (:prefix "b"
         :desc "Switch Buffer" :nv "b" #'ivy-switch-buffer))
 #+END_SRC
@@ -116,6 +117,16 @@ My main squeeze. Package config for irony/ctags. As well as other general QOL ty
               '((c-mode   "-std=c11" nil)
                 (c++-mode "-std=c++17" nil)))
 #+END_SRC
+** c-style
+#+BEGIN_SRC emacs-lisp
+(c-add-style "rncwnd"
+             '("bsd"
+               (c-basic-offset . 4)
+               (tab-width . 4)
+               (c-offsets-alist
+                (access-label . --))))
+(setq-default c-default-style "rncwnd")
+#+END_SRC
 ** Clang-format
 #+BEGIN_SRC emacs-lisp
 (map! :after cc-mode
@@ -131,3 +142,5 @@ Becuase if i'm not using c or lisp, i dont care about speed and want something t
 ((((lisp))))
 * Haskell
 A monad is just a monoid in the category of endofunctors, what's the probleⅿ?
+* Markups
+Because writing is boring, but it shouldn't be painful!

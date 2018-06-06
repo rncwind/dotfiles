@@ -45,7 +45,7 @@
 
        :lang
        assembly          ; assembly for fun or debugging
-       cc                ; C/C++/Obj-C madness
+       (cc +irony)       ; C/C++/Obj-C madness
        data              ; config/data formats
        emacs-lisp        ; drown in parentheses
        (haskell +intero) ; a language that's lazier than I am
@@ -74,5 +74,6 @@
        ;; and additional ex commands for evil-mode. Use it as a reference for
        ;; your own modules.
        (default +bindings +snippets +evil-commands)
-       (org-babel-load-file (expand-file-name "~/.doom.d/config.org")))
+       literate)
+       ;(org-babel-load-file (expand-file-name "~/.doom.d/config.org"))
 
