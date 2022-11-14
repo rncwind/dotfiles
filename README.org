@@ -1,0 +1,19 @@
+* Average (But reproducable) dotfiles.
+Right now they are somewhat basic. I would suggest using someone elses dotfiles
+for reference.
+* Setup
+Flakes, NixOS, Home-Manager.
+Main purpose is to be a development system, that is capable of gaming as well.
+I mainly use Emacs where possible, and write mostly Rust, however I play around
+with a lot of other languages.
+
+| OS       | GNU/Nix/Linux       |
+| Shell    | Fish                |
+| WM       | Sway + Waybar       |
+| Editor   | Doom Emacs / VSCode |
+| Terminal | Alacritty           |
+| Browser  | Firefox             |
+* Look at these dotfiles instead.
+- [[https://github.com/hlissner/dotfiles][Hlissner (Praise be to the doomy one)]]
+- [[https://github.com/viperML][Viper]]
+- [[https://github.com/maddiethecafebabe/dotfiles][Maddie]]
