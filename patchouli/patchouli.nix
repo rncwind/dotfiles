@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let
-  patched-discord = pkgs.discord.override { nss = pkgs.nss_latest; };
+let patched-discord = pkgs.discord.override { nss = pkgs.nss_latest; };
 in
 {
   nixpkgs.config.allowUnfree = true;
@@ -19,7 +18,8 @@ in
     gnumake
     #openjdk8
     adoptopenjdk-hotspot-bin-8
-    (pkgs.callPackage ../pkgs/codeship-jet/default.nix { })
+    #(pkgs.callPackage ../pkgs/codeship-jet/default.nix { })
+    codeship-jet
 
     # Multimedia
     firefox-wayland
@@ -38,11 +38,11 @@ in
     autotiling
     waybar
     slurp
+    dracula-theme
 
     # Communication
-    #(discord.override {nss = pkgs.nss_latest;})
     patched-discord
-    (pkgs.mumble.override { pulseSupport = true; })
+    codeship-jet
     slack
 
     # Audio and Music
@@ -54,7 +54,8 @@ in
 
     # Nix specific stuff
     nixfmt
-    nil
+    #nil
+    rnix-lsp
 
     # Utilities
     mons
@@ -65,6 +66,7 @@ in
     fishPlugins.pure
     flameshot
     grim
+    fd # Faster find.
 
     # File Management
     ranger
@@ -74,6 +76,7 @@ in
     # Security
     keepassxc
     yubioath-desktop
+    yubikey-manager
     mullvad-vpn
 
     # DB stuff
@@ -84,6 +87,11 @@ in
     # Needed for vic3
     ncurses
   ];
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
   wayland.windowManager.sway = {
     enable = true;

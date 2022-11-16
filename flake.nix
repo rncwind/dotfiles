@@ -32,7 +32,10 @@
           modules = [
             ./systems/sdm/sdm.nix
             ({ pkgs, ... }: {
-              nixpkgs.overlays = [ inputs.emacs-overlay.overlays.emacs ];
+              nixpkgs.overlays = [
+                inputs.emacs-overlay.overlays.emacs
+                (import ./pkgs)
+              ];
             })
             inputs.home-manager.nixosModules.home-manager
             {

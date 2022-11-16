@@ -13,18 +13,16 @@
   programs.fish = {
     enable = true;
 
+    loginShellInit = ''
+    if test (id --user $USER) ge 1000 && test (tty) = "/dev/tty1"
+      exec sway
+    end
+    '';
+
     interactiveShellInit = ''
       zoxide init fish | source
       direnv hook fish | source
     '';
-
-    functions = {
-      nix-shell = ''set -l nix_shell_info (
-  if test -n "$IN_NIX_SHELL"
-    echo -n "<nix-shell> "
-  end
-)'';
-    };
 
     shellAliases = {
       ls = "exa";

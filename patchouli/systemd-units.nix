@@ -7,7 +7,7 @@
       After = [ "graphical-session-pre.target" ];
       PartOf = [ "graphical-session.target" ];
     };
-    Install = { WantedBy = [ "graphical-session.targetW" ]; };
+    Install = { WantedBy = [ "graphical-session.target" ]; };
     Service = { ExecStart = "${pkgs.keepassxc}/bin/keepassxc -platform xcb"; };
   };
 
