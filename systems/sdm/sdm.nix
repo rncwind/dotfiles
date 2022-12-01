@@ -47,7 +47,7 @@
 
   users.users.patchouli = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [ ];
   };
 
@@ -96,10 +96,22 @@
   programs.sway.enable = true;
 
   # Mount additional drives.
-  fileSystems."/media/oldhome" = {
-    device = "/dev/disk/by-uuid/2d32bbbb-561f-419a-9f0b-0e6a609bf1dc";
-    fsType = "ext4";
+  #fileSystems."/media/oldhome" = {
+    #device = "/dev/disk/by-uuid/2d32bbbb-561f-419a-9f0b-0e6a609bf1dc";
+    #fsType = "ext4";
+  #};
+
+  # Docker
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings = {
+      features = {
+        buildkit = true;
+      };
+    };
   };
+  virtualisation.libvirtd.enable = true;
+  programs.dconf.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

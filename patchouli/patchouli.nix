@@ -18,8 +18,18 @@ in
     gnumake
     #openjdk8
     adoptopenjdk-hotspot-bin-8
-    #(pkgs.callPackage ../pkgs/codeship-jet/default.nix { })
     codeship-jet
+    protobuf
+    tig
+    just
+    fzf
+    virt-manager
+    virt-viewer
+
+    # Need some way of bootstrapping rust projects since there's no good flake
+    # template for oxalica's overlay.
+    rust-analyzer
+    rust-bin.stable.latest.default
 
     # Multimedia
     firefox-wayland
@@ -66,16 +76,17 @@ in
     fishPlugins.pure
     flameshot
     grim
+    oxipng
     fd # Faster find.
 
     # File Management
     ranger
     unzip
     unrar
+    xfce.thunar
 
     # Security
     keepassxc
-    yubioath-desktop
     yubikey-manager
     mullvad-vpn
 
@@ -120,13 +131,14 @@ in
       smart_gaps on
       smart_borders on
       bindsym Mod1+0 workspace number 10
-      bindsym Print exec 'grim -g "$(slurp)" - | wl-copy -t image/png'
+      bindsym Print exec 'grim -g "$(slurp)" - | oxipng - --stdout -q -o5 --timeout 3 | wl-copy -t image/png'
       bindsym Mod1+Shift+0 move container to workspace number 10
       bindsym Mod1+Shift+Control+p exec "systemctl poweroff"
       bar swaybar_command waybar
       exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
       exec hash dbus-update-activation-environment 2>/dev/null && \
         dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+      exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
     '';
   };
 

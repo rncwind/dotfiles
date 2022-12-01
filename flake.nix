@@ -13,6 +13,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+    };
+
     # A better LSP for editing nix source files.
     nil-lsp = {
       url = "github:oxalica/nil#";
@@ -34,6 +38,7 @@
             ({ pkgs, ... }: {
               nixpkgs.overlays = [
                 inputs.emacs-overlay.overlays.emacs
+                inputs.rust-overlay.overlays.default
                 (import ./pkgs)
               ];
             })

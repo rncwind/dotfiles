@@ -14,9 +14,9 @@
     enable = true;
 
     loginShellInit = ''
-    if test (id --user $USER) ge 1000 && test (tty) = "/dev/tty1"
-      exec sway
-    end
+      if test -z $DISPLAY; and test (tty) = "/dev/tty1"
+        exec sway
+      end
     '';
 
     interactiveShellInit = ''
@@ -28,6 +28,20 @@
       ls = "exa";
       ll = "exa -l";
       cat = "bat --paging=never";
+      rless = "less -r";
+    };
+
+    functions = {
+      direnv-flake = {
+        body = ''
+          if test -e .envrc
+            return 0
+          else
+            echo "use flake" >> .envrc
+            direnv allow
+          end
+        '';
+      };
     };
 
     plugins = [{
