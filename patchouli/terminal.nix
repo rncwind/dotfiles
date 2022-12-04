@@ -42,6 +42,22 @@
           end
         '';
       };
+
+      direnv-nix-shell = {
+        argumentNames = "filename";
+        body = ''
+          if test -e .envrc
+            return 0
+          else
+            if test -n "$filename"
+              echo "use nix $filename" >> .envrc
+            else
+              echo "use nix" >> .envrc
+            end
+            direnv allow
+          end
+        '';
+      };
     };
 
     plugins = [{
