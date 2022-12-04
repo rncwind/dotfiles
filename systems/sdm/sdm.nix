@@ -97,8 +97,8 @@
 
   # Mount additional drives.
   #fileSystems."/media/oldhome" = {
-    #device = "/dev/disk/by-uuid/2d32bbbb-561f-419a-9f0b-0e6a609bf1dc";
-    #fsType = "ext4";
+  #device = "/dev/disk/by-uuid/2d32bbbb-561f-419a-9f0b-0e6a609bf1dc";
+  #fsType = "ext4";
   #};
 
   # Docker
@@ -112,6 +112,8 @@
   };
   virtualisation.libvirtd.enable = true;
   programs.dconf.enable = true;
+
+  nix.trustedUsers = [ "root" "patchouli" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
