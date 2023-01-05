@@ -2,7 +2,11 @@
 
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  imports = [ ./hardware-configuration.nix ./steam.nix ];
+  nix.settings = {
+    trusted-substituters = [ "https://cache.nixos.org" "https://nix-community.cachix.org" ];
+    trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
+  };
+  imports = [ ./hardware-configuration.nix ./steam.nix ./lutris.nix ./i18n.nix ./virt.nix ];
   nixpkgs.config.allowUnfree = true;
 
   boot.loader.grub.enable = true;
@@ -55,7 +59,7 @@
   environment.shells = with pkgs; [ fish ];
 
   # Ensure that we always have _at least_ vim and wget.
-  environment.systemPackages = with pkgs; [ vim wget gcc xdg-utils ];
+  environment.systemPackages = with pkgs; [ vim wget gcc xdg-utils SDL SDL2 polkit_gnome virtiofsd ];
 
   # Set vim as default
   programs.vim.defaultEditor = true;
@@ -90,8 +94,8 @@
     enable = true;
     wlr.enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    gtkUsePortal = true;
   };
+
 
   programs.sway.enable = true;
 
@@ -104,16 +108,23 @@
   # Docker
   virtualisation.docker = {
     enable = true;
+    storageDriver = "btrfs";
     daemon.settings = {
       features = {
         buildkit = true;
       };
     };
   };
-  virtualisation.libvirtd.enable = true;
-  programs.dconf.enable = true;
 
-  nix.trustedUsers = [ "root" "patchouli" ];
+  # GVFS
+  services.gvfs.enable = true;
+  # Generate thumbnails
+  services.tumbler.enable = true;
+
+  # Polshit
+  security.polkit.enable = true;
+
+  nix.settings.trusted-users = [ "root" "patchouli" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

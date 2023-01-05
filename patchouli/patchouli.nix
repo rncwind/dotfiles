@@ -1,6 +1,15 @@
 { config, lib, pkgs, ... }:
 
-let patched-discord = pkgs.discord.override { nss = pkgs.nss_latest; };
+let
+  patched-discord = pkgs.discord.override { nss = pkgs.nss_latest; };
+  gameconq = pkgs.scanmem.overrideAttrs (oldAttrs: {
+    configureFlags = [ "--enable-gui" ];
+  });
+  gs = pkgs.gamescope.overrideAttrs (oldAttrs: {
+    fixupPhase = ''
+      setcap 'CAP_SYS_NICE=eip' gamescope
+    '';
+  });
 in
 {
   nixpkgs.config.allowUnfree = true;
@@ -8,7 +17,7 @@ in
   home.homeDirectory = "/home/patchouli";
 
   imports =
-    [ ./fontconfig.nix ./waybar.nix ./systemd-units.nix ./terminal.nix ];
+    [ ./fontconfig.nix ./waybar.nix ./systemd-units.nix ./terminal.nix ./style.nix ./audio.nix ];
 
   home.packages = with pkgs; [
     # Dev
@@ -39,6 +48,7 @@ in
     imv # Image Vewer, Feh for wayland
     ueberzug # Show images in ranger
     mpv
+    rsgain
 
     # Wayland stuff
     wl-clipboard
@@ -48,6 +58,8 @@ in
     autotiling
     waybar
     slurp
+
+    glib
     dracula-theme
 
     # Communication
@@ -58,6 +70,10 @@ in
     # Audio and Music
     pavucontrol
     spotify
+    picard
+    soundkonverter
+    chromaprint
+    r128gain
 
     # Documents
     texlive.combined.scheme-full
@@ -66,6 +82,7 @@ in
     nixfmt
     #nil
     rnix-lsp
+    alejandra
 
     # Utilities
     mons
@@ -84,11 +101,13 @@ in
     unzip
     unrar
     xfce.thunar
+    xfce.thunar-archive-plugin
 
     # Security
     keepassxc
     yubikey-manager
     mullvad-vpn
+    polkit_gnome
 
     # DB stuff
     sqlite
@@ -97,11 +116,28 @@ in
     prismlauncher-qt5
     # Needed for vic3
     ncurses
+    # Dwarf fort
+    (dwarf-fortress-packages.dwarf-fortress-full.override {
+      theme = "spacefox";
+      enableTruetype = 24;
+    })
+    scanmem
+    steamtinkerlaunch
+    gamescope
+    mangohud
+
+    anki
   ];
+
 
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+  };
+
+  programs.mako = {
+    defaultTimeout = 10000;
+    font = "hasklig 10";
   };
 
   wayland.windowManager.sway = {
@@ -140,6 +176,15 @@ in
         dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
       exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
     '';
+
+    extraSessionCommands = ''
+      export INPUT_METHOD=fcitx
+      export QT_IM_MODULE=fcitx
+      export GTK_IM_MODULE=fcitx
+      export XMODIFIERS=@im=fcitx
+      export XIM_SERVERS=fcitx
+    '';
+
   };
 
   programs.vscode = {
@@ -150,8 +195,8 @@ in
 
   programs.emacs = {
     enable = true;
-    package = pkgs.emacsPgtkNativeComp;
-    extraPackages = (epkgs: [ epkgs.vterm epkgs.emacsql-sqlite ]);
+    package = pkgs.emacsPgtk;
+    extraPackages = (epkgs: [ epkgs.vterm ]);
   };
 
   home.stateVersion = "22.05";

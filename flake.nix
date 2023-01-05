@@ -21,6 +21,12 @@
     nil-lsp = {
       url = "github:oxalica/nil#";
     };
+
+    # An uncompromising code formatter for nix
+    alejandra = {
+      url = "github:kamadorueda/alejandra/3.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ { self, ... }:
     let
