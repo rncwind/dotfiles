@@ -40,7 +40,7 @@
     };
 
     functions = {
-      direnv-flake = {
+      direnvUseFlake = {
         body = ''
           if test -e .envrc
             return 0
@@ -51,7 +51,7 @@
         '';
       };
 
-      direnv-nix-shell = {
+      direnvUseNixShell = {
         argumentNames = "filename";
         body = ''
           if test -e .envrc

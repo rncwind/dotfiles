@@ -6,7 +6,7 @@
     trusted-substituters = [ "https://cache.nixos.org" "https://nix-community.cachix.org" ];
     trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
   };
-  imports = [ ./hardware-configuration.nix ./steam.nix ./lutris.nix ./i18n.nix ./virt.nix ];
+  imports = [ ./hardware-configuration.nix ./steam.nix ./mpd.nix ./lutris.nix ./i18n.nix ./virt.nix ];
   nixpkgs.config.allowUnfree = true;
 
   boot.loader.grub.enable = true;
@@ -14,6 +14,11 @@
   boot.loader.grub.device = "nodev";
   boot.loader.grub.efiSupport = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.supportedFilesystems = [ "ntfs" ];
+
+  # Use tmpfs
+  boot.cleanTmpDir = true;
+  boot.tmpOnTmpfs = true;
 
   # At high res grub draw in EFI is really slow.
   boot.loader.grub.gfxmodeEfi = "1024x768";
@@ -121,10 +126,22 @@
   # Generate thumbnails
   services.tumbler.enable = true;
 
+  # OpenSSH
+  services.openssh.enable = true;
+  services.openssh.passwordAuthentication = true;
+
   # Polshit
   security.polkit.enable = true;
 
   nix.settings.trusted-users = [ "root" "patchouli" ];
+
+
+  security.wrappers.gamescope = {
+    owner = "patchouli";
+    group = "users";
+    capabilities = "CAP_SYS_NICE-eip";
+    source = "${pkgs.gamescope}/bin/gamescope";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

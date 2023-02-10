@@ -12,8 +12,8 @@
     #     target = "/media/vm_shared";
     #   };
     # };
-    virtualbox.host.enable = true;
+    #virtualbox.host.enable = true;
   };
-  users.extraGroups.vboxusers.members = [ "patchouli" ];
+  #users.extraGroups.vboxusers.members = [ "patchouli" ];
 
 }

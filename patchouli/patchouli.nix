@@ -1,15 +1,15 @@
 { config, lib, pkgs, ... }:
 
 let
-  patched-discord = pkgs.discord.override { nss = pkgs.nss_latest; };
-  gameconq = pkgs.scanmem.overrideAttrs (oldAttrs: {
-    configureFlags = [ "--enable-gui" ];
-  });
-  gs = pkgs.gamescope.overrideAttrs (oldAttrs: {
-    fixupPhase = ''
-      setcap 'CAP_SYS_NICE=eip' gamescope
-    '';
-  });
+  patched-discord = pkgs.discord-ptb.override { nss = pkgs.nss_latest; };
+  # gameconq = pkgs.scanmem.overrideAttrs (oldAttrs: {
+  #   configureFlags = [ "--enable-gui" ];
+  # });
+  # gs = pkgs.gamescope.overrideAttrs (oldAttrs: {
+  #   fixupPhase = ''
+  #     setcap 'CAP_SYS_NICE=eip' gamescope
+  #   '';
+  # });
 in
 {
   nixpkgs.config.allowUnfree = true;
@@ -26,7 +26,7 @@ in
     gnupg
     gnumake
     #openjdk8
-    adoptopenjdk-hotspot-bin-8
+    #adoptopenjdk-hotspot-bin-8
     codeship-jet
     protobuf
     tig
@@ -34,6 +34,7 @@ in
     fzf
     virt-manager
     virt-viewer
+    postman
 
     # Need some way of bootstrapping rust projects since there's no good flake
     # template for oxalica's overlay.
@@ -95,6 +96,7 @@ in
     grim
     oxipng
     fd # Faster find.
+    remmina
 
     # File Management
     ranger
@@ -102,6 +104,7 @@ in
     unrar
     xfce.thunar
     xfce.thunar-archive-plugin
+    gnome.file-roller
 
     # Security
     keepassxc
@@ -125,8 +128,14 @@ in
     steamtinkerlaunch
     gamescope
     mangohud
+    gamemode
+    #beatoraja
+    openal
+    portaudio
 
     anki
+    neofetch
+    deluge
   ];
 
 
@@ -158,11 +167,11 @@ in
       gaps inner 10
       gaps outer 5
       exec_always autotiling
-      output HDMI-A-2 pos 0 0 res 1920x1080
+      output HDMI-A-1 pos 0 0 res 1920x1080
       output DP-1 pos 1920 0 res 2560x1440
-      output HDMI-A-1 pos 4480 0 res 1920x1080
-      workspace 3 output HDMI-A-2
-      workspace 2 output HDMI-A-1
+      output HDMI-A-2 pos 4480 0 res 1920x1080
+      workspace 3 output HDMI-A-1
+      workspace 2 output HDMI-A-2
       workspace 1 output DP-1
       smart_gaps on
       smart_borders on
@@ -198,6 +207,23 @@ in
     package = pkgs.emacsPgtk;
     extraPackages = (epkgs: [ epkgs.vterm ]);
   };
+
+  programs.ncmpcpp = {
+    enable = true;
+    settings = {
+      user_interface = "alternative";
+      media_library_primary_tag = "album_artist";
+    };
+  };
+  programs.ncspot = {
+    enable = true;
+    settings = {
+      use_nerdfont = true;
+      volnorm = true;
+      bitrate = 320;
+    };
+  };
+
 
   home.stateVersion = "22.05";
 }
