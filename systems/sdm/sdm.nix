@@ -6,8 +6,19 @@
     trusted-substituters = [ "https://cache.nixos.org" "https://nix-community.cachix.org" ];
     trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
   };
-  imports = [ ./hardware-configuration.nix ./steam.nix ./mpd.nix ./lutris.nix ./i18n.nix ./virt.nix ];
+  imports = [ ./hardware-configuration.nix ./mpd.nix ./lutris.nix ./i18n.nix ./virt.nix ];
   nixpkgs.config.allowUnfree = true;
+
+  nixpkgs.config.packageOverrides = pkgs: {
+    steam = pkgs.steam.override {
+      extraPkgs = pkgs: with pkgs; [
+        libgdiplus
+        keyutils
+        libkrb5
+        ncurses6
+      ];
+    };
+  };
 
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
@@ -64,7 +75,7 @@
   environment.shells = with pkgs; [ fish ];
 
   # Ensure that we always have _at least_ vim and wget.
-  environment.systemPackages = with pkgs; [ vim wget gcc xdg-utils SDL SDL2 polkit_gnome virtiofsd ];
+  environment.systemPackages = with pkgs; [ steam vim wget gcc xdg-utils SDL SDL2 polkit_gnome virtiofsd ];
 
   # Set vim as default
   programs.vim.defaultEditor = true;
@@ -98,17 +109,11 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.gnome.gnome-keyring ];
   };
 
 
   programs.sway.enable = true;
-
-  # Mount additional drives.
-  #fileSystems."/media/oldhome" = {
-  #device = "/dev/disk/by-uuid/2d32bbbb-561f-419a-9f0b-0e6a609bf1dc";
-  #fsType = "ext4";
-  #};
 
   # Docker
   virtualisation.docker = {
@@ -125,7 +130,7 @@
   services.gvfs.enable = true;
   # Generate thumbnails
   services.tumbler.enable = true;
-
+  services.gnome.gnome-keyring.enable = true;
   # OpenSSH
   services.openssh.enable = true;
   services.openssh.passwordAuthentication = true;
@@ -142,6 +147,13 @@
     capabilities = "CAP_SYS_NICE-eip";
     source = "${pkgs.gamescope}/bin/gamescope";
   };
+
+  # Firewall config.
+  networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [
+    42420 # Vintage Story
+    57300 # Deluge
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

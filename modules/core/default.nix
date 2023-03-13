@@ -1,5 +1,7 @@
-{ config, lib, pkgs, ... }:
+{ ... }:
 
 {
-
+  imports = [
+    ./userOptions.nix
+  ];
 }

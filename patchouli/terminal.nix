@@ -18,66 +18,69 @@
     PATH = "${XDG_BIN_HOME}";
   };
 
-  programs.fish = {
-    enable = true;
 
-    loginShellInit = ''
-      if test -z $DISPLAY; and test (tty) = "/dev/tty1"
-        exec sway
-      end
-    '';
 
-    interactiveShellInit = ''
-      zoxide init fish | source
-      direnv hook fish | source
-    '';
+  # programs.fish = {
+  #   enable = true;
 
-    shellAliases = {
-      ls = "exa";
-      ll = "exa -l";
-      cat = "bat --paging=never";
-      rless = "less -r";
-    };
+  #   loginShellInit = ''
+  #     if test -z $DISPLAY; and test (tty) = "/dev/tty1"
+  #       exec sway
+  #     end
+  #   '';
 
-    functions = {
-      direnvUseFlake = {
-        body = ''
-          if test -e .envrc
-            return 0
-          else
-            echo "use flake" >> .envrc
-            direnv allow
-          end
-        '';
-      };
+  #   interactiveShellInit = ''
+  #     zoxide init fish | source
+  #     direnv hook fish | source
+  #   '';
 
-      direnvUseNixShell = {
-        argumentNames = "filename";
-        body = ''
-          if test -e .envrc
-            return 0
-          else
-            if test -n "$filename"
-              echo "use nix $filename" >> .envrc
-            else
-              echo "use nix" >> .envrc
-            end
-            direnv allow
-          end
-        '';
-      };
-    };
+  #   shellAliases = {
+  #     ls = "exa";
+  #     ll = "exa -l";
+  #     cat = "bat --paging=never";
+  #     normalcat = "cat";
+  #     rless = "less -r";
+  #   };
 
-    plugins = [{
-      name = "pure";
-      src = pkgs.fetchFromGitHub {
-        owner = "pure-fish";
-        repo = "pure";
-        rev = "8c1f69d7f499469979cbecc7b7eaefb97cd6f509";
-        sha256 = "ye3fwSepzFaRUlam+eNVmjB6WjhmPcvD+sQ9RkQw164=";
-      };
-    }];
-  };
+  #   functions = {
+  #     direnvUseFlake = {
+  #       body = ''
+  #         if test -e .envrc
+  #           return 0
+  #         else
+  #           echo "use flake" >> .envrc
+  #           direnv allow
+  #         end
+  #       '';
+  #     };
+
+  #     direnvUseNixShell = {
+  #       argumentNames = "filename";
+  #       body = ''
+  #         if test -e .envrc
+  #           return 0
+  #         else
+  #           if test -n "$filename"
+  #             echo "use nix $filename" >> .envrc
+  #           else
+  #             echo "use nix" >> .envrc
+  #           end
+  #           direnv allow
+  #         end
+  #       '';
+  #     };
+  #   };
+
+  #   plugins = [{
+  #     name = "pure";
+  #     src = pkgs.fetchFromGitHub {
+  #       owner = "pure-fish";
+  #       repo = "pure";
+  #       rev = "8c1f69d7f499469979cbecc7b7eaefb97cd6f509";
+  #       sha256 = "ye3fwSepzFaRUlam+eNVmjB6WjhmPcvD+sQ9RkQw164=";
+  #     };
+  #   }];
+  # };
 
   programs.zoxide = {
     enable = true;

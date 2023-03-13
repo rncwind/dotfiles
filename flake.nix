@@ -41,6 +41,8 @@
           # A module file is just a config file :tm:
           modules = [
             ./systems/sdm/sdm.nix
+            ./modules
+            ./patchouli/patchouli_new.nix
             ({ pkgs, ... }: {
               nixpkgs.overlays = [
                 inputs.emacs-overlay.overlays.emacs

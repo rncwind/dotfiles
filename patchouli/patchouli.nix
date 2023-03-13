@@ -1,15 +1,7 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   patched-discord = pkgs.discord-ptb.override { nss = pkgs.nss_latest; };
-  # gameconq = pkgs.scanmem.overrideAttrs (oldAttrs: {
-  #   configureFlags = [ "--enable-gui" ];
-  # });
-  # gs = pkgs.gamescope.overrideAttrs (oldAttrs: {
-  #   fixupPhase = ''
-  #     setcap 'CAP_SYS_NICE=eip' gamescope
-  #   '';
-  # });
 in
 {
   nixpkgs.config.allowUnfree = true;
@@ -35,6 +27,12 @@ in
     virt-manager
     virt-viewer
     postman
+
+    # Cloud stuff
+    google-cloud-sdk
+    skaffold
+    kubectl
+    cloud-sql-proxy
 
     # Need some way of bootstrapping rust projects since there's no good flake
     # template for oxalica's overlay.
@@ -116,26 +114,32 @@ in
     sqlite
 
     #Games
-    prismlauncher-qt5
-    # Needed for vic3
-    ncurses
-    # Dwarf fort
+
+    # Actual Games
     (dwarf-fortress-packages.dwarf-fortress-full.override {
       theme = "spacefox";
       enableTruetype = 24;
     })
+    prismlauncher-qt5
+    vintagestory
+    xivlauncher
+
+    # Stuff for games
+    jdk19_headless
+    ncurses
     scanmem
     steamtinkerlaunch
     gamescope
     mangohud
     gamemode
-    #beatoraja
     openal
     portaudio
 
+    # Misc
     anki
     neofetch
     deluge
+    nicotine-plus
   ];
 
 
@@ -184,6 +188,9 @@ in
       exec hash dbus-update-activation-environment 2>/dev/null && \
         dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
       exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
+
+      assign [app_id="slack"] 3
+      assign [app_id="discord"] 3
     '';
 
     extraSessionCommands = ''
@@ -222,6 +229,27 @@ in
       volnorm = true;
       bitrate = 320;
     };
+  };
+
+  programs.tealdeer = {
+    enable = true;
+    settings = {
+      use_pager = true;
+      updates = {
+        auto_update = true;
+      };
+    };
+  };
+
+  services.gammastep = {
+    enable = true;
+    temperature = {
+      day = 6500;
+      night = 2700;
+    };
+    tray = true;
+    latitude = 51.5072;
+    longitude = 0.12;
   };
 
 

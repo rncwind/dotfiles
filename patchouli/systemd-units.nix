@@ -5,11 +5,11 @@
   # Services that are to start after sway (anything with a tray icon etc)
   # should depend on sway-session.
   systemd.user.services.sway-session = {
-    unit = {
-      description = "Placeholder for sway startup for other targets";
-      after = [ "graphical-session.pre.target" ];
-      wants = [ "graphical-session.pre.target" ];
-      bindsto = [ "graphical-session.target" ];
+    Unit = {
+      Description = "Placeholder for sway startup for other targets";
+      After = [ "graphical-session.pre.target" ];
+      Wants = [ "graphical-session.pre.target" ];
+      BindsTo = [ "graphical-session.target" ];
     };
   };
 
@@ -18,10 +18,19 @@
       Description = "Start KeepassXC on graphical session";
       #After = [ "graphical-session.target" ];
       #PartOf = [ "graphical-session.target" ];
-      bindsto = [ "sway-session.target" ];
+      BindsTo = [ "sway-session.target" ];
     };
     Install = { WantedBy = [ "sway-session.target" ]; };
     Service = { ExecStart = "${pkgs.keepassxc}/bin/keepassxc -platform xcb"; };
+  };
+
+  systemd.user.services.slack-autostart = {
+    Unit = {
+      Description = "Autostart slack on weekdays";
+      BindsTo = [ "sway-session.target" ];
+    };
+    Install = { WantedBy = [ "sway-session.target" ]; };
+    Service = { ExecStart = "${./static/maybe_start_slack.sh}"; };
   };
 
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
