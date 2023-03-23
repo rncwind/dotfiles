@@ -2,8 +2,14 @@
 
 let
   patched-discord = pkgs.discord-ptb.override { nss = pkgs.nss_latest; };
+  ffxiv-wrapper = pkgs.writeScriptBin "ffxiv" ''
+    #! ${pkgs.bash}/bin/bash
+    export DXVK_FRAME_RATE=74
+    exec gamemoderun XIVLauncher.Core "$@"
+  '';
 in
 {
+
   nixpkgs.config.allowUnfree = true;
   home.username = "patchouli";
   home.homeDirectory = "/home/patchouli";
@@ -88,7 +94,6 @@ in
     htop
     ripgrep
     sshfs
-    direnv
     fishPlugins.pure
     flameshot
     grim
@@ -123,6 +128,7 @@ in
     prismlauncher-qt5
     vintagestory
     xivlauncher
+    ffxiv-wrapper
 
     # Stuff for games
     jdk19_headless
@@ -143,10 +149,10 @@ in
   ];
 
 
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
+  # programs.direnv = {
+  #   enable = true;
+  #   nix-direnv.enable = true;
+  # };
 
   programs.mako = {
     defaultTimeout = 10000;
@@ -251,7 +257,6 @@ in
     latitude = 51.5072;
     longitude = 0.12;
   };
-
 
   home.stateVersion = "22.05";
 }

@@ -5,6 +5,13 @@
     shell = {
       fish.enable = true;
       alacritty.enable = true;
+      terminalPrograms.enable = true;
     };
+  };
+
+  user = {
+    home.packages = with pkgs; [
+
+    ];
   };
 }

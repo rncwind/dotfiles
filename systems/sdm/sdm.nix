@@ -20,6 +20,17 @@
     };
   };
 
+  nixpkgs.overlays = [
+    (self: super: {
+      # We don't override libpcap directly since then everything needs to rebuild, and we really just want the binary
+      rpcapd = super.libpcap.overrideAttrs (final: prev: {
+        nativeBuildInputs = prev.nativeBuildInputs ++ [ pkgs.libxcrypt ];
+        configureFlags = prev.configureFlags ++ [ "--enable-remote" ];
+      });
+    })
+  ];
+
+
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.loader.grub.device = "nodev";
@@ -71,11 +82,8 @@
     packages = with pkgs; [ ];
   };
 
-  users.defaultUserShell = pkgs.fish;
-  environment.shells = with pkgs; [ fish ];
-
   # Ensure that we always have _at least_ vim and wget.
-  environment.systemPackages = with pkgs; [ steam vim wget gcc xdg-utils SDL SDL2 polkit_gnome virtiofsd ];
+  environment.systemPackages = with pkgs; [ steam steam-run vim wget gcc xdg-utils SDL SDL2 polkit_gnome virtiofsd rpcapd gnutls ];
 
   # Set vim as default
   programs.vim.defaultEditor = true;
@@ -148,11 +156,19 @@
     source = "${pkgs.gamescope}/bin/gamescope";
   };
 
+  security.wrappers.rpcapd = {
+    source = "${pkgs.rpcapd}/bin/rpcapd";
+    capabilities = "cap_net_admin,cap_net_raw,cap_sys_ptrace=eip";
+    owner = "patchouli";
+    group = "users";
+  };
+
   # Firewall config.
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [
     42420 # Vintage Story
     57300 # Deluge
+    2234 # SLSK
   ];
 
   # This value determines the NixOS release from which the default

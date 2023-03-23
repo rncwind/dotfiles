@@ -2,6 +2,7 @@
 
 with lib; let
   cfg = config.modules.shell.fish;
+  tpCfg = config.modules.shell.terminalPrograms;
 in
 {
   options = {
@@ -38,9 +39,13 @@ in
 
   # If fish is enabled
   config = mkIf cfg.enable {
-    programs.fish.enable = mkIf cfg.enable true;
+    programs.fish.enable = cfg.enable;
+    users.defaultUserShell = pkgs.fish;
+    environment.shells = [ pkgs.fish ];
+
 
     home-manager.users.${config.user.name} = {
+
       programs.fish = {
         enable = true;
 
@@ -51,20 +56,23 @@ in
         '';
 
         interactiveShellInit = mkIf cfg.enableInitScripts ''
-          zoxide init fish | source
-          direnv hook fish | source
+          ${if config.modules.shell.terminalPrograms.enableZoxide then "zoxide init fish | source" else ""}
+          ${if config.modules.shell.terminalPrograms.enableDirenv then "direnv hook fish | source" else ""}
         '';
 
-        shellAliases = mkIf cfg.enableAliases {
-          ls = "exa";
-          ll = "exa -l";
-          cat = "bat --paging=never";
-          normalcat = "cat";
-          rless = "less -r";
-        };
+        shellAliases =
+          mkIf
+            cfg.enableAliases
+            {
+              ls = mkIf (config.modules.shell.terminalPrograms.enableExa && cfg.enableAliases) "exa";
+              ll = mkIf (config.modules.shell.terminalPrograms.enableExa && cfg.enableAliases) "exa -l";
+              cat = mkIf (config.modules.shell.terminalPrograms.enableBat && cfg.enableAliases) "bat --paging=never";
+              normalcat = mkIf (config.modules.shell.terminalPrograms.enableBat && cfg.enableAliases) "cat";
+              rless = "less -r";
+            };
 
         functions = {
-          direnvUseFlake = mkIf cfg.enableNixFunctions {
+          direnv-use-flake = mkIf (cfg.enableNixFunctions && tpCfg.enableDirenv) {
             body = ''
               if test -e .envrc
                 return 0
@@ -75,7 +83,7 @@ in
             '';
           };
 
-          direnvUseNixShell = mkIf cfg.enableNixFunctions {
+          direnv-use-nix-shell = mkIf (cfg.enableNixFunctions && tpCfg.enableDirenv) {
             argumentNames = "filename";
             body = ''
               if test -e .envrc
@@ -91,6 +99,7 @@ in
             '';
           };
         };
+
         plugins = mkIf cfg.enablePure [{
           name = "pure";
           src = pkgs.fetchFromGitHub {

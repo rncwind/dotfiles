@@ -18,5 +18,14 @@ in
       type = str;
       default = "/home/patchouli";
     };
+
+    # Home manager stuff. This is mostly used so we can install non-moduled
+    # pacakges and similar.
+    home = {
+      packages = mkOption {
+        type = listOf package;
+        default = [ ];
+      };
+    };
   };
 }
