@@ -8,6 +8,6 @@
     ardour
     # VSTs
     surge-XT
-
+    exactaudiocopy
   ];
 }

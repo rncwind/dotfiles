@@ -20,17 +20,6 @@
     };
   };
 
-  nixpkgs.overlays = [
-    (self: super: {
-      # We don't override libpcap directly since then everything needs to rebuild, and we really just want the binary
-      rpcapd = super.libpcap.overrideAttrs (final: prev: {
-        nativeBuildInputs = prev.nativeBuildInputs ++ [ pkgs.libxcrypt ];
-        configureFlags = prev.configureFlags ++ [ "--enable-remote" ];
-      });
-    })
-  ];
-
-
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.loader.grub.device = "nodev";

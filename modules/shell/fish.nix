@@ -60,16 +60,13 @@ in
           ${if config.modules.shell.terminalPrograms.enableDirenv then "direnv hook fish | source" else ""}
         '';
 
-        shellAliases =
-          mkIf
-            cfg.enableAliases
-            {
-              ls = mkIf (config.modules.shell.terminalPrograms.enableExa && cfg.enableAliases) "exa";
-              ll = mkIf (config.modules.shell.terminalPrograms.enableExa && cfg.enableAliases) "exa -l";
-              cat = mkIf (config.modules.shell.terminalPrograms.enableBat && cfg.enableAliases) "bat --paging=never";
-              normalcat = mkIf (config.modules.shell.terminalPrograms.enableBat && cfg.enableAliases) "cat";
-              rless = "less -r";
-            };
+        shellAliases = mkIf cfg.enableAliases {
+          ls = mkIf (config.modules.shell.terminalPrograms.enableExa && cfg.enableAliases) "exa";
+          ll = mkIf (config.modules.shell.terminalPrograms.enableExa && cfg.enableAliases) "exa -l";
+          cat = mkIf (config.modules.shell.terminalPrograms.enableBat && cfg.enableAliases) "bat --paging=never";
+          normalcat = mkIf (config.modules.shell.terminalPrograms.enableBat && cfg.enableAliases) "cat";
+          rless = "less -r";
+        };
 
         functions = {
           direnv-use-flake = mkIf (cfg.enableNixFunctions && tpCfg.enableDirenv) {
