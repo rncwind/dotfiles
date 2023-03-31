@@ -72,7 +72,7 @@
   };
 
   # Ensure that we always have _at least_ vim and wget.
-  environment.systemPackages = with pkgs; [ steam steam-run vim wget gcc xdg-utils SDL SDL2 polkit_gnome virtiofsd rpcapd gnutls ];
+  environment.systemPackages = with pkgs; [ steam steam-run vim wget gcc xdg-utils SDL SDL2 polkit_gnome virtiofsd gnutls ];
 
   # Set vim as default
   programs.vim.defaultEditor = true;
@@ -143,13 +143,6 @@
     group = "users";
     capabilities = "CAP_SYS_NICE-eip";
     source = "${pkgs.gamescope}/bin/gamescope";
-  };
-
-  security.wrappers.rpcapd = {
-    source = "${pkgs.rpcapd}/bin/rpcapd";
-    capabilities = "cap_net_admin,cap_net_raw,cap_sys_ptrace=eip";
-    owner = "patchouli";
-    group = "users";
   };
 
   # Firewall config.
