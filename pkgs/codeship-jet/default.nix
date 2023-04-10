@@ -1,4 +1,3 @@
-#{ stdenv, pkgs, lib, fetchzip, ... }:
 { stdenv, lib, fetchzip, ... }:
 
 stdenv.mkDerivation

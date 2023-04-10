@@ -65,11 +65,11 @@
 
   sound.enable = true;
 
-  users.users.patchouli = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [ ];
-  };
+  # users.users.patchouli = {
+  #   isNormalUser = true;
+  #   extraGroups = [ "wheel" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
+  #   packages = with pkgs; [ ];
+  # };
 
   # Ensure that we always have _at least_ vim and wget.
   environment.systemPackages = with pkgs; [ steam steam-run vim wget gcc xdg-utils SDL SDL2 polkit_gnome virtiofsd gnutls ];

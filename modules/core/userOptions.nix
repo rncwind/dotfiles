@@ -31,16 +31,17 @@ in
         type = listOf package;
         default = [ ];
       };
+    };
 
-      home-manager.enable = mkOption {
-        type = bool;
-        default = true;
-      };
+    home-manager.enable = mkOption {
+      type = bool;
+      default = true;
     };
   };
 
+  # This is the actual reificiation of our options. Everyting delcared here
+  # is actually used and included in the config.
   config = {
-    # Reify our user configuration options.
     users.mutableUsers = true;
     users.users = {
       "${cfg.name}" = {
@@ -50,5 +51,22 @@ in
         extraGroups = cfg.extraGroups;
       };
     };
+
+    home-manager = mkIf cfg.home-manager.enable {
+      useGlobalPkgs = mkDefault true;
+      useUserPackages = mkDefault true;
+      users."${cfg.name}" = {
+        home = with cfg.home; {
+          inherit packages;
+
+          stateVersion = "22.05";
+          homeDirectory = cfg.homeDir;
+          username = cfg.name;
+        };
+        programs.home-manager.enable = true;
+      };
+    };
+
   };
+
 }

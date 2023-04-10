@@ -9,7 +9,7 @@
     };
 
     emacs-overlay = {
-      url = "github:nix-community/emacs-overlay?rev=cc6ed01ef2d28fae346fe537f67956d986bab5e7";
+      url = "github:nix-community/emacs-overlay?rev=6a2222bf037ac02d79f28c5455ec62adad699560";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -40,6 +40,7 @@
           inherit system;
           # A module file is just a config file :tm:
           modules = [
+            inputs.home-manager.nixosModules.home-manager
             ./systems/sdm/sdm.nix
             ./modules
             ./patchouli/patchouli_new.nix
@@ -50,12 +51,6 @@
                 (import ./pkgs)
               ];
             })
-            inputs.home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.patchouli = import ./patchouli/patchouli.nix;
-            }
           ];
         };
       };
