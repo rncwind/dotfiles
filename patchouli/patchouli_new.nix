@@ -39,7 +39,6 @@ in
         music.enable = true;
       };
     };
-
   };
 
   user = {
@@ -48,26 +47,7 @@ in
     # In general, this is more of a "grab bag" of random utils etc.
     home.packages = with pkgs; [
       # Dev
-      git
-      git-crypt
-      gnupg
-      gnumake
-      #openjdk8
-      #adoptopenjdk-hotspot-bin-8
-      codeship-jet
-      protobuf
-      tig
-      just
-      fzf
       virt-manager
-      virt-viewer
-      postman
-
-      # Cloud stuff
-      google-cloud-sdk
-      skaffold
-      kubectl
-      cloud-sql-proxy
 
       # Need some way of bootstrapping rust projects since there's no good flake
       # template for oxalica's overlay.
@@ -123,12 +103,16 @@ in
       htop
       ripgrep
       sshfs
+      tailscale
       fishPlugins.pure
       flameshot
       grim
       oxipng
       fd # Faster find.
       remmina
+      yt-dlp
+      languagetool # Who needs grammarly?
+      (aspellWithDicts (dicts: with dicts; [ en en-computers en-science ]))
 
       # File Management
       ranger
@@ -145,7 +129,7 @@ in
       polkit_gnome
 
       # DB stuff
-      sqlite
+      #sqlite
 
       #Games
 
@@ -161,7 +145,7 @@ in
       scanmem
       steamtinkerlaunch
       gamescope
-      mangohud
+      #mangohud
       gamemode
       openal
       portaudio
@@ -172,23 +156,12 @@ in
       deluge
       nicotine-plus
 
-      k9s
-
-      # Fonts
-      hasklig
-      dejavu_fonts
-      open-sans
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-      liberation_ttf
-      (pkgs.nerdfonts.override { fonts = [ "Hasklig" ]; })
-
-
       # Configure GTK
       configure-gtk
 
       exactaudiocopy
+      openmw-tes3mp
+      libsForQt5.qt5.qtwayland
     ];
   };
 
@@ -223,7 +196,7 @@ in
         BindsTo = [ "sway-session.target" ];
       };
       Install = { WantedBy = [ "sway-session.target" ]; };
-      Service = { ExecStart = "${./static/maybe_start_slack.sh}"; };
+      Service = { ExecStart = "${../static/maybe_start_slack.sh}"; };
     };
 
     systemd.user.services.polkit-gnome-authentication-agent-1 = {
@@ -259,30 +232,11 @@ in
       PATH = "${XDG_BIN_HOME}";
     };
 
-
-
     # DEV STUFF
-    programs.tealdeer = {
-      enable = true;
-      settings = {
-        use_pager = true;
-        updates = {
-          auto_update = true;
-        };
-      };
-    };
-
-
     programs.vscode = {
       enable = true;
       package = pkgs.vscode.fhsWithPackages
         (ps: with ps; [ rustup zlib openssl.dev pkg-config ]);
-    };
-
-    programs.emacs = {
-      enable = true;
-      package = pkgs.emacsPgtk;
-      extraPackages = (epkgs: [ epkgs.vterm ]);
     };
 
   };

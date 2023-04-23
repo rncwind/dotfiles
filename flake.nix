@@ -19,7 +19,7 @@
 
     # A better LSP for editing nix source files.
     nil-lsp = {
-      url = "github:oxalica/nil#";
+      url = "github:oxalica/nil";
     };
 
     # An uncompromising code formatter for nix
@@ -30,15 +30,15 @@
   };
   outputs = inputs @ { self, ... }:
     let
-      system = "x86_64-linux";
-
       lib = inputs.nixpkgs.lib;
     in
     {
       nixosConfigurations = {
+        # Desktop computer.
+
         sdm = lib.nixosSystem {
-          inherit system;
-          # A module file is just a config file :tm:
+          system = "x86_64-linux";
+
           modules = [
             inputs.home-manager.nixosModules.home-manager
             ./systems/sdm/sdm.nix
@@ -52,6 +52,22 @@
               ];
             })
           ];
+        };
+
+        rhea = lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./modules
+            ./systems/rhea/rhea.nix
+            ({ pkgs, ... }: {
+              nixpkgs.overlays = [
+                inputs.emacs-overlay.overlays.emacs
+                inputs.rust-overlay.overlays.default
+                (import ./pkgs)
+              ];
+            })
+          ];
+
         };
       };
     };

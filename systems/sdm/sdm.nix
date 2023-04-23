@@ -65,14 +65,22 @@
 
   sound.enable = true;
 
-  # users.users.patchouli = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
-  #   packages = with pkgs; [ ];
-  # };
-
   # Ensure that we always have _at least_ vim and wget.
-  environment.systemPackages = with pkgs; [ steam steam-run vim wget gcc xdg-utils SDL SDL2 polkit_gnome virtiofsd gnutls ];
+  environment.systemPackages = with pkgs; [
+    vim
+    git
+    steam
+    steam-run
+    wget
+    gcc
+    xdg-utils
+    SDL
+    SDL2
+    polkit_gnome
+    virtiofsd
+    gnutls
+    via
+  ];
 
   # Set vim as default
   programs.vim.defaultEditor = true;
@@ -80,7 +88,7 @@
 
   # Yubi
   services.pcscd.enable = true;
-  services.udev.packages = [ pkgs.yubikey-personalization ];
+  services.udev.packages = [ pkgs.yubikey-personalization pkgs.via ];
 
   # Printing stuff.
   services.printing.enable = true;
@@ -129,8 +137,11 @@
   services.tumbler.enable = true;
   services.gnome.gnome-keyring.enable = true;
   # OpenSSH
-  services.openssh.enable = true;
-  services.openssh.passwordAuthentication = true;
+  #services.openssh.enable = true;
+  #services.openssh.passwordAuthentication = true;
+
+  #Tailscale
+  services.tailscale.enable = true;
 
   # Polshit
   security.polkit.enable = true;
@@ -145,12 +156,15 @@
     source = "${pkgs.gamescope}/bin/gamescope";
   };
 
+  security.pki.certificateFiles = [ "/home/patchouli/programming/local_cert/" ];
+
   # Firewall config.
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [
     42420 # Vintage Story
     57300 # Deluge
     2234 # SLSK
+    25565 # OpenMW / Minecraft
   ];
 
   # This value determines the NixOS release from which the default
