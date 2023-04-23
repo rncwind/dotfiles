@@ -34,34 +34,25 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"
   ];
 
-  # Now drop into our module config.
   modules = {
-    user = {
-      name = "rhea";
-      description = "Web Server";
-      homeDir = "/home/rhea";
-      extraGroups = [ "wheel" ];
-    };
-
-    dekstop = {
-      desktop-utils.enable = false;
-      fontconfig.enable = false;
-      music.enable = false;
-      sway.enable = false;
-    };
-
     dev = {
       editors.emacs.enable = false;
       dev-tools.enable = false;
       python.enable = false;
     };
-
     shell = {
       alacritty.enable = false;
       fish.enable = false;
       terminalPrograms.enable = false;
     };
+    desktop = {
+      desktop-utils.enable = false;
+      fontconfig.enable = false;
+      audio.music.enable = false;
+      sway.enable = false;
+    };
   };
 
+  # Now drop into our module config.
   system.stateVersion = "22.11";
 }

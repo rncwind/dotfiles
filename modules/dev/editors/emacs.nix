@@ -2,11 +2,11 @@
 
 with lib; let
   cfg = config.modules.dev.editors.emacs;
-  eScript = pkgs.writeScriptBin "e" ''
+  eScript = pkgs.writeScriptBin ",e" ''
     #! ${pkgs.bash}/bin/bash
     emacsclient -n -r $@
   '';
-  eScriptNew = pkgs.writeScriptBin "enew" ''
+  eScriptNew = pkgs.writeScriptBin ",enew" ''
     #! ${pkgs.bash}/bin/bash
     emacsclient -n -c $@
   '';

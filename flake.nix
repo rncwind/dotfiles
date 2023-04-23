@@ -57,6 +57,7 @@
         rhea = lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
+            inputs.home-manager.nixosModules.home-manager
             ./modules
             ./systems/rhea/rhea.nix
             ({ pkgs, ... }: {
