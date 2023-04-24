@@ -25,14 +25,18 @@
   zramSwap.enable = true;
   networking.hostName = "rhea";
   networking.domain = "vps.ovh.net";
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 3000 8080 ];
-  };
   services.openssh.enable = true;
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"
   ];
+
+
+  user = {
+    name = "rhea";
+    description = "A web hoster";
+    homeDir = "/home/rhea";
+    extraGroups = [ "wheel" ];
+  };
 
   modules = {
     dev = {
@@ -51,6 +55,49 @@
       audio.music.enable = false;
       sway.enable = false;
     };
+  };
+
+  # ACME settings.
+  security.acme.acceptTerms = true;
+  security.acme.defaults.email = "admin@whydoesntmycode.work";
+
+
+  # Set up a reverse proxy that binds to a unix socket.
+  services.nginx = {
+    enable = true;
+    virtualHosts."whydoesntmycode.work" = {
+      # Force enable ACME and TLS.
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://unix:/tmp/socket";
+        proxyWebsockets = true;
+      };
+    };
+  };
+  # Let it read tmp
+  systemd.services.nginx.serviceConfig = {
+    PrivateTmp = lib.mkForce false;
+  };
+
+
+  # # Enable nginx
+  # services.nginx.enable = true;
+  # # Configure our host
+  # services.nginx.virtualHosts."whydoesntmycode.work" = {
+  #   # Force enable ACME and TLS.
+  #   forceSSL = true;
+  #   enableACME = true;
+  #   locations."/" = {
+  #     proxyPass = "http://unix:/tmp/socket";
+  #     proxyWebsockets = true;
+  #   };
+  # };
+
+
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 80 443 ];
   };
 
   # Now drop into our module config.

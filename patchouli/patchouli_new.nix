@@ -54,6 +54,8 @@ in
       rust-analyzer
       rust-bin.stable.latest.default
 
+      zip
+
       # Multimedia
       firefox-wayland
       #chromium # I hate the browser hegemony i hate the browser hegemony
