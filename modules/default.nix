@@ -4,5 +4,6 @@
     ./shell
     ./desktop
     ./dev
+    ./secrets
   ];
 }

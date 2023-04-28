@@ -39,10 +39,22 @@ in
         music.enable = true;
       };
     };
+
+    secrets = {
+      enable = true;
+      #expose = ["example_key"];
+      expose = {example_key = {owner = config.users.users.patchouli.name;}; another_example = {};};
+      keyFilePath = "/home/patchouli/.config/sops/age/keys.txt";
+      secretsFile = ../secrets/users/patchouli.yaml;
+    };
   };
 
+  # sops.age.keyFile = "/home/patchouli/.config/sops/age/keys.txt";
+  # sops.defaultSopsFile = ../secrets/user/patchouli.yaml;
+  # sops.secrets.example_key = {};
+
   user = {
-    extraGroups = [ "wheel" "docker" "libvirtd" ];
+    extraGroups = [ "wheel" "docker" "libvirtd" config.users.groups.keys.name ];
     # Packages here don't have a programs.enable or a custom module.
     # In general, this is more of a "grab bag" of random utils etc.
     home.packages = with pkgs; [
@@ -95,10 +107,10 @@ in
       texlive.combined.scheme-full
 
       # Nix specific stuff
-      nixfmt
-      #nil
-      rnix-lsp
+      nil
       alejandra
+      sops
+      age
 
       # Utilities
       mons
@@ -113,7 +125,6 @@ in
       fd # Faster find.
       remmina
       yt-dlp
-      languagetool # Who needs grammarly?
       (aspellWithDicts (dicts: with dicts; [ en en-computers en-science ]))
 
       # File Management
@@ -167,8 +178,10 @@ in
     ];
   };
 
+
   # This is all temp stuff so i can migrate.
   home-manager.users.${config.user.name} = {
+
     fonts.fontconfig.enable = true;
 
     # Systemd units

@@ -14,6 +14,7 @@
     '';
     startWhenNeeded = true; # Use systemd so mpd only starts when we connect to it
   };
+
   systemd.services.mpd.environment = {
     XDG_RUNTIME_DIR = "/run/user/1000";
   };

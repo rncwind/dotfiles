@@ -1,0 +1,17 @@
+# keys:
+#   - &sdm-secrets-key age1g9ge9qpmyuw4vgsvkt82d3njc6hyls2gkt5t3dpz7qjph2faqsrqk2wwkk
+# creation_rules:
+#   - path_regex: secrets/[^/]+\.yaml$
+#   key_groups:
+#     - pgp:
+
+#       age:
+#         - *sdm-secrets-key
+keys:
+  - &sdm-secrets-key age1eq54pm4lz5jgu35rparx8vwxsdp0g42fs032jpv3t0w5h2v583vqp9g4eh
+creation_rules:
+  - path_regex: secrets/users/[^/]+\.yaml$
+    key_groups:
+      - pgp:
+        age:
+          - *sdm-secrets-key
