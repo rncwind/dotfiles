@@ -118,7 +118,7 @@ in
 
           "disk" = {
             interval = 30;
-            format = " {used}/{free} ({percentage_used}%)";
+            format = "󰋊 {used}/{free} ({percentage_used}%)";
             path = "/";
           };
 
@@ -146,7 +146,7 @@ in
 
           "memory" = {
             interval = 5;
-            format = " {}%";
+            format = "󰍛 {}%";
             states = {
               warning = 70;
               critical = 90;
@@ -155,7 +155,7 @@ in
 
           "network" = {
             interval = 5;
-            format-ethernet = "歷 {ifname}: {ipaddr}/{cidr}";
+            format-ethernet = "󰱓 {ifname}: {ipaddr}/{cidr}";
             format-disconnected = "⚠  Disconnected";
           };
 

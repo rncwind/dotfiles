@@ -80,6 +80,7 @@
     virtiofsd
     gnutls
     via
+    #deploy-rs
   ];
 
   # Set vim as default
@@ -107,6 +108,7 @@
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
+    jack.enable = true;
   };
 
   # Use portals for screenshares and things.
@@ -158,14 +160,25 @@
 
   security.pki.certificateFiles = [ "/home/patchouli/programming/local_cert/" ];
 
+  # nginx test
+  services.nginx = {
+    enable = true;
+    virtualHosts."localhost" = {
+      locations."/" = {
+        proxyPass = "http://unix:/run/user/1000/blogsocket";
+        proxyWebsockets = true;
+      };
+    };
+  };
+
   # Firewall config.
-  networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [
-    42420 # Vintage Story
-    57300 # Deluge
-    2234 # SLSK
-    25565 # OpenMW / Minecraft
-  ];
+  networking.firewall.enable = false;
+  #networking.firewall.allowedTCPPorts = [
+    #42420 # Vintage Story
+    #57300 # Deluge
+    #2234 # SLSK
+    #25565 # OpenMW / Minecraft
+  #];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

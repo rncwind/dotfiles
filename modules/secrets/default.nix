@@ -1,4 +1,4 @@
-{ config, lib, pkgs, sops, ... }:
+{ config, lib, pkgs, sops-nix, ... }:
 
 with lib; with lib.types; let
   cfg = config.modules.secrets;
@@ -17,7 +17,7 @@ in
 
     modules.secrets.keyFilePath = mkOption {
       description = "A path to the age keyfile";
-      type = string;
+      type = str;
     };
 
     modules.secrets.secretsFile = mkOption {

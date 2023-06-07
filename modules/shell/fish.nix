@@ -32,17 +32,16 @@ in
 
     modules.shell.fish.enablePure = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "Enable the pure modeline";
     };
   };
 
   # If fish is enabled
   config = mkIf cfg.enable {
-    programs.fish.enable = cfg.enable;
+    programs.fish.enable = true;
     users.defaultUserShell = pkgs.fish;
     environment.shells = [ pkgs.fish ];
-
 
     home-manager.users.${config.user.name} = {
 
@@ -68,6 +67,7 @@ in
           # e = mkIf (config.modules.dev.editors.emacs.daemon && config.modules.dev.editors.emacs.enable) "emacsclient -n -r";
           # en = mkIf (config.modules.dev.editors.emacs.daemon && config.modules.dev.editors.emacs.enable) "emacsclient -n -c";
           rless = "less -r";
+          mosquitto_sub_all = "mosquitto_sub -v -t '#' -p $argv[1]";
         };
 
         functions = {

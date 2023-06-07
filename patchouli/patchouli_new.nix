@@ -1,7 +1,11 @@
-{ config, lib, pkgs, inputs, ... }:
-
-let
-  patched-discord = pkgs.discord-ptb.override { nss = pkgs.nss_latest; };
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}: let
+  patched-discord = pkgs.discord-ptb.override {nss = pkgs.nss_latest;};
   ffxiv-wrapper = pkgs.writeScriptBin "ffxiv" ''
     #! ${pkgs.bash}/bin/bash
     export DXVK_FRAME_RATE=74
@@ -11,20 +15,16 @@ let
     name = "configure-gtk";
     destination = "/bin/configure-gtk";
     executable = true;
-    text =
-      let
-        schema = pkgs.gsettings-desktop-schemas;
-        datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-      in
-      ''
-        export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-        gnome_schema=org.gnome.desktop.interface
-        gsettings set $gnome_schema gtk-theme 'Dracula'
-      '';
+    text = let
+      schema = pkgs.gsettings-desktop-schemas;
+      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+    in ''
+      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+      gnome_schema=org.gnome.desktop.interface
+      gsettings set $gnome_schema gtk-theme 'Dracula'
+    '';
   };
-
-in
-{
+in {
   modules = {
     shell = {
       fish.enable = true;
@@ -38,12 +38,34 @@ in
       audio = {
         music.enable = true;
       };
+      fontconfig = {
+        enable = true;
+        nerdFontsList = ["Hasklig"];
+        cjk = true;
+        emoji = true;
+        noto = true;
+      };
+    };
+
+    dev = {
+      dev-tools = {
+        enable = true;
+        git = true;
+        webTools = true;
+        cloudTools = true;
+        tldr = true;
+        shellDev = true;
+        grabBag = true;
+      };
     };
 
     secrets = {
       enable = true;
       #expose = ["example_key"];
-      expose = {example_key = {owner = config.users.users.patchouli.name;}; another_example = {};};
+      expose = {
+        example_key = {owner = config.users.users.patchouli.name;};
+        another_example = {};
+      };
       keyFilePath = "/home/patchouli/.config/sops/age/keys.txt";
       secretsFile = ../secrets/users/patchouli.yaml;
     };
@@ -54,12 +76,16 @@ in
   # sops.secrets.example_key = {};
 
   user = {
-    extraGroups = [ "wheel" "docker" "libvirtd" config.users.groups.keys.name ];
+    extraGroups = ["wheel" "docker" "libvirtd" config.users.groups.keys.name];
     # Packages here don't have a programs.enable or a custom module.
     # In general, this is more of a "grab bag" of random utils etc.
     home.packages = with pkgs; [
       # Dev
       virt-manager
+      # jq
+
+      # bash-language-server
+      # shellcheck
 
       # Need some way of bootstrapping rust projects since there's no good flake
       # template for oxalica's overlay.
@@ -102,6 +128,7 @@ in
       soundkonverter
       chromaprint
       r128gain
+      vcv-rack
 
       # Documents
       texlive.combined.scheme-full
@@ -125,7 +152,7 @@ in
       fd # Faster find.
       remmina
       yt-dlp
-      (aspellWithDicts (dicts: with dicts; [ en en-computers en-science ]))
+      (aspellWithDicts (dicts: with dicts; [en en-computers en-science]))
 
       # File Management
       ranger
@@ -173,24 +200,28 @@ in
       configure-gtk
 
       exactaudiocopy
-      openmw-tes3mp
       libsForQt5.qt5.qtwayland
+
+      # TODO: SORT THESE
+      obs-studio
+      appimage-run
+      coreutils-full
+      sudo
+      which
     ];
   };
 
-
   # This is all temp stuff so i can migrate.
   home-manager.users.${config.user.name} = {
-
     fonts.fontconfig.enable = true;
 
     # Systemd units
     systemd.user.services.sway-session = {
       Unit = {
         Description = "Placeholder for sway startup for other targets";
-        After = [ "graphical-session.pre.target" ];
-        Wants = [ "graphical-session.pre.target" ];
-        BindsTo = [ "graphical-session.target" ];
+        After = ["graphical-session.pre.target"];
+        Wants = ["graphical-session.pre.target"];
+        BindsTo = ["graphical-session.target"];
       };
     };
 
@@ -199,28 +230,29 @@ in
         Description = "Start KeepassXC on graphical session";
         #After = [ "graphical-session.target" ];
         #PartOf = [ "graphical-session.target" ];
-        BindsTo = [ "sway-session.target" ];
+        BindsTo = ["sway-session.target"];
       };
-      Install = { WantedBy = [ "sway-session.target" ]; };
-      Service = { ExecStart = "${pkgs.keepassxc}/bin/keepassxc -platform xcb"; };
+      Install = {WantedBy = ["sway-session.target"];};
+      Service = {ExecStart = "${pkgs.keepassxc}/bin/keepassxc -platform xcb";};
     };
 
     systemd.user.services.slack-autostart = {
       Unit = {
         Description = "Autostart slack on weekdays";
-        BindsTo = [ "sway-session.target" ];
+        BindsTo = ["sway-session.target"];
       };
-      Install = { WantedBy = [ "sway-session.target" ]; };
-      Service = { ExecStart = "${../static/maybe_start_slack.sh}"; };
+      Install = {WantedBy = ["sway-session.target"];};
+      Service = {ExecStart = "${../static/maybe_start_slack.sh}";};
     };
 
     systemd.user.services.polkit-gnome-authentication-agent-1 = {
       Unit = {
         Description = "polkit-gnome-authentication-agent-1";
-        Wants = [ "graphical-session.target" ];
-        WantedBy = [ "graphical-session.target" ];
-        After = [ "graphical-session.target" ];
+        Wants = ["graphical-session.target"];
+        WantedBy = ["graphical-session.target"];
+        After = ["graphical-session.target"];
       };
+      Install = {WantedBy = ["sway-session.target"];};
       Service = {
         Type = "simple";
         ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
@@ -250,9 +282,9 @@ in
     # DEV STUFF
     programs.vscode = {
       enable = true;
-      package = pkgs.vscode.fhsWithPackages
-        (ps: with ps; [ rustup zlib openssl.dev pkg-config ]);
+      package =
+        pkgs.vscode.fhsWithPackages
+        (ps: with ps; [rustup zlib openssl.dev pkg-config]);
     };
-
   };
 }

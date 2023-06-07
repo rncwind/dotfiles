@@ -83,11 +83,11 @@
 }
 
 #cpu.warning {
-    color: orange;
+    background-color: orange;
 }
 
 #cpu.critical {
-    color: red;
+    background-color: red;
 }
 
 #memory {
@@ -97,11 +97,11 @@
 }
 
 #memory.warning {
-    color: orange;
+    background-color: orange;
 }
 
 #memory.critical {
-    color: red;
+    background-color: red;
     animation-name: blink-critical;
     animation-duration: 2s;
 }
