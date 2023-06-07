@@ -275,8 +275,6 @@ in {
       XDG_DATA_HOME = "~/.local/share";
       # Steam needs this to find Proton-GE
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";
-      # note: this doesn't replace PATH, it just adds this to it
-      PATH = "${XDG_BIN_HOME}";
     };
 
     # DEV STUFF
