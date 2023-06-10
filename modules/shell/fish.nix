@@ -64,10 +64,7 @@ in
           ll = mkIf (config.modules.shell.terminalPrograms.enableExa && cfg.enableAliases) "exa -l";
           cat = mkIf (config.modules.shell.terminalPrograms.enableBat && cfg.enableAliases) "bat --paging=never";
           normalcat = mkIf (config.modules.shell.terminalPrograms.enableBat && cfg.enableAliases) "cat";
-          # e = mkIf (config.modules.dev.editors.emacs.daemon && config.modules.dev.editors.emacs.enable) "emacsclient -n -r";
-          # en = mkIf (config.modules.dev.editors.emacs.daemon && config.modules.dev.editors.emacs.enable) "emacsclient -n -c";
           rless = "less -r";
-          mosquitto_sub_all = "mosquitto_sub -v -t '#' -p $argv[1]";
         };
 
         functions = {
