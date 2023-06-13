@@ -57,6 +57,21 @@ in {
         shellDev = true;
         grabBag = true;
       };
+
+      web = {
+        enable = true;
+        node18 = true;
+        yarn = true;
+        formatters = true;
+        linters = true;
+      };
+
+      haskell = {
+        enable = true;
+        buildTools = true;
+        hls = true;
+        hoogle = true;
+      };
     };
 
     secrets = {
@@ -211,6 +226,7 @@ in {
       asciinema
       asciinema-agg
       asciinema-scenario
+      chromium
     ];
   };
 
