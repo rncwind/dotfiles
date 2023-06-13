@@ -1,9 +1,13 @@
-{ config, lib, pkgs, modules, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  modules,
+  ...
+}:
 with lib; let
   cfg = config.modules.dev.python;
-in
-{
+in {
   options = {
     modules.dev.python.enable = mkOption {
       type = types.bool;
@@ -28,14 +32,25 @@ in
       default = true;
       description = "enable isort to sort python imports";
     };
-
-
   };
 
   config = mkIf cfg.enable {
-    user.home.packages = [ ]
-      ++ (if cfg.pyright then [ pkgs.pyright ] else [ ])
-      ++ (if cfg.black then [ pkgs.black ] else [ ])
-      ++ (if cfg.isort then [ pkgs.isort ] else [ ]);
+    user.home.packages =
+      []
+      ++ (
+        if cfg.pyright
+        then [pkgs.pyright]
+        else []
+      )
+      ++ (
+        if cfg.black
+        then [pkgs.black]
+        else []
+      )
+      ++ (
+        if cfg.isort
+        then [pkgs.isort]
+        else []
+      );
   };
 }

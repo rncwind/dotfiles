@@ -1,9 +1,14 @@
-{ config, lib, pkgs, modules, ... }:
-
-with lib; with types; let
-  cfg = config.modules.desktop.desktop-utils;
-in
 {
+  config,
+  lib,
+  pkgs,
+  modules,
+  ...
+}:
+with lib;
+with types; let
+  cfg = config.modules.desktop.desktop-utils;
+in {
   options = {
     modules.desktop.desktop-utils.enable = mkOption {
       type = bool;
@@ -26,7 +31,6 @@ in
 
   config = mkIf (cfg.enable && config.user.home-manager.enable) {
     home-manager.users.${config.user.name} = {
-
       services.mako = mkIf cfg.enableMako {
         enable = cfg.enableMako;
         defaultTimeout = 10000;

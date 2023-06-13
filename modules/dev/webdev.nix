@@ -4,7 +4,8 @@
   pkgs,
   ...
 }:
-with lib; with lib.types; let
+with lib;
+with lib.types; let
   cfg = config.modules.dev.web;
 in {
   options = {

@@ -40,9 +40,14 @@ in {
 
   config = mkIf cfg.enable {
     fonts.fonts = with pkgs;
-      [dejavu_fonts liberation_ttf open-sans hasklig
-       # Annoyingly required.
-       (pkgs.nerdfonts.override {fonts = cfg.nerdFontsList;})]
+      [
+        dejavu_fonts
+        liberation_ttf
+        open-sans
+        hasklig
+        # Annoyingly required.
+        (pkgs.nerdfonts.override {fonts = cfg.nerdFontsList;})
+      ]
       ++ (
         if cfg.cjk
         then [noto-fonts-cjk]
@@ -59,5 +64,4 @@ in {
         else []
       );
   };
-
 }

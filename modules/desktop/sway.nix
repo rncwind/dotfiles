@@ -1,9 +1,14 @@
-{ config, lib, pkgs, modules, ... }:
-
-with lib; with types; let
-  cfg = config.modules.desktop.sway;
-in
 {
+  config,
+  lib,
+  pkgs,
+  modules,
+  ...
+}:
+with lib;
+with types; let
+  cfg = config.modules.desktop.sway;
+in {
   options = {
     modules.desktop.sway.enable = mkOption {
       type = types.bool;
@@ -37,13 +42,12 @@ in
 
     modules.desktop.sway.bars = mkOption {
       #type = listOf submodule;
-      default = [ ];
+      default = [];
       description = "Sway bars. Default is empty set as we use waybar";
     };
   };
 
   config = mkIf cfg.enable {
-
     programs.sway.enable = cfg.enable;
 
     home-manager.users.${config.user.name} = {
@@ -87,7 +91,7 @@ in
 
         config = {
           terminal = cfg.terminal;
-          bars = [ ];
+          bars = [];
           input."*" = {
             xkb_layout = cfg.xkb_layout;
             xkb_options = cfg.xkb_options;
@@ -100,81 +104,82 @@ in
       programs.waybar = {
         enable = true;
         style = ../../static/waybar_style.css;
-        settings = [{
-          layer = "top";
-          position = "bottom";
-          height = 25;
-          modules-left = [ "sway/workspaces" "sway/mode" ];
-          modules-right = [
-            "network"
-            "disk"
-            "memory"
-            "cpu"
-            "temperature"
-            "clock#date"
-            "clock#time"
-            "tray"
-          ];
+        settings = [
+          {
+            layer = "top";
+            position = "bottom";
+            height = 25;
+            modules-left = ["sway/workspaces" "sway/mode"];
+            modules-right = [
+              "network"
+              "disk"
+              "memory"
+              "cpu"
+              "temperature"
+              "clock#date"
+              "clock#time"
+              "tray"
+            ];
 
-          "disk" = {
-            interval = 30;
-            format = "󰋊 {used}/{free} ({percentage_used}%)";
-            path = "/";
-          };
-
-          "clock#time" = {
-            #timezone = "Europe/London";
-            format = " {:%H:%M:%S}";
-            interval = 1;
-            tooltip = false;
-          };
-
-          "clock#date" = {
-            interval = 60;
-            format = " {:%Y-%m-%d (%a)}";
-            tooltip = false;
-          };
-
-          "cpu" = {
-            interval = 5;
-            format = " {usage}% ({load})";
-            states = {
-              warning = 70;
-              critical = 90;
+            "disk" = {
+              interval = 30;
+              format = "󰋊 {used}/{free} ({percentage_used}%)";
+              path = "/";
             };
-          };
 
-          "memory" = {
-            interval = 5;
-            format = "󰍛 {}%";
-            states = {
-              warning = 70;
-              critical = 90;
+            "clock#time" = {
+              #timezone = "Europe/London";
+              format = " {:%H:%M:%S}";
+              interval = 1;
+              tooltip = false;
             };
-          };
 
-          "network" = {
-            interval = 5;
-            format-ethernet = "󰱓 {ifname}: {ipaddr}/{cidr}";
-            format-disconnected = "⚠  Disconnected";
-          };
+            "clock#date" = {
+              interval = 60;
+              format = " {:%Y-%m-%d (%a)}";
+              tooltip = false;
+            };
 
-          "sway/workspaces" = { all-outputs = false; };
+            "cpu" = {
+              interval = 5;
+              format = " {usage}% ({load})";
+              states = {
+                warning = 70;
+                critical = 90;
+              };
+            };
 
-          "temperature" = {
-            critical-threshold = 80;
-            interval = 5;
-            format = "{icon}  {temperatureC}°C";
-            format-icons = [ "" "" "" "" "" ];
-          };
+            "memory" = {
+              interval = 5;
+              format = "󰍛 {}%";
+              states = {
+                warning = 70;
+                critical = 90;
+              };
+            };
 
-          "tray" = {
-            icon-size = 18;
-            spacing = 10;
-          };
-        }];
+            "network" = {
+              interval = 5;
+              format-ethernet = "󰱓 {ifname}: {ipaddr}/{cidr}";
+              format-disconnected = "⚠  Disconnected";
+            };
+
+            "sway/workspaces" = {all-outputs = false;};
+
+            "temperature" = {
+              critical-threshold = 80;
+              interval = 5;
+              format = "{icon}  {temperatureC}°C";
+              format-icons = ["" "" "" "" ""];
+            };
+
+            "tray" = {
+              icon-size = 18;
+              spacing = 10;
+            };
+          }
+        ];
       };
-
     };
   };
 }

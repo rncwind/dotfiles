@@ -1,4 +1,7 @@
-{inputs, lib, pkgs, ...}:
 {
-
+  inputs,
+  lib,
+  pkgs,
+  ...
+}: {
 }

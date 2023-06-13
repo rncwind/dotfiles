@@ -1,5 +1,9 @@
-{ stdenv, lib, fetchzip, ... }:
-
+{
+  stdenv,
+  lib,
+  fetchzip,
+  ...
+}:
 stdenv.mkDerivation
 {
   pname = "codeship-jet";
@@ -18,7 +22,7 @@ stdenv.mkDerivation
     description = "Codeship Jet";
     homepage = "https://docs.cloudbees.com/docs/cloudbees-codeship/latest/pro-jet-cli/";
     license = licenses.unfree;
-    maintainers = [ ];
+    maintainers = [];
     platforms = platforms.all;
   };
 }

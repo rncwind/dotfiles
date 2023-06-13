@@ -1,22 +1,26 @@
-{ config, lib, pkgs, ... }:
-
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.settings = {
-    trusted-substituters = [ "https://cache.nixos.org" "https://nix-community.cachix.org" ];
-    trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
+    trusted-substituters = ["https://cache.nixos.org" "https://nix-community.cachix.org"];
+    trusted-public-keys = ["cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
   };
-  imports = [ ./hardware-configuration.nix ./mpd.nix ./lutris.nix ./i18n.nix ./virt.nix ];
+  imports = [./hardware-configuration.nix ./mpd.nix ./lutris.nix ./i18n.nix ./virt.nix];
   nixpkgs.config.allowUnfree = true;
 
   nixpkgs.config.packageOverrides = pkgs: {
     steam = pkgs.steam.override {
-      extraPkgs = pkgs: with pkgs; [
-        libgdiplus
-        keyutils
-        libkrb5
-        ncurses6
-      ];
+      extraPkgs = pkgs:
+        with pkgs; [
+          libgdiplus
+          keyutils
+          libkrb5
+          ncurses6
+        ];
     };
   };
 
@@ -25,7 +29,7 @@
   boot.loader.grub.device = "nodev";
   boot.loader.grub.efiSupport = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "ntfs" ];
+  boot.supportedFilesystems = ["ntfs"];
 
   # Use tmpfs
   boot.cleanTmpDir = true;
@@ -46,11 +50,11 @@
   networking.hostName = "sdm"; # Define your hostname.
 
   # Graphics card block
-  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.initrd.kernelModules = ["amdgpu"];
   hardware.opengl = {
     enable = true;
     # Mesa OpenCL
-    extraPackages = with pkgs; [ rocm-opencl-icd rocm-opencl-runtime ];
+    extraPackages = with pkgs; [rocm-opencl-icd rocm-opencl-runtime];
     # Enable vulkan
     driSupport = true;
     driSupport32Bit = true;
@@ -59,7 +63,7 @@
   # i18
   i18n.defaultLocale = "en_GB.UTF-8";
   time.timeZone = "Europe/London";
-  console = { keyMap = "uk"; };
+  console = {keyMap = "uk";};
   services.xserver.layout = "uk";
   services.xserver.xkbOptions = "ctrl:nocaps";
 
@@ -86,20 +90,18 @@
   # Set vim as default
   programs.vim.defaultEditor = true;
 
-
   # Yubi
   services.pcscd.enable = true;
-  services.udev.packages = [ pkgs.yubikey-personalization pkgs.via ];
+  services.udev.packages = [pkgs.yubikey-personalization pkgs.via];
 
   # Printing stuff.
   services.printing.enable = true;
-  services.printing.drivers =
-    [ pkgs.brlaser pkgs.brgenml1lpr pkgs.brgenml1cupswrapper ];
+  services.printing.drivers = [pkgs.brlaser pkgs.brgenml1lpr pkgs.brgenml1cupswrapper];
   services.avahi.enable = true;
   services.avahi.publish.enable = true;
   #services.avahi.userServices = true;
   services.printing.browsing = true;
-  services.printing.allowFrom = [ "all" ];
+  services.printing.allowFrom = ["all"];
 
   services.mullvad-vpn.enable = true;
 
@@ -116,9 +118,8 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.gnome.gnome-keyring ];
+    extraPortals = [pkgs.xdg-desktop-portal-gtk pkgs.gnome.gnome-keyring];
   };
-
 
   programs.sway.enable = true;
 
@@ -148,8 +149,7 @@
   # Polshit
   security.polkit.enable = true;
 
-  nix.settings.trusted-users = [ "root" "patchouli" ];
-
+  nix.settings.trusted-users = ["root" "patchouli"];
 
   security.wrappers.gamescope = {
     owner = "patchouli";
@@ -158,7 +158,7 @@
     source = "${pkgs.gamescope}/bin/gamescope";
   };
 
-  security.pki.certificateFiles = [ "/home/patchouli/programming/local_cert/" ];
+  security.pki.certificateFiles = ["/home/patchouli/programming/local_cert/"];
 
   # nginx test
   services.nginx = {
@@ -174,10 +174,10 @@
   # Firewall config.
   networking.firewall.enable = false;
   #networking.firewall.allowedTCPPorts = [
-    #42420 # Vintage Story
-    #57300 # Deluge
-    #2234 # SLSK
-    #25565 # OpenMW / Minecraft
+  #42420 # Vintage Story
+  #57300 # Deluge
+  #2234 # SLSK
+  #25565 # OpenMW / Minecraft
   #];
 
   # This value determines the NixOS release from which the default

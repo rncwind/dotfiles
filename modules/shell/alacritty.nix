@@ -1,9 +1,14 @@
-{ config, lib, pkgs, modules, ... }:
-
-with lib; with types; let
-  cfg = config.modules.shell.alacritty;
-in
 {
+  config,
+  lib,
+  pkgs,
+  modules,
+  ...
+}:
+with lib;
+with types; let
+  cfg = config.modules.shell.alacritty;
+in {
   options = {
     modules.shell.alacritty = {
       enable = mkOption {
@@ -25,8 +30,11 @@ in
       };
 
       windowPadding = mkOption {
-        type = attrsOf (number);
-        default = { x = 10; y = 10; };
+        type = attrsOf number;
+        default = {
+          x = 10;
+          y = 10;
+        };
         description = "Window padding";
       };
 
@@ -48,7 +56,7 @@ in
         enable = true;
 
         settings = {
-          env = { "TERM" = "xterm-256color"; };
+          env = {"TERM" = "xterm-256color";};
 
           font = {
             family.normal = cfg.font;

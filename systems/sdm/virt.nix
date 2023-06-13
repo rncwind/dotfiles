@@ -1,7 +1,10 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 # Configure VMs and stuff that this system has.
-
 {
   programs.dconf.enable = true;
   virtualisation = {

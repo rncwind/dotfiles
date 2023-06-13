@@ -1,9 +1,14 @@
-{ config, lib, pkgs, sops-nix, ... }:
-
-with lib; with lib.types; let
-  cfg = config.modules.secrets;
-in
 {
+  config,
+  lib,
+  pkgs,
+  sops-nix,
+  ...
+}:
+with lib;
+with lib.types; let
+  cfg = config.modules.secrets;
+in {
   options = {
     modules.secrets.enable = mkOption {
       description = "Enable secrets handling with sops";

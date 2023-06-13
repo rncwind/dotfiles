@@ -1,5 +1,10 @@
-{ lib, pkgs, stdenv, fetchFromGitHub, ... }:
-
+{
+  lib,
+  pkgs,
+  stdenv,
+  fetchFromGitHub,
+  ...
+}:
 stdenv.mkDerivation rec {
   pname = "rsgain";
   version = "3.1.1";

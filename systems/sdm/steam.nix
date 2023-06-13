@@ -1,5 +1,8 @@
-{ config, pkgs, ... }:
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   patched-steam = pkgs.steam.override {
     extraPkgs = [
       pkgs.keyutils
@@ -7,8 +10,7 @@ let
       pkgs.ncurses6
     ];
   };
-in
-{
+in {
   patched-steam = {
     enable = true;
     remotePlay.openFirewall = true;

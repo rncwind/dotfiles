@@ -1,10 +1,14 @@
-{ config, lib, pkgs, modules, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  modules,
+  ...
+}:
 with lib; let
   cfg = config.modules.shell.fish;
   tpCfg = config.modules.shell.terminalPrograms;
-in
-{
+in {
   options = {
     modules.shell.fish.enable = mkOption {
       type = types.bool;
@@ -41,10 +45,9 @@ in
   config = mkIf cfg.enable {
     programs.fish.enable = true;
     users.defaultUserShell = pkgs.fish;
-    environment.shells = [ pkgs.fish ];
+    environment.shells = [pkgs.fish];
 
     home-manager.users.${config.user.name} = {
-
       programs.fish = {
         enable = true;
 
@@ -55,8 +58,16 @@ in
         '';
 
         interactiveShellInit = mkIf cfg.enableInitScripts ''
-          ${if config.modules.shell.terminalPrograms.enableZoxide then "zoxide init fish | source" else ""}
-          ${if config.modules.shell.terminalPrograms.enableDirenv then "direnv hook fish | source" else ""}
+          ${
+            if config.modules.shell.terminalPrograms.enableZoxide
+            then "zoxide init fish | source"
+            else ""
+          }
+          ${
+            if config.modules.shell.terminalPrograms.enableDirenv
+            then "direnv hook fish | source"
+            else ""
+          }
         '';
 
         shellAliases = mkIf cfg.enableAliases {
@@ -96,15 +107,17 @@ in
           };
         };
 
-        plugins = mkIf cfg.enablePure [{
-          name = "pure";
-          src = pkgs.fetchFromGitHub {
-            owner = "pure-fish";
-            repo = "pure";
-            rev = "8c1f69d7f499469979cbecc7b7eaefb97cd6f509";
-            sha256 = "ye3fwSepzFaRUlam+eNVmjB6WjhmPcvD+sQ9RkQw164=";
-          };
-        }];
+        plugins = mkIf cfg.enablePure [
+          {
+            name = "pure";
+            src = pkgs.fetchFromGitHub {
+              owner = "pure-fish";
+              repo = "pure";
+              rev = "8c1f69d7f499469979cbecc7b7eaefb97cd6f509";
+              sha256 = "ye3fwSepzFaRUlam+eNVmjB6WjhmPcvD+sQ9RkQw164=";
+            };
+          }
+        ];
       };
     };
   };

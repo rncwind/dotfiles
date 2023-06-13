@@ -1,9 +1,13 @@
-{ config, lib, pkgs, modules, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  modules,
+  ...
+}:
 with lib; let
   cfg = config.modules.desktop.audio.music;
-in
-{
+in {
   options = {
     modules.desktop.audio.music.enable = mkOption {
       type = types.bool;
@@ -25,9 +29,7 @@ in
   };
 
   config = mkIf cfg.enable {
-
     home-manager.users.${config.user.name} = {
-
       programs.ncmpcpp = mkIf cfg.enableNcmpcpp {
         enable = cfg.enableNcmpcpp;
         settings = {
@@ -46,7 +48,6 @@ in
           bitrate = 320;
         };
       };
-
     };
   };
 }

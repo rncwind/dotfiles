@@ -1,8 +1,14 @@
-{ config, lib, pkgs, inputs, options, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  options,
+  ...
+}:
 with lib; let
   cfg = config.user;
-in
-{
+in {
   options.user = with types; {
     name = mkOption {
       type = str;
@@ -21,7 +27,7 @@ in
 
     extraGroups = mkOption {
       type = listOf str;
-      default = [ ];
+      default = [];
     };
 
     # Home manager stuff. This is mostly used so we can install non-moduled
@@ -29,7 +35,7 @@ in
     home = {
       packages = mkOption {
         type = listOf package;
-        default = [ ];
+        default = [];
       };
     };
 
@@ -66,7 +72,5 @@ in
         programs.home-manager.enable = true;
       };
     };
-
   };
-
 }

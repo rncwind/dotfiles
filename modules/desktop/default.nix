@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   imports = [
     ./sway.nix
     ./desktop-utils.nix

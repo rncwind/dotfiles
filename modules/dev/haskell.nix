@@ -4,7 +4,8 @@
   pkgs,
   ...
 }:
-with lib; with lib.types; let
+with lib;
+with lib.types; let
   cfg = config.modules.dev.haskell;
   self = modules.dev.haskell;
 in {
@@ -44,7 +45,6 @@ in {
       default = false;
       description = "Enable a local instance of haskell's search engine, hoogle";
     };
-
   };
 
   config = mkIf cfg.enable {
@@ -58,24 +58,23 @@ in {
       )
       ++ (
         if cfg.cabal or cfg.buildTools
-        then [ pkgs.haskellPackages.cabal-install ]
+        then [pkgs.haskellPackages.cabal-install]
         else []
       )
       ++ (
         if cfg.stack or cfg.buildTools
-        then [ pkgs.stack ]
+        then [pkgs.stack]
         else []
       )
       ++ (
         if cfg.hls
-        then [ pkgs.haskell-language-server ]
+        then [pkgs.haskell-language-server]
         else []
       )
       ++ (
         if cfg.hoogle
-        then [ pkgs.haskellPackages.hoogle ]
+        then [pkgs.haskellPackages.hoogle]
         else []
-      )
-      ;
+      );
   };
 }

@@ -1,12 +1,15 @@
-{ config, lib, pkgs, modules, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  modules,
+  ...
+}:
 # This is where we put sundry terminal applications that we often want.
 # Good examples of this include zoxide and direnv!
-
 with lib; let
   cfg = config.modules.shell.terminalPrograms;
-in
-{
+in {
   options = {
     modules.shell.terminalPrograms.enable = mkOption {
       type = types.bool;
@@ -37,7 +40,6 @@ in
       default = true;
       description = "Enable direnv, the saving grace of nixos";
     };
-
   };
 
   config = mkIf cfg.enable {
