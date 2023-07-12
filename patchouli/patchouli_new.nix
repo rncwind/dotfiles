@@ -45,16 +45,20 @@ in {
         emoji = true;
         noto = true;
       };
+      i18n = {
+        enable = true;
+        useMozc = true;
+      };
     };
 
     dev = {
       dev-tools = {
         enable = true;
         git = true;
-        webTools = true;
         cloudTools = true;
         tldr = true;
         shellDev = true;
+        grpc = true;
         grabBag = true;
       };
 
@@ -71,6 +75,11 @@ in {
         buildTools = true;
         hls = true;
         hoogle = true;
+      };
+      rust = {
+        enable = true;
+        rust-analyzer = true;
+        rust-stable = true;
       };
     };
 
@@ -104,8 +113,6 @@ in {
 
       # Need some way of bootstrapping rust projects since there's no good flake
       # template for oxalica's overlay.
-      rust-analyzer
-      rust-bin.stable.latest.default
 
       zip
 
@@ -206,7 +213,6 @@ in {
       portaudio
 
       # Misc
-      anki
       neofetch
       deluge
       nicotine-plus
@@ -227,6 +233,18 @@ in {
       asciinema-agg
       asciinema-scenario
       chromium
+      wireshark
+      libnotify
+      anki-bin
+      sem
+      socat
+      pkg-config
+      gimp
+
+      # Faster linkers
+      lld
+      mold
+      zellij
     ];
   };
 

@@ -44,6 +44,12 @@ in {
       default = false;
       description = "Enable formatters. Tidy and js-beautify";
     };
+
+    modules.dev.web.postman = mkOption {
+      type = bool;
+      default = false;
+      description = "Enable postman";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -67,6 +73,11 @@ in {
       ++ (
         if cfg.formatters
         then [pkgs.html-tidy pkgs.nodePackages.js-beautify]
+        else []
+      )
+      ++ (
+        if cfg.postman
+        then [pkgs.postman]
         else []
       );
   };

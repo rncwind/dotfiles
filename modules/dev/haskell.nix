@@ -57,12 +57,12 @@ in {
         else []
       )
       ++ (
-        if cfg.cabal or cfg.buildTools
+        if cfg.cabal || cfg.buildTools
         then [pkgs.haskellPackages.cabal-install]
         else []
       )
       ++ (
-        if cfg.stack or cfg.buildTools
+        if cfg.stack || cfg.buildTools
         then [pkgs.stack]
         else []
       )

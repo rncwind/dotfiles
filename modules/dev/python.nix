@@ -36,7 +36,7 @@ in {
 
   config = mkIf cfg.enable {
     user.home.packages =
-      []
+      [pkgs.poetry]
       ++ (
         if cfg.pyright
         then [pkgs.pyright]

@@ -82,11 +82,9 @@ in {
         '';
 
         extraSessionCommands = ''
-          export INPUT_METHOD=fcitx
-          export QT_IM_MODULE=fcitx
-          export GTK_IM_MODULE=fcitx
-          export XMODIFIERS=@im=fcitx
-          export XIM_SERVERS=fcitx
+          GTK_IM_MODULE=fcitx
+          QT_IM_MODULE=fcitx
+          XMODIFIERS=@im=fcitx
         '';
 
         config = {

@@ -21,12 +21,6 @@ in {
       description = "Enable git and git tools";
     };
 
-    modules.dev.dev-tools.webTools = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Enable web tools like curl, postman etc";
-    };
-
     modules.dev.dev-tools.cloudTools = mkOption {
       type = types.bool;
       default = false;
@@ -45,6 +39,12 @@ in {
       description = "Enable bash language server, shellcheck and bashdb";
     };
 
+    modules.dev.dev-tools.grpc = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable GRPC tools like Evans or grpcurl";
+    };
+
     modules.dev.dev-tools.grabBag = mkOption {
       type = types.bool;
       default = false;
@@ -61,23 +61,23 @@ in {
         else []
       )
       ++ (
-        if cfg.webTools
-        then [curl postman]
-        else []
-      )
-      ++ (
         if cfg.cloudTools
-        then [kubectl cloud-sql-proxy k9s]
+        then [kubectl cloud-sql-proxy k9s (google-cloud-sdk.withExtraComponents [google-cloud-sdk.components.gke-gcloud-auth-plugin])]
         else []
       )
       ++ (
         if cfg.grabBag
-        then [jq]
+        then [jq curl]
+        else []
+      )
+      ++ (
+        if cfg.grpc
+        then [grpcurl evans]
         else []
       )
       ++ (
         if cfg.shellDev
-        then [nodePackages_latest.bash-language-server shellcheck bashdb]
+        then [nodePackages_latest.bash-language-server shellcheck bashdb shfmt]
         else []
       );
 
