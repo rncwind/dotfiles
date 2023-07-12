@@ -6,8 +6,7 @@
 }:
 with lib;
 with lib.types; let
-  cfg = config.modules.dev.haskell;
-  self = modules.dev.haskell;
+  cfg = config.modules.dev.lang.haskell;
 in {
   options = {
     modules.dev.haskell.enable = mkOption {

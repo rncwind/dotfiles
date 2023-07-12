@@ -6,7 +6,7 @@
   ...
 }:
 with lib; let
-  cfg = config.modules.dev.python;
+  cfg = config.modules.dev.lang.python;
 in {
   options = {
     modules.dev.python.enable = mkOption {

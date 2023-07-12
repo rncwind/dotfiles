@@ -6,7 +6,7 @@
   ...
 }:
 with lib; let
-  cfg = config.modules.dev.rust;
+  cfg = config.modules.dev.lang.rust;
 in {
   options = {
     modules.dev.rust.enable = mkOption {
@@ -39,7 +39,6 @@ in {
       description = "Enable beta rust from Oxalica's overlay";
     };
 
-
     modules.dev.rust.rust-nightly = mkOption {
       type = types.bool;
       default = false;
@@ -52,29 +51,28 @@ in {
       []
       ++ (
         if cfg.rust-analyzer
-        then [ rust-analyzer ]
+        then [rust-analyzer]
         else []
       )
       ++ (
         if cfg.rust-analyzer-unwrapped
-        then [ rust-analyzer-unwrapped ]
+        then [rust-analyzer-unwrapped]
         else []
       )
       ++ (
         if cfg.rust-stable
-        then [ rust-bin.stable.latest.default ]
+        then [rust-bin.stable.latest.default]
         else []
       )
       ++ (
         if cfg.rust-beta
-        then [ rust-bin.beta.latest.default ]
+        then [rust-bin.beta.latest.default]
         else []
       )
       ++ (
         if cfg.rust-nightly
-        then [ rust-bin.nightly.latest.default ]
+        then [rust-bin.nightly.latest.default]
         else []
-      )
-    ;
+      );
   };
 }

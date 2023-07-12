@@ -7,7 +7,7 @@
 with lib;
 with types; let
   cfg = config.modules.desktop.i18n;
-  fcitx5Package = pkgs.fcitx5-with-addons.override { addons = with pkgs; [ fcitx5-mozc ]; };
+  fcitx5Package = pkgs.fcitx5-with-addons.override {addons = with pkgs; [fcitx5-mozc];};
 in {
   options = {
     modules.desktop.i18n.enable = mkOption {
@@ -30,12 +30,12 @@ in {
   };
 
   config = mkIf cfg.enable {
-
     home-manager.users.${config.user.name} = {
       i18n.inputMethod = {
         package = fcitx5Package;
         enabled = "fcitx5";
-        fcitx5.addons = ([]
+        fcitx5.addons = (
+          []
           ++ (
             if cfg.useAnthy
             then [pkgs.fcitx5-anthy]
@@ -48,11 +48,11 @@ in {
           )
         );
       };
-    systemd.user.services.fcitx5-daemon = {
-      Service = {
-      ExecStart = "${fcitx5Package}/bin/fcitx5";
+      systemd.user.services.fcitx5-daemon = {
+        Service = {
+          ExecStart = "${fcitx5Package}/bin/fcitx5";
+        };
       };
     };
-  };
   };
 }

@@ -6,7 +6,7 @@
 }:
 with lib;
 with lib.types; let
-  cfg = config.modules.dev.web;
+  cfg = config.modules.dev.lang.web;
 in {
   options = {
     modules.dev.web.enable = mkOption {

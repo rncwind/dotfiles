@@ -62,24 +62,26 @@ in {
         grabBag = true;
       };
 
-      web = {
-        enable = true;
-        node18 = true;
-        yarn = true;
-        formatters = true;
-        linters = true;
-      };
+      lang = {
+        web = {
+          enable = true;
+          node18 = true;
+          yarn = true;
+          formatters = true;
+          linters = true;
+        };
 
-      haskell = {
-        enable = true;
-        buildTools = true;
-        hls = true;
-        hoogle = true;
-      };
-      rust = {
-        enable = true;
-        rust-analyzer = true;
-        rust-stable = true;
+        haskell = {
+          enable = true;
+          buildTools = true;
+          hls = true;
+          hoogle = true;
+        };
+        rust = {
+          enable = true;
+          rust-analyzer = true;
+          rust-stable = true;
+        };
       };
     };
 
@@ -150,7 +152,6 @@ in {
       soundkonverter
       chromaprint
       r128gain
-      vcv-rack
 
       # Documents
       texlive.combined.scheme-full

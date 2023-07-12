@@ -1,9 +1,7 @@
 {...}: {
   imports = [
-    ./python.nix
-    ./webdev.nix
-    ./haskell.nix
     ./dev-tools.nix
+    ./lang
     ./editors
   ];
 }
