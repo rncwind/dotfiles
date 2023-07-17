@@ -1,14 +1,25 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+
+  # TODO: Make this boilerplate abstracted across systems.
+  # produce some mkSystem function.
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings = {
+    trusted-substituters = ["https://cache.nixos.org" "https://nix-community.cachix.org"];
+    trusted-public-keys = ["cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
+  };
+
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -23,12 +34,16 @@
   boot.initrd.luks.devices."luks-20578edc-e6c6-49ba-8101-f15d20f2baf9".device = "/dev/disk/by-uuid/20578edc-e6c6-49ba-8101-f15d20f2baf9";
   boot.initrd.luks.devices."luks-20578edc-e6c6-49ba-8101-f15d20f2baf9".keyFile = "/crypto_keyfile.bin";
 
-  networking.hostName = "nixos"; # Define your hostname.
-  #networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostName = "helium"; # Define your hostname.
+  # Trusted users.
+  nix.settings.trusted-users = ["@wheel" "root" "satori" "patchouli"];
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  # Enable OpenSSH
+  services.openssh = {
+    enable = true;
+  };
+
+  # TODO: BOilerplate ends here
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -68,17 +83,12 @@
   #   packages = with pkgs; [];
   # };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
-  # Trust root and satori
-  nix.settings.trusted-users = ["@wheel" "root" "satori" "patchouli"];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    vim
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -93,10 +103,10 @@
 
   # Enable the OpenSSH daemon.
   #services.openssh.enable = true;
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = true;
-  };
+  # services.openssh = {
+  #   enable = true;
+  #   settings.PasswordAuthentication = true;
+  # };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

@@ -140,6 +140,10 @@
   services.tumbler.enable = true;
   services.gnome.gnome-keyring.enable = true;
   # OpenSSH
+  services.openssh = {
+    enable = true;
+  };
+  users.users.patchouli.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
   #services.openssh.enable = true;
   #services.openssh.passwordAuthentication = true;
 

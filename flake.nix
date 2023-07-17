@@ -93,11 +93,21 @@
       };
     };
 
+    deploy.nodes.sdm = {
+      hostname = "192.168.1.37";
+      fastConnection = true;
+      profiles.system = {
+        user = "patchouli";
+        sshUser = "patchouli";
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.sdm;
+      };
+    };
+
     deploy.nodes.helium = {
       hostname = "192.168.1.38";
       fastConnection = true;
       profiles.system = {
-        user = "satori";
+        user = "root";
         sshUser = "root";
         path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.helium;
       };
