@@ -19,13 +19,13 @@ in {
   options = {
     modules.dev.editors.emacs.enable = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "Enable emacs";
     };
 
     modules.dev.editors.emacs.daemon = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "Enable emacs in daemon mode";
     };
   };

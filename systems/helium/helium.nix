@@ -61,15 +61,18 @@
   console.keyMap = "uk";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.satori = {
-    isNormalUser = true;
-    description = "satori";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
-  };
+  # users.users.satori = {
+  #   isNormalUser = true;
+  #   description = "satori";
+  #   extraGroups = [ "networkmanager" "wheel" ];
+  #   packages = with pkgs; [];
+  # };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Trust root and satori
+  nix.settings.trusted-users = ["@wheel" "root" "satori" "patchouli"];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

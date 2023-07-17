@@ -11,25 +11,25 @@ in {
   options = {
     modules.dev.lang.python.enable = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "enable python tooling";
     };
 
     modules.dev.lang.python.pyright = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "enable pyright LSP";
     };
 
     modules.dev.lang.python.black = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "enable black formatter";
     };
 
     modules.dev.lang.python.isort = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "enable isort to sort python imports";
     };
   };

@@ -149,7 +149,7 @@
   # Polshit
   security.polkit.enable = true;
 
-  nix.settings.trusted-users = ["root" "patchouli"];
+  nix.settings.trusted-users = ["root" "patchouli" "satori"];
 
   security.wrappers.gamescope = {
     owner = "patchouli";

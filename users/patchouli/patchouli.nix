@@ -34,10 +34,15 @@ in {
 
     desktop = {
       sway.enable = true;
-      desktop-utils.enable = true;
+      desktop-utils = {
+        enable = true;
+        enableMako = true;
+        enableGammastep = true;
+      };
       audio = {
         music = {
           enable = true;
+          enableNcmpcpp = true;
           enableMpdScribble = true;
         };
         production = {
@@ -73,6 +78,13 @@ in {
         reversing = true;
       };
 
+      editors = {
+        emacs = {
+          enable = true;
+          daemon = true;
+        };
+      };
+
 
       lang = {
         web = {
@@ -93,6 +105,12 @@ in {
           rust-analyzer = true;
           rust-stable = true;
         };
+        python = {
+          enable = true;
+          pyright = true;
+          black = true;
+          isort = true;
+        };
       };
     };
 
@@ -108,7 +126,7 @@ in {
         # another_example = {};
       };
       keyFilePath = "/home/patchouli/.config/sops/age/keys.txt";
-      secretsFile = ../secrets/users/patchouli.yaml;
+      secretsFile = ../../secrets/users/patchouli.yaml;
     };
   };
 
@@ -121,6 +139,7 @@ in {
     # Packages here don't have a programs.enable or a custom module.
     # In general, this is more of a "grab bag" of random utils etc.
     home.packages = with pkgs; [
+      deploy-rs
       # Dev
       virt-manager
       zip
@@ -272,7 +291,7 @@ in {
         BindsTo = ["sway-session.target"];
       };
       Install = {WantedBy = ["sway-session.target"];};
-      Service = {ExecStart = "${../static/maybe_start_slack.sh}";};
+      Service = {ExecStart = "${../../static/maybe_start_slack.sh}";};
     };
 
     systemd.user.services.polkit-gnome-authentication-agent-1 = {

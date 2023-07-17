@@ -18,13 +18,13 @@ in {
 
     modules.desktop.desktop-utils.enableMako = mkOption {
       type = bool;
-      default = true;
+      default = false;
       description = "Enable mako";
     };
 
     modules.desktop.desktop-utils.enableGammastep = mkOption {
       type = bool;
-      default = true;
+      default = false;
       description = "Enable flux for wayland";
     };
   };

@@ -37,7 +37,6 @@
   in {
     nixosConfigurations = {
       # Desktop computer.
-
       sdm = lib.nixosSystem {
         system = "x86_64-linux";
 
@@ -65,6 +64,7 @@
         };
       };
 
+      # Dell Laptop
       helium = lib.nixosSystem {
         system = "x86_64-linux";
 
@@ -91,32 +91,18 @@
           inherit inputs;
         };
       };
-
-      #rhea = lib.nixosSystem {
-      #system = "x86_64-linux";
-      #modules = [
-      #inputs.home-manager.nixosModules.home-manager
-      #inputs.sops-nix.nixosModules.sops
-      #./modules
-      #./systems/rhea/rhea.nix
-      #({ pkgs, ... }: {
-      #nixpkgs.overlays = [
-      #inputs.emacs-overlay.overlays.emacs
-      #inputs.rust-overlay.overlays.default
-      #(import ./pkgs)
-      #];
-      #})
-      #];
-
-      #};
     };
 
-    #deploy.nodes.sdm.profiles.system = {
-    #hostname = "sdm";
-    #user = "root";
-    #path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.sdm;
-    #};
+    deploy.nodes.helium = {
+      hostname = "192.168.1.38";
+      fastConnection = true;
+      profiles.system = {
+        user = "satori";
+        sshUser = "root";
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.helium;
+      };
+    };
 
-    #checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+    checks = builtins.mapAttrs(system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
   };
 }

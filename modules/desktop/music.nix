@@ -11,13 +11,13 @@ in {
   options.modules.desktop.audio.music = {
     enable = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "Enable the music module. Mostly contains music players";
     };
 
     enableNcmpcpp = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "Enable ncmpcpp for this device";
     };
 
