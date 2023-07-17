@@ -9,43 +9,37 @@ with lib.types; let
   cfg = config.modules.dev.lang.web;
 in {
   options = {
-    modules.dev.web.enable = mkOption {
+    modules.dev.lang.web.enable = mkOption {
       type = bool;
       default = false;
       description = "Enable web dev tools";
     };
 
-    # modules.dev.web.ts-ls = mkOption {
-    #   type = bool;
-    #   default = false;
-    #   description = "Enable typescript language server";
-    # };
-
-    modules.dev.web.node18 = mkOption {
+    modules.dev.lang.web.node18 = mkOption {
       type = bool;
       default = false;
       description = "Install and enable NPM";
     };
 
-    modules.dev.web.yarn = mkOption {
+    modules.dev.lang.web.yarn = mkOption {
       type = bool;
       default = false;
       description = "Install and Enable Yarn";
     };
 
-    modules.dev.web.linters = mkOption {
+    modules.dev.lang.web.linters = mkOption {
       type = bool;
       default = false;
       description = "Enable linters. Eslint and stylelint";
     };
 
-    modules.dev.web.formatters = mkOption {
+    modules.dev.lang.web.formatters = mkOption {
       type = bool;
       default = false;
       description = "Enable formatters. Tidy and js-beautify";
     };
 
-    modules.dev.web.postman = mkOption {
+    modules.dev.lang.web.postman = mkOption {
       type = bool;
       default = false;
       description = "Enable postman";

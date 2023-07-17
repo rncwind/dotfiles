@@ -43,6 +43,10 @@ in {
       type = bool;
       default = true;
     };
+
+    stateVersion = mkOption {
+      default = "22.05";
+    };
   };
 
   # This is the actual reificiation of our options. Everyting delcared here
@@ -65,7 +69,7 @@ in {
         home = with cfg.home; {
           inherit packages;
 
-          stateVersion = "22.05";
+          stateVersion = cfg.stateVersion;
           homeDirectory = cfg.homeDir;
           username = cfg.name;
         };

@@ -58,7 +58,34 @@
           # My stuff.
           ./systems/sdm/sdm.nix
           ./modules
-          ./patchouli/patchouli_new.nix
+          ./users/patchouli/patchouli.nix
+        ];
+        specialArgs = {
+          inherit inputs;
+        };
+      };
+
+      helium = lib.nixosSystem {
+        system = "x86_64-linux";
+
+        modules = [
+          # Flake inputs
+          inputs.home-manager.nixosModules.home-manager
+          inputs.sops-nix.nixosModules.sops
+          # Add overlays.
+          ({pkgs, ...}: {
+            nixpkgs.overlays = [
+              inputs.emacs-overlay.overlays.emacs
+              inputs.rust-overlay.overlays.default
+              # Overlay our own packages into nixpkgs.
+              (import ./pkgs)
+            ];
+          })
+
+          # My stuff.
+          ./systems/helium/helium.nix
+          ./modules
+          ./users/satori/satori.nix
         ];
         specialArgs = {
           inherit inputs;

@@ -9,37 +9,37 @@ with lib; let
   cfg = config.modules.dev.lang.rust;
 in {
   options = {
-    modules.dev.rust.enable = mkOption {
+    modules.dev.lang.rust.enable = mkOption {
       type = types.bool;
       default = false;
       description = "Enable rust tooling";
     };
 
-    modules.dev.rust.rust-analyzer = mkOption {
+    modules.dev.lang.rust.rust-analyzer = mkOption {
       type = types.bool;
       default = false;
       description = "Enable Rust Analyzer, the rust language server";
     };
 
-    modules.dev.rust.rust-analyzer-unwrapped = mkOption {
+    modules.dev.lang.rust.rust-analyzer-unwrapped = mkOption {
       type = types.bool;
       default = false;
       description = "Enable Rust Analyzer (Unwrapped), the rust language server";
     };
 
-    modules.dev.rust.rust-stable = mkOption {
+    modules.dev.lang.rust.rust-stable = mkOption {
       type = types.bool;
       default = false;
       description = "Enable stable rust from oxalica's overlay";
     };
 
-    modules.dev.rust.rust-beta = mkOption {
+    modules.dev.lang.rust.rust-beta = mkOption {
       type = types.bool;
       default = false;
       description = "Enable beta rust from Oxalica's overlay";
     };
 
-    modules.dev.rust.rust-nightly = mkOption {
+    modules.dev.lang.rust.rust-nightly = mkOption {
       type = types.bool;
       default = false;
       description = "Enable nightly rust from Oxalica's overlay";

@@ -9,25 +9,25 @@ with lib; let
   cfg = config.modules.dev.lang.python;
 in {
   options = {
-    modules.dev.python.enable = mkOption {
+    modules.dev.lang.python.enable = mkOption {
       type = types.bool;
       default = true;
       description = "enable python tooling";
     };
 
-    modules.dev.python.pyright = mkOption {
+    modules.dev.lang.python.pyright = mkOption {
       type = types.bool;
       default = true;
       description = "enable pyright LSP";
     };
 
-    modules.dev.python.black = mkOption {
+    modules.dev.lang.python.black = mkOption {
       type = types.bool;
       default = true;
       description = "enable black formatter";
     };
 
-    modules.dev.python.isort = mkOption {
+    modules.dev.lang.python.isort = mkOption {
       type = types.bool;
       default = true;
       description = "enable isort to sort python imports";

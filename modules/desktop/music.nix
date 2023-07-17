@@ -8,27 +8,44 @@
 with lib; let
   cfg = config.modules.desktop.audio.music;
 in {
-  options = {
-    modules.desktop.audio.music.enable = mkOption {
+  options.modules.desktop.audio.music = {
+    enable = mkOption {
       type = types.bool;
       default = true;
       description = "Enable the music module. Mostly contains music players";
     };
 
-    modules.desktop.audio.music.enableNcmpcpp = mkOption {
+    enableNcmpcpp = mkOption {
       type = types.bool;
       default = true;
       description = "Enable ncmpcpp for this device";
     };
 
-    modules.desktop.audio.music.enableNcspot = mkOption {
+    enableNcspot = mkOption {
       type = types.bool;
       default = false;
       description = "Enable ncspot, a ncurses spotify interface";
     };
+
+    enableMpdScribble = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable mpdscribble. A lastfm scrobbler for mpd";
+    };
   };
 
   config = mkIf cfg.enable {
+
+    # FIXME: We want evaltime secrets before we can do this properly.
+    # services.mpdscribble = mkIf cfg.enableMpdScribble {
+    #   enable = cfg.enableMpdScribble;
+    #   endpoints = {
+    #     "last.fm" = {
+    #       passwordFile = config.sops.secrets.lastfm_password.path;
+    #     };
+    #   };
+    # };
+
     home-manager.users.${config.user.name} = {
       programs.ncmpcpp = mkIf cfg.enableNcmpcpp {
         enable = cfg.enableNcmpcpp;
@@ -48,6 +65,7 @@ in {
           bitrate = 320;
         };
       };
+
     };
   };
 }

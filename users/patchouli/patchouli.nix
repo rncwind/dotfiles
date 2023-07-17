@@ -36,7 +36,14 @@ in {
       sway.enable = true;
       desktop-utils.enable = true;
       audio = {
-        music.enable = true;
+        music = {
+          enable = true;
+          enableMpdScribble = true;
+        };
+        production = {
+          enable = true;
+          reaper = true;
+        };
       };
       fontconfig = {
         enable = true;
@@ -60,17 +67,21 @@ in {
         shellDev = true;
         grpc = true;
         grabBag = true;
+        virt = true;
+        linkers = false;
+        asciinema = true;
+        reversing = true;
       };
+
 
       lang = {
         web = {
           enable = true;
           node18 = true;
-          yarn = true;
+          yarn = false;
           formatters = true;
           linters = true;
         };
-
         haskell = {
           enable = true;
           buildTools = true;
@@ -89,8 +100,12 @@ in {
       enable = true;
       #expose = ["example_key"];
       expose = {
-        example_key = {owner = config.users.users.patchouli.name;};
-        another_example = {};
+        lastfm_username = {owner = config.users.users.patchouli.name;};
+        lastfm_password = {owner = config.users.users.patchouli.name;};
+        librefm_username= {owner = config.users.users.patchouli.name;};
+        librefm_password = {owner = config.users.users.patchouli.name;};
+        # example_key = {owner = config.users.users.patchouli.name;};
+        # another_example = {};
       };
       keyFilePath = "/home/patchouli/.config/sops/age/keys.txt";
       secretsFile = ../secrets/users/patchouli.yaml;
@@ -102,20 +117,12 @@ in {
   # sops.secrets.example_key = {};
 
   user = {
-    extraGroups = ["wheel" "docker" "libvirtd" config.users.groups.keys.name];
+    extraGroups = ["wheel" "docker" config.users.groups.keys.name];
     # Packages here don't have a programs.enable or a custom module.
     # In general, this is more of a "grab bag" of random utils etc.
     home.packages = with pkgs; [
       # Dev
       virt-manager
-      # jq
-
-      # bash-language-server
-      # shellcheck
-
-      # Need some way of bootstrapping rust projects since there's no good flake
-      # template for oxalica's overlay.
-
       zip
 
       # Multimedia
@@ -126,7 +133,6 @@ in {
       imv # Image Vewer, Feh for wayland
       ueberzug # Show images in ranger
       mpv
-      rsgain
 
       # Wayland stuff
       wl-clipboard
@@ -136,13 +142,11 @@ in {
       autotiling
       waybar
       slurp
-
       glib
       dracula-theme
 
       # Communication
       patched-discord
-      codeship-jet
       slack
 
       # Audio and Music
@@ -151,7 +155,7 @@ in {
       picard
       soundkonverter
       chromaprint
-      r128gain
+      rsgain
 
       # Documents
       texlive.combined.scheme-full
@@ -173,7 +177,6 @@ in {
       grim
       oxipng
       fd # Faster find.
-      remmina
       yt-dlp
       (aspellWithDicts (dicts: with dicts; [en en-computers en-science]))
 
@@ -190,9 +193,6 @@ in {
       yubikey-manager
       mullvad-vpn
       polkit_gnome
-
-      # DB stuff
-      #sqlite
 
       #Games
 
@@ -232,20 +232,12 @@ in {
       which
       asciinema
       asciinema-agg
-      asciinema-scenario
       chromium
       wireshark
       libnotify
       anki-bin
-      sem
-      socat
       pkg-config
       gimp
-
-      # Faster linkers
-      lld
-      mold
-      zellij
     ];
   };
 
@@ -320,7 +312,7 @@ in {
       enable = true;
       package =
         pkgs.vscode.fhsWithPackages
-        (ps: with ps; [rustup zlib openssl.dev pkg-config]);
+        (ps: with ps; [rustup zlib openssl.dev pkg-config python310Full]);
     };
   };
 }
