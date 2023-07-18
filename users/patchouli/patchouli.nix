@@ -219,6 +219,7 @@ in {
       yubikey-manager
       mullvad-vpn
       polkit_gnome
+      x11_ssh_askpass
 
       #Games
 
