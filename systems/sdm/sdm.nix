@@ -144,8 +144,7 @@
     enable = true;
   };
   users.users.patchouli.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
-  #services.openssh.enable = true;
-  #services.openssh.passwordAuthentication = true;
+  users.users.root.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
 
   #Tailscale
   services.tailscale.enable = true;
@@ -153,7 +152,7 @@
   # Polshit
   security.polkit.enable = true;
 
-  nix.settings.trusted-users = ["root" "patchouli" "satori"];
+  nix.settings.trusted-users = ["@wheel" "root" "patchouli"];
 
   security.wrappers.gamescope = {
     owner = "patchouli";

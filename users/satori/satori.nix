@@ -16,8 +16,41 @@ in {
 
     home.packages = with pkgs; [
       deploy-rs
-      hello
+      tailscale
+      patched-discord
+      sqlite
+      rofi
+      firefox
+      slack
+      keepassxc
     ];
   };
 
+  modules = {
+    shell = {
+      fish.enable = true;
+      alacritty.enable = true;
+      terminalPrograms.enable = true;
+    };
+
+    desktop = {
+      hyprland.enable = true;
+      waybar = {
+        enable = true;
+        hyprland = true;
+      };
+      desktop-utils = {
+        enable = true;
+        enableMako = true;
+        enableGammastep = true;
+      };
+    };
+  };
+  # programs.hyprland = {
+  #   enable = true;
+  # };
+
+
+  home-manager.users.${config.user.name} = {
+  };
 }

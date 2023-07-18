@@ -33,7 +33,13 @@ in {
     };
 
     desktop = {
-      sway.enable = true;
+      sway = {
+        enable = true;
+      };
+      waybar = {
+        enable = true;
+        hyprland = false;
+      };
       desktop-utils = {
         enable = true;
         enableMako = true;
@@ -198,6 +204,7 @@ in {
       fd # Faster find.
       yt-dlp
       (aspellWithDicts (dicts: with dicts; [en en-computers en-science]))
+      android-file-transfer
 
       # File Management
       ranger

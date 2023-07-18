@@ -6,14 +6,27 @@ Flakes, NixOS, Home-Manager.
 Main purpose is to be a development system, that is capable of gaming as well.
 I mainly use Emacs where possible, and write mostly Rust, however I play around
 with a lot of other languages.
+Networking and "Totally a LAN i swear" service is provided by Tailscale. At some
+point i will consider moving this to Headscale.
 
+** SDM
+Main desktop. What I use most of the time.
 | OS       | GNU/Nix/Linux       |
 | Shell    | Fish                |
 | WM       | Sway + Waybar       |
 | Editor   | Doom Emacs / VSCode |
 | Terminal | Alacritty           |
 | Browser  | Firefox             |
+** Helium
+Laptop. Designed to be pretty lightweight but look nice.
+Often serves as a testbed for when i dont want to break my desktop.
+| OS       | GNU/Nix/Linux       |
+| Shell    | Fish                |
+| WM       | Hyprland            |
+| Editor   | Doom Emacs  |
+| Terminal | Alacritty           |
+| Browser  | Firefox             |
 * Look at these dotfiles instead.
 - [[https://github.com/hlissner/dotfiles][Hlissner (Praise be to the doomy one)]]
 - [[https://github.com/viperML][Viper]]
-- [[https://github.com/maddiethecafebabe/dotfiles][Maddie]]
+- [[https://git.crossdressing.rocks/dork/dotfiles][Dork]]

@@ -116,17 +116,59 @@
         "type": "github"
       }
     },
-    "nixpkgs": {
+    "hyprland": {
+      "inputs": {
+        "hyprland-protocols": "hyprland-protocols",
+        "nixpkgs": "nixpkgs",
+        "wlroots": "wlroots",
+        "xdph": "xdph"
+      },
       "locked": {
-        "lastModified": 1689008574,
-        "narHash": "sha256-VFMgyHDiqsGDkRg73alv6OdHJAqhybryWHv77bSCGIw=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "4a729ce4b1fe5ec4fffc71c67c96aa5184ebb462",
+        "lastModified": 1689691874,
+        "narHash": "sha256-c81l8OTpjw9XTt3b2pGn0HFCHx8jN+/1U/2Fh/H+lvY=",
+        "owner": "hyprwm",
+        "repo": "Hyprland",
+        "rev": "08310b4af9ce289180d2b3adef157642379f158e",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "hyprwm",
+        "repo": "Hyprland",
+        "type": "github"
+      }
+    },
+    "hyprland-protocols": {
+      "inputs": {
+        "nixpkgs": [
+          "hyprland",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1684265364,
+        "narHash": "sha256-AxNnWbthsuNx73HDQr0eBxrcE3+yfl/WsaXZqUFmkpQ=",
+        "owner": "hyprwm",
+        "repo": "hyprland-protocols",
+        "rev": "8c279b9fb0f2b031427dc5ef4eab53f2ed835530",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "hyprland-protocols",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1688500189,
+        "narHash": "sha256-djYYiY4lzJOlXOnTHytH6BUugrxHDZjuGxTSrU4gt4M=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "78419edadf0fabbe5618643bd850b2f2198ed060",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
@@ -164,12 +206,29 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1689008574,
+        "narHash": "sha256-VFMgyHDiqsGDkRg73alv6OdHJAqhybryWHv77bSCGIw=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "4a729ce4b1fe5ec4fffc71c67c96aa5184ebb462",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "deploy-rs": "deploy-rs",
         "emacs-overlay": "emacs-overlay",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs",
+        "hyprland": "hyprland",
+        "nixpkgs": "nixpkgs_2",
         "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix"
       }
@@ -258,6 +317,49 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "wlroots": {
+      "flake": false,
+      "locked": {
+        "host": "gitlab.freedesktop.org",
+        "lastModified": 1689611045,
+        "narHash": "sha256-3RTOlQabkNetQ4O4UzSf57JPco9VGVHhSU1ls5uKBeE=",
+        "owner": "wlroots",
+        "repo": "wlroots",
+        "rev": "7791ffe0584c4ac13c170e1661ce33bdbd4a9b9e",
+        "type": "gitlab"
+      },
+      "original": {
+        "host": "gitlab.freedesktop.org",
+        "owner": "wlroots",
+        "repo": "wlroots",
+        "type": "gitlab"
+      }
+    },
+    "xdph": {
+      "inputs": {
+        "hyprland-protocols": [
+          "hyprland",
+          "hyprland-protocols"
+        ],
+        "nixpkgs": [
+          "hyprland",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1685385764,
+        "narHash": "sha256-r+XMyOoRXq+hlfjayb+fyi9kq2JK48TrwuNIAXqlj7U=",
+        "owner": "hyprwm",
+        "repo": "xdg-desktop-portal-hyprland",
+        "rev": "4d9ff0c17716936e0b5ca577a39e263633901ed1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "xdg-desktop-portal-hyprland",
         "type": "github"
       }
     }

@@ -31,6 +31,9 @@
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hyprland.url = "github:hyprwm/Hyprland";
+
   };
   outputs = inputs @ {self, ...}: let
     lib = inputs.nixpkgs.lib;
@@ -72,6 +75,8 @@
           # Flake inputs
           inputs.home-manager.nixosModules.home-manager
           inputs.sops-nix.nixosModules.sops
+          inputs.hyprland.nixosModules.default
+          {programs.hyprland.package = null;}
           # Add overlays.
           ({pkgs, ...}: {
             nixpkgs.overlays = [
@@ -94,17 +99,17 @@
     };
 
     deploy.nodes.sdm = {
-      hostname = "192.168.1.37";
+      hostname = "sdm.cinnamon-moth.ts.net";
       fastConnection = true;
       profiles.system = {
-        user = "patchouli";
-        sshUser = "patchouli";
+        user = "root";
+        sshUser = "root";
         path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.sdm;
       };
     };
 
     deploy.nodes.helium = {
-      hostname = "192.168.1.38";
+      hostname = "helium.cinnamon-moth.ts.net";
       fastConnection = true;
       profiles.system = {
         user = "root";

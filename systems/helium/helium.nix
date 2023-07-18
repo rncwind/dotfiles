@@ -17,7 +17,6 @@
     trusted-public-keys = ["cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
   };
 
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -42,6 +41,11 @@
   services.openssh = {
     enable = true;
   };
+  users.users.satori.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
+  users.users.root.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
+
+  # Enable Tailscale
+  services.tailscale.enable = true;
 
   # TODO: BOilerplate ends here
 
@@ -74,22 +78,25 @@
 
   # Configure console keymap
   console.keyMap = "uk";
+  # Use Ctrl on caps always
+  services.xserver.xkbOptions = "ctrl:nocaps";
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.satori = {
-  #   isNormalUser = true;
-  #   description = "satori";
-  #   extraGroups = [ "networkmanager" "wheel" ];
-  #   packages = with pkgs; [];
-  # };
+  hardware.opengl = {
+    enable = true;
+  };
 
-
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # We always want vim.
   environment.systemPackages = with pkgs; [
     vim
   ];
+
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -100,13 +107,6 @@
   # };
 
   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  #services.openssh.enable = true;
-  # services.openssh = {
-  #   enable = true;
-  #   settings.PasswordAuthentication = true;
-  # };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
