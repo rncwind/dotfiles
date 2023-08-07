@@ -56,6 +56,10 @@ in {
           reaper = true;
         };
       };
+      media = {
+        enable = true;
+        rss = true;
+      };
       fontconfig = {
         enable = true;
         nerdFontsList = ["Hasklig"];
@@ -154,10 +158,10 @@ in {
       firefox-wayland
       #chromium # I hate the browser hegemony i hate the browser hegemony
       thunderbird
-      zathura # PDF viewer
+      hexchat
+      #zathura # PDF viewer
       imv # Image Vewer, Feh for wayland
       ueberzug # Show images in ranger
-      mpv
 
       # Wayland stuff
       wl-clipboard
@@ -220,11 +224,12 @@ in {
       mullvad-vpn
       polkit_gnome
       x11_ssh_askpass
+      lxqt.lxqt-openssh-askpass
 
       #Games
 
       # Actual Games
-      prismlauncher-qt5
+      (prismlauncher.override { jdks = [ adoptopenjdk-hotspot-bin-8 jdk17 jdk19 ]; })
       vintagestory
       xivlauncher
       ffxiv-wrapper
@@ -319,6 +324,7 @@ in {
       };
     };
 
+
     home.sessionVariables = rec {
       EDITOR = "vim";
       RUST_BACKTRACE = 1;
@@ -333,6 +339,7 @@ in {
       # Steam needs this to find Proton-GE
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";
     };
+
 
     # DEV STUFF
     programs.vscode = {

@@ -1,0 +1,22 @@
+SSID: ENC[AES256_GCM,data:3tNNfUnT7JOxj51H+apChg==,iv:FYPPfWsaOPs2G2H+tr4auAFOj22zjBlfGqU1aigdiyE=,tag:d7kq2mb+9heOvewrELbjgw==,type:str]
+SSIDpassword: ENC[AES256_GCM,data:tEAJGT72BLYNZbsW,iv:jP3NgiEMRBhNJTm0CKJBCNW12NViIC1welZokXcIWb0=,tag:vjVragat4V93jDkJWMejDw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1eq54pm4lz5jgu35rparx8vwxsdp0g42fs032jpv3t0w5h2v583vqp9g4eh
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB6Y1RpY3MxNTlOL2N1aENu
+            cVZOcmRHcXlNWldqNmwxWUxHMlFCRnFDS1ZjCm9ySDVPdFhVSkdKZFdKb1JHN2Va
+            TWhUbHYvOHNFRnpvUi8weDRQZ0o4Q2cKLS0tIFdaWUE4cUZoT0hVVmNvdldWeWdp
+            OG0wV0xCL1A2NEUwS3NmcEh3bG04YnMKX3GmLaY55UQyIHrDx3kplGwz+dt1MHAC
+            aMsaoXAQUslvjj1v4OaRJ8+FpOzNq9yxuNgmN43zXRwsLkrKWMKAsw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-08-06T17:21:50Z"
+    mac: ENC[AES256_GCM,data:qwAPtTHkZzOPhc9Y8eZme9FNZ2n72U6khISoeGWKbH4KEP886N0YV73qOqGSdD16sUHatYMgeGB6Fcgk6iPaC5GMXA7ivQnsHD5SIi3yw/GneaQ+d4iiBA//7riiDs1hx9M7WdyIWVkPmtHbr64eE/Nc9KVxm9ivhIokUstHzwg=,iv:D7OJT3iPxlT/d2bpt8Gkad5yYBAGK+4q+JL7LTXxRQQ=,tag:NXLZq4qb87wGIZhAJwA1nQ==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.7.3

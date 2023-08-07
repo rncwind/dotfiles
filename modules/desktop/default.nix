@@ -7,6 +7,7 @@
     ./music.nix
     ./fontconfig.nix
     ./i18n.nix
+    ./media.nix
     ./audio
   ];
 }

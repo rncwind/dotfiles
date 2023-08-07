@@ -13,7 +13,7 @@ in {
     modules.shell.alacritty = {
       enable = mkOption {
         type = types.bool;
-        default = true;
+        default = false;
         description = "Enable Alacritty as graphical shell";
       };
 

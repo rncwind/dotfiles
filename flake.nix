@@ -96,6 +96,20 @@
           inherit inputs;
         };
       };
+
+      hydrogen = lib.nixosSystem {
+        system = "aarch64-linux";
+
+        modules = [
+          inputs.sops-nix.nixosModules.sops
+          inputs.home-manager.nixosModules.home-manager
+          ./systems/hydrogen/hydrogen.nix
+          ./modules
+        ];
+        specialArgs = {
+          inherit inputs;
+        };
+      };
     };
 
     deploy.nodes.sdm = {
@@ -115,6 +129,17 @@
         user = "root";
         sshUser = "root";
         path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.helium;
+      };
+    };
+
+    deploy.nodes.hydrogen = {
+      hostname = "192.168.1.2";
+      fastConnection = true;
+      remoteBuild = true;
+      profiles.system = {
+        user = "root";
+        sshUser = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hydrogen;
       };
     };
 

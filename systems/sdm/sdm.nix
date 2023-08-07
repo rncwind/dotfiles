@@ -24,33 +24,45 @@
     };
   };
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  boot.loader.grub.device = "nodev";
-  boot.loader.grub.efiSupport = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = ["ntfs"];
+  boot = {
+    loader = {
+       grub = {
+         enable = true;
+         device = "nodev";
+         efiSupport = true;
+      };
+      efi.canTouchEfiVariables = true;
+    };
+
+    tmp = {
+      cleanOnBoot = true;
+      useTmpfs = true;
+    };
+
+    loader.grub.gfxmodeEfi = "1024x768";
+
+    initrd.luks.devices = {
+      enc-pv = {
+        name = "enc-pv";
+        device = "/dev/disk/by-uuid/0cd3cd42-6568-4371-acb0-a5ac28d529d6";
+        preLVM = true;
+        allowDiscards = true;
+      };
+    };
+
+    initrd.kernelModules = ["amdgpu"];
+    supportedFilesystems = ["ntfs"];
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+  };
+
 
   # Use tmpfs
-  boot.cleanTmpDir = true;
-  boot.tmpOnTmpfs = true;
 
   # At high res grub draw in EFI is really slow.
-  boot.loader.grub.gfxmodeEfi = "1024x768";
-
-  boot.initrd.luks.devices = {
-    enc-pv = {
-      name = "enc-pv";
-      device = "/dev/disk/by-uuid/0cd3cd42-6568-4371-acb0-a5ac28d529d6";
-      preLVM = true;
-      allowDiscards = true;
-    };
-  };
 
   networking.hostName = "sdm"; # Define your hostname.
 
   # Graphics card block
-  boot.initrd.kernelModules = ["amdgpu"];
   hardware.opengl = {
     enable = true;
     # Mesa OpenCL
@@ -138,10 +150,15 @@
   services.gvfs.enable = true;
   # Generate thumbnails
   services.tumbler.enable = true;
+  # Try set up ssh-auth agent in a sane way.
   services.gnome.gnome-keyring.enable = true;
   # OpenSSH
   services.openssh = {
     enable = true;
+  };
+  programs.ssh = {
+    startAgent = true;
+    enableAskPassword = true;
   };
   users.users.patchouli.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
   users.users.root.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
@@ -162,17 +179,6 @@
   };
 
   security.pki.certificateFiles = ["/home/patchouli/programming/local_cert/"];
-
-  # nginx test
-  services.nginx = {
-    enable = true;
-    virtualHosts."localhost" = {
-      locations."/" = {
-        proxyPass = "http://unix:/run/user/1000/blogsocket";
-        proxyWebsockets = true;
-      };
-    };
-  };
 
   # Firewall config.
   networking.firewall.enable = false;

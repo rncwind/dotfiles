@@ -12,7 +12,7 @@ in {
   options = {
     modules.desktop.fontconfig.enable = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "Enable the minimal set of fonts";
     };
 

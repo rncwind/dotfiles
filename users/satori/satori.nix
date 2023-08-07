@@ -33,6 +33,14 @@ in {
       terminalPrograms.enable = true;
     };
 
+    dev = {
+      dev-tools = {
+        enable = true;
+        git = true;
+        grabBag = true;
+      };
+    };
+
     desktop = {
       hyprland.enable = true;
       waybar = {

@@ -7,6 +7,7 @@
 }:
 with lib; let
   cfg = config.modules.dev.dev-tools;
+  gcloudWithPlugins = pkgs.google-cloud-sdk.withExtraComponents [pkgs.google-cloud-sdk.components.gke-gcloud-auth-plugin];
 in {
   options.modules.dev.dev-tools = {
     enable = mkOption {
@@ -78,7 +79,7 @@ in {
 
   config = mkIf cfg.enable {
     user.home.packages = with pkgs;
-      [codeship-jet fzf just sqlite]
+      [fzf just sqlite exercism ]
       ++ (
         if cfg.git
         then [git git-crypt gnupg tig]
@@ -86,7 +87,7 @@ in {
       )
       ++ (
         if cfg.cloudTools
-        then [kubectl cloud-sql-proxy k9s (google-cloud-sdk.withExtraComponents [google-cloud-sdk.components.gke-gcloud-auth-plugin])]
+        then [ kubectl cloud-sql-proxy k9s gcloudWithPlugins codeship-jet ]
         else []
       )
       ++ (

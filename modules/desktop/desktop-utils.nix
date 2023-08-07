@@ -12,7 +12,7 @@ in {
   options = {
     modules.desktop.desktop-utils.enable = mkOption {
       type = bool;
-      default = true;
+      default = false;
       description = "Enable desktop utilities";
     };
 

@@ -13,7 +13,7 @@ in {
   options = {
     modules.shell.terminalPrograms.enable = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "Enable various terminal applications that we often find useful";
     };
 
