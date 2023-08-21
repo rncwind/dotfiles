@@ -12,6 +12,10 @@
   imports = [./hardware-configuration.nix ./mpd.nix ./lutris.nix ./virt.nix];
   nixpkgs.config.allowUnfree = true;
 
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "nodejs-16.20.1"
+  ];
   nixpkgs.config.packageOverrides = pkgs: {
     steam = pkgs.steam.override {
       extraPkgs = pkgs:

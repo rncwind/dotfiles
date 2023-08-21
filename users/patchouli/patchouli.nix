@@ -270,6 +270,7 @@ in {
       anki-bin
       pkg-config
       gimp
+      languagetool
     ];
   };
 
