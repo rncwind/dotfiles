@@ -26,6 +26,11 @@
   };
 in {
   modules = {
+    # core.coretools = {
+    #   enable = true;
+    #   archives = true;
+    # };
+
     shell = {
       fish.enable = true;
       alacritty.enable = true;
@@ -86,6 +91,7 @@ in {
         linkers = false;
         asciinema = true;
         reversing = true;
+        replicated = true;
       };
 
       editors = {
@@ -151,15 +157,12 @@ in {
     home.packages = with pkgs; [
       deploy-rs
       # Dev
-      virt-manager
-      zip
+      #zip
 
       # Multimedia
       firefox-wayland
-      #chromium # I hate the browser hegemony i hate the browser hegemony
       thunderbird
       hexchat
-      #zathura # PDF viewer
       imv # Image Vewer, Feh for wayland
       ueberzug # Show images in ranger
 
@@ -180,7 +183,6 @@ in {
 
       # Audio and Music
       pavucontrol
-      spotify
       picard
       soundkonverter
       chromaprint
@@ -224,7 +226,6 @@ in {
       mullvad-vpn
       polkit_gnome
       x11_ssh_askpass
-      lxqt.lxqt-openssh-askpass
 
       #Games
 
@@ -237,7 +238,6 @@ in {
       # Stuff for games
       jdk19_headless
       ncurses
-      scanmem
       steamtinkerlaunch
       gamescope
       #mangohud
@@ -259,9 +259,9 @@ in {
       # TODO: SORT THESE
       obs-studio
       appimage-run
-      coreutils-full
-      sudo
-      which
+      #coreutils-full
+      #sudo
+      #which
       asciinema
       asciinema-agg
       chromium
@@ -326,18 +326,10 @@ in {
     };
 
 
-    home.sessionVariables = rec {
+    home.sessionVariables = {
       EDITOR = "vim";
       RUST_BACKTRACE = 1;
-      #SDL_VIDEODRIVER = "wayland";
       QT_QPA_PLATFORM = "wayland";
-      # XDG_CURRENT_DESKTOP = "sway";
-      # XDG_SESSION_DESKTOP = "sway";
-      # XDG_CACHE_HOME = "~/.cache";
-      # XDG_CONFIG_HOME = "~/.config";
-      # XDG_BIN_HOME = "~/.local/bin";
-      # XDG_DATA_HOME = "~/.local/share";
-      # Steam needs this to find Proton-GE
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";
     };
 

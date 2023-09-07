@@ -1,5 +1,6 @@
 final: prev: {
   codeship-jet = prev.callPackage ./codeship-jet {};
   rsgain = prev.callPackage ./rsgain {};
-  #beatoraja = prev.callPackage ./beatoraja { variant = "-modernchic"; };
+  kots = prev.callPackage ./kots {};
+  replicated-cli = prev.callPackage ./replicated-cli {};
 }

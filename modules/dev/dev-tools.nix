@@ -28,6 +28,12 @@ in {
       description = "Enable cloud tools like k9s, kubectl etc";
     };
 
+    replicated = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable tooling for Replicated. Additional K8s stuff";
+    };
+
     tldr = mkOption {
       type = types.bool;
       default = false;
@@ -87,7 +93,12 @@ in {
       )
       ++ (
         if cfg.cloudTools
-        then [ kubectl cloud-sql-proxy k9s gcloudWithPlugins codeship-jet ]
+        then [ kubectl k9s gcloudWithPlugins codeship-jet ]
+        else []
+      )
+      ++ (
+        if cfg.replicated
+        then [ replicated-cli kots krew kubecm k3d ]
         else []
       )
       ++ (

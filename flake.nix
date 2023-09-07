@@ -5,7 +5,8 @@
 
     # --- Overlay flakes ---
     emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
+      # Pinned to version as of 2023-08-29
+      url = "github:nix-community/emacs-overlay/18db5f949c4a8d2c8a04e446092414fcd65e6bcd";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

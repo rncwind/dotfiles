@@ -184,6 +184,15 @@
 
   security.pki.certificateFiles = ["/home/patchouli/programming/local_cert/"];
 
+  networking = {
+    nameservers = [ "192.168.1.2" ];
+    dhcpcd.extraConfig = "nohook resolv.conf";
+  };
+
+  # I wnat to be able to edit hosts in a way that doesn't
+  # require me to tell the world about my infra.
+  environment.etc.hosts.mode = "0644";
+
   # Firewall config.
   networking.firewall.enable = false;
   #networking.firewall.allowedTCPPorts = [
