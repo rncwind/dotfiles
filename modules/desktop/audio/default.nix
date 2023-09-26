@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   imports = [
     ./production.nix
   ];

@@ -1,27 +1,18 @@
-inputs: {
-  host,
-  extraMods ? [],
-  system ? "x86_64-linux",
-  path ? host,
+{
+  self,
+  inputs,
 }: let
-  inherit (inputs.nixpkgs.lib) nixosSystem lists optionalAttrs optionals;
-  inherit (inputs) emacs-overlay home-manager;
+  inherit (inputs) home-manager nixpkgs;
+in {
+  mkSystem = {
+    hostname,
+    system ? "x86_64-linux",
+    pkgs ? nixpkgs,
+  }:
+    nixpkgs.lib.nixosSystem {
+      inherit system pkgs;
 
-  overlays.nixpkgs.overlays = lists.flatten [
-    (import ../pkgs)
-  ];
-in
-  nixosSystem {
-    inherit system;
-    modules =
-      extraMods
-      ++ [
-        overlays
-        ../modules
-        ../hosts/${path}/configuration.nix
+      modules = [
       ];
-
-    specialArgs = {
-      inherit inputs emacs-overlay host system;
     };
-  }
+}

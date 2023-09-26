@@ -1,4 +1,3 @@
-
 {
   stdenv,
   lib,
@@ -8,10 +7,10 @@
 stdenv.mkDerivation
 {
   pname = "replicated-cli";
-  version = "0.57.0";
+  version = "0.59.0";
   src = fetchzip {
-    url = "https://github.com/replicatedhq/replicated/releases/download/v0.57.0/replicated_0.57.0_linux_amd64.tar.gz";
-    sha256 = "0kvmlbrjzgskk09vka77h2i7yvcw445fwy6rk1zn0xlbgpgcfis2";
+    url = "https://github.com/replicatedhq/replicated/releases/download/v0.59.0/replicated_0.59.0_linux_amd64.tar.gz";
+    sha256 = "0hy5dikw8ryw18xkqa3p4yb7x60dn7zb4rmkbfzr72121gz83fwx";
     stripRoot = false;
   };
 

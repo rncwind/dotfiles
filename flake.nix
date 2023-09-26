@@ -6,7 +6,7 @@
     # --- Overlay flakes ---
     emacs-overlay = {
       # Pinned to version as of 2023-08-29
-      url = "github:nix-community/emacs-overlay/18db5f949c4a8d2c8a04e446092414fcd65e6bcd";
+      url = "github:nix-community/emacs-overlay/32cf0314159f4b2eb85970483124e7df730e3413";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -34,7 +34,6 @@
     };
 
     hyprland.url = "github:hyprwm/Hyprland";
-
   };
   outputs = inputs @ {self, ...}: let
     lib = inputs.nixpkgs.lib;
@@ -62,6 +61,21 @@
           ./systems/sdm/sdm.nix
           ./modules
           ./users/patchouli/patchouli.nix
+        ];
+        specialArgs = {
+          inherit inputs;
+        };
+      };
+
+      # Pi
+      hydrogen = lib.nixosSystem {
+        system = "aarch64-linux";
+
+        modules = [
+          inputs.sops-nix.nixosModules.sops
+          inputs.home-manager.nixosModules.home-manager
+          ./systems/hydrogen/hydrogen.nix
+          ./modules
         ];
         specialArgs = {
           inherit inputs;
@@ -98,14 +112,28 @@
         };
       };
 
-      hydrogen = lib.nixosSystem {
-        system = "aarch64-linux";
+      # Hetzner dedi
+      lithium = lib.nixosSystem {
+        system = "x86_64-linux";
 
         modules = [
           inputs.sops-nix.nixosModules.sops
           inputs.home-manager.nixosModules.home-manager
-          ./systems/hydrogen/hydrogen.nix
+          ./systems/lithium/lithium.nix
           ./modules
+        ];
+        specialArgs = {
+          inherit inputs;
+        };
+      };
+
+      neodymium = lib.nixosSystem {
+        system = "x86_64-linux";
+
+        modules = [
+          inputs.sops-nix.nixosModules.sops
+          inputs.home-manager.nixosModules.home-manager
+          ./systems/neodymium/neodymium.nix
         ];
         specialArgs = {
           inherit inputs;
@@ -123,18 +151,8 @@
       };
     };
 
-    deploy.nodes.helium = {
-      hostname = "helium.cinnamon-moth.ts.net";
-      fastConnection = true;
-      profiles.system = {
-        user = "root";
-        sshUser = "root";
-        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.helium;
-      };
-    };
-
     deploy.nodes.hydrogen = {
-      hostname = "192.168.1.2";
+      hostname = "hydrogen.cinnamon-moth.ts.net";
       fastConnection = true;
       remoteBuild = true;
       profiles.system = {
@@ -144,6 +162,39 @@
       };
     };
 
-    checks = builtins.mapAttrs(system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
+    deploy.nodes.helium = {
+      hostname = "helium.cinnamon-moth.ts.net";
+      fastConnection = true;
+      remoteBuild = true;
+      profiles.system = {
+        user = "root";
+        sshUser = "root";
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.helium;
+      };
+    };
+
+    deploy.nodes.lithium = {
+      hostname = "lithium.cinnamon-moth.ts.net";
+      fastConnection = true;
+      remoteBuild = true;
+      profiles.system = {
+        user = "root";
+        sshUser = "root";
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.lithium;
+      };
+    };
+
+    deploy.nodes.neodymium = {
+      hostname = "192.168.1.42";
+      fastConnection = true;
+      remoteBuild = true;
+      profiles.system = {
+        user = "root";
+        sshUser = "root";
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.neodymium;
+      };
+    };
+
+    checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
   };
 }

@@ -58,7 +58,6 @@ in {
   #   enable = true;
   # };
 
-
   home-manager.users.${config.user.name} = {
   };
 }

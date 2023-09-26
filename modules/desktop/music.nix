@@ -35,7 +35,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-
     # FIXME: We want evaltime secrets before we can do this properly.
     # services.mpdscribble = mkIf cfg.enableMpdScribble {
     #   enable = cfg.enableMpdScribble;
@@ -65,7 +64,6 @@ in {
           bitrate = 320;
         };
       };
-
     };
   };
 }

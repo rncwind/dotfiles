@@ -12,7 +12,6 @@
   imports = [./hardware-configuration.nix ./mpd.nix ./lutris.nix ./virt.nix];
   nixpkgs.config.allowUnfree = true;
 
-
   nixpkgs.config.permittedInsecurePackages = [
     "nodejs-16.20.1"
   ];
@@ -30,10 +29,10 @@
 
   boot = {
     loader = {
-       grub = {
-         enable = true;
-         device = "nodev";
-         efiSupport = true;
+      grub = {
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
       };
       efi.canTouchEfiVariables = true;
     };
@@ -56,9 +55,8 @@
 
     initrd.kernelModules = ["amdgpu"];
     supportedFilesystems = ["ntfs"];
-    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    binfmt.emulatedSystems = ["aarch64-linux"];
   };
-
 
   # Use tmpfs
 
@@ -100,6 +98,8 @@
     virtiofsd
     gnutls
     via
+    antimicroX
+    usbutils
     #deploy-rs
   ];
 
@@ -108,7 +108,10 @@
 
   # Yubi
   services.pcscd.enable = true;
-  services.udev.packages = [pkgs.yubikey-personalization pkgs.via];
+  services.udev.packages = [pkgs.yubikey-personalization pkgs.via pkgs.antimicroX pkgs.pulseview];
+  services.udev.extraRules = ''
+    ATTRS{idVendor}=="0925", ATTRS{idProduct}=="3881", MODE="660", GROUP="plugdev", TAG+="uaccess"
+  '';
 
   # Printing stuff.
   services.printing.enable = true;
@@ -185,7 +188,7 @@
   security.pki.certificateFiles = ["/home/patchouli/programming/local_cert/"];
 
   networking = {
-    nameservers = [ "192.168.1.2" ];
+    nameservers = ["192.168.1.2"];
     dhcpcd.extraConfig = "nohook resolv.conf";
   };
 

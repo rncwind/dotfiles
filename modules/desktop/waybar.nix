@@ -38,7 +38,7 @@ in {
               []
               ++ (
                 if cfg.hyprland
-                then [ "hyprland/workspaces" "hyprland/submap" ]
+                then ["hyprland/workspaces" "hyprland/submap"]
                 else ["sway/workspaces" "sway/mode"]
               );
             modules-right = [

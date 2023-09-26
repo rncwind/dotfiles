@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
     pkgs.fmt
     pkgs.inih
     pkgs.cmake
-    pkgs.pkgconfig
+    pkgs.pkg-config
     pkgs.zlib
   ];
 

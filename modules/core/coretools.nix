@@ -5,8 +5,8 @@
   modules,
   ...
 }:
-with lib;
-  let cfg = config.modules.core.coretools;
+with lib; let
+  cfg = config.modules.core.coretools;
 in {
   options.modules.core.coretools = {
     enable = mkOption {
@@ -27,7 +27,7 @@ in {
       [sops age which coreutils-full sudo]
       ++ (
         if cfg.archives
-        then [ zip unzip unrar ]
+        then [zip unzip unrar]
         else []
       );
   };

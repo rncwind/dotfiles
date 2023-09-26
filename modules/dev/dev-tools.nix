@@ -85,7 +85,7 @@ in {
 
   config = mkIf cfg.enable {
     user.home.packages = with pkgs;
-      [fzf just sqlite exercism ]
+      [fzf just sqlite exercism]
       ++ (
         if cfg.git
         then [git git-crypt gnupg tig]
@@ -93,12 +93,12 @@ in {
       )
       ++ (
         if cfg.cloudTools
-        then [ kubectl k9s gcloudWithPlugins codeship-jet ]
+        then [kubectl k9s gcloudWithPlugins codeship-jet]
         else []
       )
       ++ (
         if cfg.replicated
-        then [ replicated-cli kots krew kubecm k3d ]
+        then [replicated-cli kots krew kubecm k3d]
         else []
       )
       ++ (
@@ -118,22 +118,22 @@ in {
       )
       ++ (
         if cfg.virt
-        then [ virt-manager ]
+        then [virt-manager]
         else []
       )
       ++ (
         if cfg.linkers
-        then [ lld mold ]
+        then [lld mold]
         else []
       )
       ++ (
         if cfg.asciinema
-        then [ asciinema asciinema-agg ]
+        then [asciinema asciinema-agg]
         else []
       )
       ++ (
         if cfg.reversing
-        then [ gdb pwndbg ghidra-bin ]
+        then [gdb pwndbg ghidra-bin]
         else []
       );
     #user.extraGroups = user.extraGroups ++ (if cfg.virt then ["libvirtd"] else []);

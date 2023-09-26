@@ -101,7 +101,6 @@ in {
         };
       };
 
-
       lang = {
         web = {
           enable = true;
@@ -136,7 +135,7 @@ in {
       expose = {
         lastfm_username = {owner = config.users.users.patchouli.name;};
         lastfm_password = {owner = config.users.users.patchouli.name;};
-        librefm_username= {owner = config.users.users.patchouli.name;};
+        librefm_username = {owner = config.users.users.patchouli.name;};
         librefm_password = {owner = config.users.users.patchouli.name;};
         # example_key = {owner = config.users.users.patchouli.name;};
         # another_example = {};
@@ -151,7 +150,7 @@ in {
   # sops.secrets.example_key = {};
 
   user = {
-    extraGroups = ["wheel" "docker" config.users.groups.keys.name];
+    extraGroups = ["wheel" "docker" "plugdev" config.users.groups.keys.name];
     # Packages here don't have a programs.enable or a custom module.
     # In general, this is more of a "grab bag" of random utils etc.
     home.packages = with pkgs; [
@@ -230,7 +229,7 @@ in {
       #Games
 
       # Actual Games
-      (prismlauncher.override { jdks = [ adoptopenjdk-hotspot-bin-8 jdk17 jdk19 ]; })
+      (prismlauncher.override {jdks = [adoptopenjdk-hotspot-bin-8 jdk17 jdk19];})
       vintagestory
       xivlauncher
       ffxiv-wrapper
@@ -271,6 +270,10 @@ in {
       pkg-config
       gimp
       languagetool
+      dbeaver
+      pulseview
+      wineWowPackages.waylandFull
+      mame
     ];
   };
 
@@ -325,14 +328,12 @@ in {
       };
     };
 
-
     home.sessionVariables = {
       EDITOR = "vim";
       RUST_BACKTRACE = 1;
       QT_QPA_PLATFORM = "wayland";
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";
     };
-
 
     # DEV STUFF
     programs.vscode = {

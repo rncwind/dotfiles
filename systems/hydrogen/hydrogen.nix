@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   user = "user";
   hostname = "hydrogen";
 in {
@@ -11,7 +14,7 @@ in {
 
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
-    initrd.availableKernelModules = [ "xhci_pci" "usbhid" "usb_storage" ];
+    initrd.availableKernelModules = ["xhci_pci" "usbhid" "usb_storage"];
     loader = {
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
@@ -22,7 +25,7 @@ in {
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";
       fsType = "ext4";
-      options = [ "noatime" ];
+      options = ["noatime"];
     };
   };
 
@@ -30,12 +33,13 @@ in {
     hostName = hostname;
     wireless = {
       enable = true;
-      interfaces = [ "wlan0" ];
+      interfaces = ["wlan0"];
     };
     firewall = {
       enable = false;
       allowedTCPPorts = [
-        80 443 # NGINX http(s)
+        80
+        443 # NGINX http(s)
         53 # AdGuard DNS
         3000 # AdGuard WebUI
       ];
@@ -45,7 +49,7 @@ in {
     };
   };
 
-  environment.systemPackages = with pkgs; [ vim tailscale ];
+  environment.systemPackages = with pkgs; [vim tailscale];
 
   services.openssh.enable = true;
   services.tailscale.enable = true;
@@ -55,7 +59,7 @@ in {
     users."${user}" = {
       openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
       isNormalUser = true;
-      extraGroups = [ "wheel" ];
+      extraGroups = ["wheel"];
       passwordFile = config.sops.secrets.userPassword.path;
     };
     users.root.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
@@ -66,50 +70,12 @@ in {
       enable = true;
       expose = {
         ssid = {owner = "user";};
-        ssidPassword = { owner = "user"; };
-        userPassword = { owner = "user"; };
+        ssidPassword = {owner = "user";};
+        userPassword = {owner = "user";};
       };
       keyFilePath = "/home/user/.config/sops/age/keys.txt";
       secretsFile = ../../secrets/hosts/hydrogen/hydrogen.yaml;
     };
-  };
-
-  # services.nginx = {
-  #   enable = true;
-  #   recommendedProxySettings = true;
-  #   recommendedTlsSettings = true;
-
-  #   virtualHosts."hydrogen.local" = {
-  #     serverName = "hydrogen.local";
-  #     locations."/" = {
-  #       proxyPass = "http://0.0.0.0:9001";
-  #       proxyWebsockets = true;
-  #     };
-  #   };
-
-  #   virtualHosts."adguard.local" = {
-  #     serverName = "adguard.local";
-  #     locations."/" = {
-  #       proxyPass = "http://0.0.0.0:3000";
-  #       proxyWebsockets = true;
-  #     };
-  #   };
-
-  #   virtualHosts.${config.services.grafana.settings.server.domain} = {
-  #     serverName = config.services.grafana.settings.server.domain;
-  #     locations."/" = {
-  #       proxyPass = "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
-  #       proxyWebsockets = true;
-  #     };
-  #   };
-
-  #   virtualHosts."prometheus.local" = {
-  #     serverName = "prometheus.local";
-  #     locations."/" = {
-  #       proxyPass = "http://127.0.0.1:${toString config.services.prometheus.port}";
-  #       proxyWebsockets = true;
-  #     };
-  #   };
   };
 
   services.adguardhome = {
@@ -137,7 +103,7 @@ in {
     exporters = {
       node = {
         enable = true;
-        enabledCollectors = [ "systemd" ];
+        enabledCollectors = ["systemd"];
         port = 9001;
       };
     };
@@ -145,15 +111,19 @@ in {
     scrapeConfigs = [
       {
         job_name = "Hydrogen";
-        static_configs = [{
-          targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" ];
-        }];
+        static_configs = [
+          {
+            targets = ["127.0.0.1:${toString config.services.prometheus.exporters.node.port}"];
+          }
+        ];
       }
       {
         job_name = "whydoesntmycodework";
-        static_configs = [{
-          targets = [ "whydoesntmycode.work" ];
-        }];
+        static_configs = [
+          {
+            targets = ["whydoesntmycode.work"];
+          }
+        ];
       }
     ];
   };

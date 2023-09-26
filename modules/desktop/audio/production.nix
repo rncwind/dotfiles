@@ -5,8 +5,8 @@
   modules,
   ...
 }:
-with lib;
-  let cfg = config.modules.desktop.audio.production;
+with lib; let
+  cfg = config.modules.desktop.audio.production;
 in {
   options.modules.desktop.audio.production = {
     enable = mkOption {
@@ -27,7 +27,7 @@ in {
       []
       ++ (
         if cfg.reaper
-        then [ pkgs.reaper ]
+        then [pkgs.reaper]
         else []
       );
   };

@@ -53,8 +53,16 @@ in {
 
         loginShellInit = mkIf cfg.enableInitScripts ''
           if test -z $DISPLAY; and test (tty) = "/dev/tty1"
-          ${if config.modules.desktop.sway.enable then "exec sway" else ""}
-          ${if config.modules.desktop.hyprland.enable then "exec Hyprland" else ""}
+          ${
+            if config.modules.desktop.sway.enable
+            then "exec sway"
+            else ""
+          }
+          ${
+            if config.modules.desktop.hyprland.enable
+            then "exec Hyprland"
+            else ""
+          }
           end
         '';
 

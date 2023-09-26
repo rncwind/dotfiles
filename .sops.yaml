@@ -10,6 +10,8 @@
 keys:
   - &patchouli-key age1eq54pm4lz5jgu35rparx8vwxsdp0g42fs032jpv3t0w5h2v583vqp9g4eh
   - &hydrogen-key age1wuxxk56kamqtyzmqx0cc6k2qd92wt7y8vrevupf8hn0elrk2ypnql2ndm6
+  - &lithium-root-key age1stwgaakkpnxzqpycpw7vvfxm4gd6qngqntue39thmlnvp6x0jymq726awl
+  - &lithium-key age1upgmyck3x2gx3mp6pvwz9uqhutxdhzkmyt6cen9tr9hpn3jmcshq7w8lqx
 creation_rules:
   - path_regex: secrets/users/[^/]+\.yaml$
     key_groups:
@@ -22,3 +24,11 @@ creation_rules:
         age:
           - *patchouli-key
           - *hydrogen-key
+  - path_regex: secrets/hosts/lithium/[^/]+\.yaml$
+    key_groups:
+      - pgp:
+        age:
+          - *patchouli-key
+          - *lithium-root-key
+          - *lithium-key
+

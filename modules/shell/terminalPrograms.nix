@@ -45,7 +45,7 @@ in {
   config = mkIf cfg.enable {
     home-manager.users.${config.user.name} = {
       programs.bat.enable = cfg.enableBat;
-      programs.exa.enable = cfg.enableExa;
+      programs.eza.enable = cfg.enableExa;
 
       programs.zoxide = mkIf cfg.enableZoxide {
         enable = cfg.enableZoxide;
