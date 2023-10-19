@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   transmissionPort = 9091;
 in {
   services.transmission = {
@@ -38,7 +41,7 @@ in {
       ];
     };
   };
-  users.users.transmission.extraGroups = [ "pooluser" ];
+  users.users.transmission.extraGroups = ["pooluser"];
 
   services.nginx.virtualHosts."transmission.local" = {
     locations."/" = {

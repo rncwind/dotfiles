@@ -88,7 +88,7 @@
   users.groups = {
     pooluser = {
       name = "pooluser";
-      members = ["root" "nessie" "transmission" ];
+      members = ["root" "nessie" "transmission"];
     };
   };
 

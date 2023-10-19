@@ -13,7 +13,7 @@
     enable = true;
     recommendedGzipSettings = true;
     recommendedOptimisation = true;
-    recommendedProxySettings = true;
+    recommendedProxySettings = false;
     recommendedTlsSettings = true;
     virtualHosts."whydoesntmycode.work" = {
       enableACME = true;

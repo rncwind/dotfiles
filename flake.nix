@@ -136,7 +136,7 @@
           inherit inputs;
           nixpkgs-main = (import inputs.nixpkgs-main) {
             system = "x86_64-linux";
-            config = { allowUnfree = true; };
+            config = {allowUnfree = true;};
           };
         };
       };

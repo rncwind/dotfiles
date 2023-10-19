@@ -9,7 +9,7 @@
     ./gitea.nix
     ./nginx.nix
     ./foundry.nix
-    #./pleroma.nix
+    ./pleroma.nix
     #./headscale.nix
   ];
 
@@ -123,7 +123,7 @@
     users."user" = {
       openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
       isNormalUser = true;
-      extraGroups = ["wheel" "gitea" "foundry"];
+      extraGroups = ["wheel" "gitea" "foundry" "pleroma"];
       packages = [
         pkgs.ranger
       ];
@@ -134,11 +134,24 @@
       group = "gitea";
       passwordFile = config.sops.secrets."gitea/userPassword".path;
     };
+    users."pleroma" = {
+      isNormalUser = false;
+      isSystemUser = true;
+      group = "pleroma";
+      packages = [
+        pkgs.elixir
+        pkgs.file
+        pkgs.gcc-unwrapped
+        pkgs.hexdump
+        pkgs.exiftool
+      ];
+    };
     users.root = {
       openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
     };
     groups.gitea = {};
   };
+  users.groups.pleroma = {};
 
   services.quassel = {
     enable = true;

@@ -1,6 +1,11 @@
-{ config, lib, pkgs, inputs, nixpkgs-main, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  nixpkgs-main,
+  ...
+}: let
   prowlarrPort = 9696;
   sonarrPort = 8989;
   radarrPort = 7878;
@@ -29,13 +34,12 @@ in {
       ];
     };
   };
-  users.users.sabnzbd.extraGroups = [ "pooluser" ];
+  users.users.sabnzbd.extraGroups = ["pooluser"];
   services.nginx.virtualHosts."sabnzbd.local" = {
     locations."/" = {
       proxyPass = "http://0.0.0.0:${builtins.toString sabnzbdPort}";
     };
   };
-
 
   services.prowlarr = {
     enable = true;
@@ -58,7 +62,6 @@ in {
     };
   };
 
-
   services.sonarr = {
     enable = true;
     group = "pooluser";
@@ -80,5 +83,4 @@ in {
       proxyPass = "http://0.0.0.0:${builtins.toString bazarrPort}";
     };
   };
-
 }
