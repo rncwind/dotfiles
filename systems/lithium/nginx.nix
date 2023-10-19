@@ -4,26 +4,27 @@
   pkgs,
   ...
 }: {
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "admin@whydoesntmycode.work";
+  };
+
   services.nginx = {
     enable = true;
     recommendedGzipSettings = true;
     recommendedOptimisation = true;
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
-
-    # # Headscale
-    # virtualHosts."headscale.whydoesntmycode.work" = {
-    #   forceSSL = true;
-    #   enableACME = true;
-    #   locations."/" = {
-    #     proxyPass = "http://127.0.0.1:${toString config.services.headscale.port}";
-    #     proxyWebsockets = true;
-    #   };
-    # };
-  };
-
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "admin@whydoesntmycode.work";
+    virtualHosts."whydoesntmycode.work" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://0.0.0.0:3002";
+      };
+      locations."/foundry" = {
+        proxyPass = "http://0.0.0.0:3003";
+        proxyWebsockets = true;
+      };
+    };
   };
 }

@@ -52,6 +52,12 @@ in {
       description = "Enable GRPC tools like Evans or grpcurl";
     };
 
+    apis = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable API Tools. For now this is Curl and Insomnia";
+    };
+
     grabBag = mkOption {
       type = types.bool;
       default = false;
@@ -109,6 +115,11 @@ in {
       ++ (
         if cfg.grpc
         then [grpcurl evans]
+        else []
+      )
+      ++ (
+        if cfg.apis
+        then [curl insomnia]
         else []
       )
       ++ (

@@ -8,6 +8,8 @@
     ./hardware-configuration.nix
     ./gitea.nix
     ./nginx.nix
+    ./foundry.nix
+    #./pleroma.nix
     #./headscale.nix
   ];
 
@@ -50,7 +52,10 @@
 
   environment = {
     # just a couple of packages to make our lives easier
-    systemPackages = with pkgs; [vim];
+    systemPackages = with pkgs; [
+      vim
+      nodejs_18
+    ];
   };
   networking = {
     hostName = "lithium";
@@ -104,14 +109,6 @@
     age = {
       keyFile = "/root/.config/sops/age/keys.txt";
     };
-    # secrets."users/passwords/user" = {
-    #   neededForUsers = true;
-    #   #owner = config.users.users.user.name;
-    # };
-    # secrets."users/passwords/root" = {
-    #   neededForUsers = true;
-    #   #owner = config.users.users.root.name;
-    # };
     secrets."gitea/userPassword" = {
       neededForUsers = true;
       #owner = config.users.users.gitea.name;
@@ -126,7 +123,10 @@
     users."user" = {
       openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
       isNormalUser = true;
-      extraGroups = ["wheel" "gitea"];
+      extraGroups = ["wheel" "gitea" "foundry"];
+      packages = [
+        pkgs.ranger
+      ];
     };
     users."gitea" = {
       isNormalUser = false;
@@ -138,6 +138,15 @@
       openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
     };
     groups.gitea = {};
+  };
+
+  services.quassel = {
+    enable = true;
+    interfaces = ["100.123.52.150"];
+  };
+
+  environment.variables = {
+    EDITOR = "vim";
   };
 
   services.tailscale.enable = true;

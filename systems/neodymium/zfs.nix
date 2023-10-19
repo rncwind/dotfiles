@@ -4,5 +4,10 @@
   boot.zfs = {
     extraPools = ["nas-pool"];
   };
-  services.zfs.autoScrub.enable = true;
+  networking.hostId = "eba5a815";
+  #services.zfs.autoScrub.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    zfs
+  ];
 }

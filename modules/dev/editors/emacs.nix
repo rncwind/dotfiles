@@ -42,13 +42,13 @@ in {
     home-manager.users.${config.user.name} = {
       programs.emacs = {
         enable = cfg.enable;
-        package = pkgs.emacs-pgtk;
+        package = pkgs.emacs29-pgtk;
         extraPackages = epkgs: [epkgs.vterm];
       };
 
       services.emacs = mkIf cfg.daemon {
         enable = cfg.daemon;
-        package = pkgs.emacs-pgtk;
+        package = pkgs.emacs29-pgtk;
       };
     };
   };

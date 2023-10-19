@@ -4,12 +4,17 @@
 {
   config,
   pkgs,
+  inputs,
+  nixpkgs-main,
   ...
 }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./zfs.nix
+    ./usenet.nix
+    ./torrent.nix
+    ./jellyfin.nix
   ];
   networking = {
     hostName = "neodymium"; # Define your hostname.
@@ -18,12 +23,6 @@
     # Configure network proxy if necessary
     # networking.proxy.default = "http://user:password@proxy:port/";
     # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-    # Enable networking
-    networkmanager.enable = true;
-
-    # Set hostID. Needed for ZFS.
-    hostId = "eba5a815";
   };
 
   boot = {
@@ -33,6 +32,7 @@
       grub.device = "/dev/disk/by-id/ata-CT1000BX500SSD1_2247E688AF9C";
     };
     supportedFilesystems = ["zfs"];
+    kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -71,11 +71,24 @@
       description = "nessie";
       extraGroups = ["networkmanager" "wheel"];
       packages = with pkgs; [];
-      openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINj3LyG4dzz76CJaSi+ukitHDADqAyIgttbkwD7S39Dv emilia@tzeentch"
+      ];
     };
 
     root = {
-      openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINj3LyG4dzz76CJaSi+ukitHDADqAyIgttbkwD7S39Dv emilia@tzeentch"
+      ];
+    };
+  };
+
+  users.groups = {
+    pooluser = {
+      name = "pooluser";
+      members = ["root" "nessie" "transmission" ];
     };
   };
 
@@ -84,7 +97,11 @@
   environment.systemPackages = with pkgs; [
     vim
     wget
-    zfs
+    ranger
+    lsof
+    fd
+    ripgrep
+    fzf
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -100,6 +117,15 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
+    ports = [22 13120];
+  };
+
+  services.nginx = {
+    enable = true;
+    recommendedGzipSettings = true;
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+    recommendedTlsSettings = true;
   };
 
   # Open ports in the firewall.
@@ -109,6 +135,42 @@
 
   networking.firewall = {
     trustedInterfaces = ["tailscale0"];
+  };
+  networking.firewall.enable = false;
+
+  services.samba = {
+    enable = true;
+    openFirewall = true;
+    extraConfig = ''
+      workgroup = WORKGROUP
+      server string = neodymium_smb
+      netbios name = neodymium_smb
+      security = user
+      hosts allow = 192.168.1. 127.0.0.1 localhost
+      guest account = nobody
+      map to guest bad user
+    '';
+
+    shares = {
+      series = {
+        path = "/mnt/nas-pool/media/complete/Series";
+        browsable = "yes";
+        "read only" = "yes";
+        "guest ok" = "yes";
+      };
+      movies = {
+        path = "/mnt/nas-pool/media/complete/Movies";
+        browsable = "yes";
+        "read only" = "yes";
+        "guest ok" = "yes";
+      };
+      anime = {
+        path = "/mnt/nas-pool/media/rtorrent/anime";
+        browsable = "yes";
+        "read only" = "yes";
+        "guest ok" = "yes";
+      };
+    };
   };
 
   services.tailscale.enable = true;

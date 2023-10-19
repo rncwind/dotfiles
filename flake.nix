@@ -2,13 +2,13 @@
   description = "This is not a place of honor";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-main.url = "github:nixos/nixpkgs";
 
     # --- Overlay flakes ---
-    emacs-overlay = {
-      # Pinned to version as of 2023-08-29
-      url = "github:nix-community/emacs-overlay/32cf0314159f4b2eb85970483124e7df730e3413";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # emacs-overlay = {
+    #   # Pinned to version as of 2023-08-29
+    #   url = "github:nix-community/emacs-overlay/32cf0314159f4b2eb85970483124e7df730e3413";
+    # };
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -19,18 +19,15 @@
     home-manager = {
       # Home-manager exposes more config options for packages.
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     sops-nix = {
       # Secrets OPerationS. Manages my secrets.
       url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     deploy-rs = {
       url = "github:serokell/deploy-rs";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     hyprland.url = "github:hyprwm/Hyprland";
@@ -50,7 +47,7 @@
           # Add overlays.
           ({pkgs, ...}: {
             nixpkgs.overlays = [
-              inputs.emacs-overlay.overlays.emacs
+              #inputs.emacs-overlay.overlays.emacs
               inputs.rust-overlay.overlays.default
               # Overlay our own packages into nixpkgs.
               (import ./pkgs)
@@ -95,7 +92,7 @@
           # Add overlays.
           ({pkgs, ...}: {
             nixpkgs.overlays = [
-              inputs.emacs-overlay.overlays.emacs
+              #inputs.emacs-overlay.overlays.emacs
               inputs.rust-overlay.overlays.default
               # Overlay our own packages into nixpkgs.
               (import ./pkgs)
@@ -137,6 +134,10 @@
         ];
         specialArgs = {
           inherit inputs;
+          nixpkgs-main = (import inputs.nixpkgs-main) {
+            system = "x86_64-linux";
+            config = { allowUnfree = true; };
+          };
         };
       };
     };

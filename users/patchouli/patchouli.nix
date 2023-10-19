@@ -26,10 +26,10 @@
   };
 in {
   modules = {
-    # core.coretools = {
-    #   enable = true;
-    #   archives = true;
-    # };
+    core.coretools = {
+      enable = true;
+      archives = true;
+    };
 
     shell = {
       fish.enable = true;
@@ -86,6 +86,7 @@ in {
         tldr = true;
         shellDev = true;
         grpc = true;
+        apis = true;
         grabBag = true;
         virt = true;
         linkers = false;
@@ -274,6 +275,9 @@ in {
       pulseview
       wineWowPackages.waylandFull
       mame
+      transmission-remote-gtk
+      termdown
+      quasselClient
     ];
   };
 
