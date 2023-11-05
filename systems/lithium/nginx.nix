@@ -19,11 +19,10 @@
       enableACME = true;
       forceSSL = true;
       locations."/" = {
-        proxyPass = "http://0.0.0.0:3002";
+        proxyPass = "http://unix:/srv/blog/socket";
       };
-      locations."/foundry" = {
-        proxyPass = "http://0.0.0.0:3003";
-        proxyWebsockets = true;
+      locations."/shared" = {
+        root = "/var/www/";
       };
     };
   };

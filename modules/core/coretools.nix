@@ -24,7 +24,7 @@ in {
 
   config = mkIf cfg.enable {
     user.home.packages = with pkgs;
-      [sops age which coreutils-full sudo]
+      [sops age which coreutils-full sudo htop curl ranger]
       ++ (
         if cfg.archives
         then [zip unzip unrar]

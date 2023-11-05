@@ -122,7 +122,7 @@
   services.printing.browsing = true;
   services.printing.allowFrom = ["all"];
 
-  services.mullvad-vpn.enable = true;
+  #services.mullvad-vpn.enable = true;
 
   # Use pipewire because it's best.
   services.pipewire = {

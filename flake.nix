@@ -4,33 +4,27 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-main.url = "github:nixos/nixpkgs";
 
-    # --- Overlay flakes ---
-    # emacs-overlay = {
-    #   # Pinned to version as of 2023-08-29
-    #   url = "github:nix-community/emacs-overlay/32cf0314159f4b2eb85970483124e7df730e3413";
-    # };
-
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # --- Flake Modules ---
-    home-manager = {
-      # Home-manager exposes more config options for packages.
-      url = "github:nix-community/home-manager";
-    };
+    # Home-manager exposes more config options for packages.
+    home-manager.url = "github:nix-community/home-manager";
 
-    sops-nix = {
-      # Secrets OPerationS. Manages my secrets.
-      url = "github:Mic92/sops-nix";
-    };
+    # Secrets OPerationS. Manages my secrets.
+    sops-nix.url = "github:Mic92/sops-nix";
 
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
-    };
+    deploy-rs.url = "github:serokell/deploy-rs";
 
     hyprland.url = "github:hyprwm/Hyprland";
+
+    simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+
+    vs-overlay.url = "github:sshiroi/vs-overlay";
+
+    # Our own stuff!
+    whydoesntmycodework-blog.url = "github:rncwind/whydoesntmycodework";
   };
   outputs = inputs @ {self, ...}: let
     lib = inputs.nixpkgs.lib;
@@ -47,10 +41,10 @@
           # Add overlays.
           ({pkgs, ...}: {
             nixpkgs.overlays = [
-              #inputs.emacs-overlay.overlays.emacs
-              inputs.rust-overlay.overlays.default
-              # Overlay our own packages into nixpkgs.
               (import ./pkgs)
+              inputs.rust-overlay.overlays.default
+              inputs.vs-overlay.overlay
+              # Overlay our own packages into nixpkgs.
             ];
           })
 
@@ -116,6 +110,7 @@
         modules = [
           inputs.sops-nix.nixosModules.sops
           inputs.home-manager.nixosModules.home-manager
+          inputs.simple-nixos-mailserver.nixosModule
           ./systems/lithium/lithium.nix
           ./modules
         ];

@@ -1,8 +1,10 @@
 {
   config,
   pkgs,
+  inputs,
   ...
-}: {
+}:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -10,6 +12,9 @@
     ./nginx.nix
     ./foundry.nix
     ./pleroma.nix
+    ./mailserver.nix
+    ./deluge.nix
+    ./blog.nix
     #./headscale.nix
   ];
 
@@ -55,6 +60,7 @@
     systemPackages = with pkgs; [
       vim
       nodejs_18
+      inputs.whydoesntmycodework-blog.packages.${pkgs.system}.default
     ];
   };
   networking = {
@@ -94,7 +100,7 @@
     # Always trust the tailnet.
     firewall = {
       trustedInterfaces = ["tailscale0"];
-      allowedTCPPorts = [22 443]; # Let us SSH from the normal net.
+      allowedTCPPorts = [22 443];
       allowedUDPPorts = [config.services.tailscale.port 3478];
     };
   };
@@ -116,6 +122,15 @@
     secrets."gitea/postgresDBPass" = {
       owner = config.users.users.gitea.name;
     };
+    secrets."mailserver/passwords/rncwnd" = {
+      mode = "0444";
+    };
+    secrets."mailserver/passwords/emilia" = {
+      mode = "0444";
+    };
+    secrets."deluge/auth" = {
+      owner = config.users.users.deluge.name;
+    };
   };
 
   users = {
@@ -123,7 +138,7 @@
     users."user" = {
       openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMaht3shCbIVA1wzW4a9yZfd5JWHCKN3/V/dpXAFf2Eu patchouli@SDM"];
       isNormalUser = true;
-      extraGroups = ["wheel" "gitea" "foundry" "pleroma"];
+      extraGroups = ["wheel" "gitea" "foundry" "pleroma" "deluge" "blog"];
       packages = [
         pkgs.ranger
       ];

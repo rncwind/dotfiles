@@ -8,6 +8,7 @@
     ./fontconfig.nix
     ./i18n.nix
     ./media.nix
+    ./encoding.nix
     ./audio
   ];
 }

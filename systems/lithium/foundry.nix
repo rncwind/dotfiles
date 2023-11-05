@@ -16,6 +16,15 @@
     ];
   };
 
+  services.nginx.virtualHosts."foundry.whydoesntmycode.work" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+        proxyPass = "http://0.0.0.0:3003";
+        proxyWebsockets = true;
+    };
+  };
+
   systemd.services.foundryvtt = {
     wantedBy = ["multi-user.target"];
     after = ["network.target"];

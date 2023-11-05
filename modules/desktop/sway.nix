@@ -72,6 +72,7 @@ in {
           bindsym Shift+Print exec 'grim -g "$(slurp)" - | oxipng - --stdout -q -o5 --timeout 3 > /tmp/screenshot.png'
           bindsym Mod1+Shift+0 move container to workspace number 10
           bindsym Mod1+Shift+Control+p exec "systemctl poweroff"
+          bindsym Mod1+Shift+Control+e exec "emacsclient --eval \"(emacs-everywhere)\""
           exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
           exec hash dbus-update-activation-environment 2>/dev/null && \
             dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK

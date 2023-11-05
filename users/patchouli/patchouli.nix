@@ -11,6 +11,10 @@
     export DXVK_FRAME_RATE=74
     exec gamemoderun XIVLauncher.Core "$@"
   '';
+  tdwrapper = pkgs.writeScriptBin "countdown" ''
+    #!${pkgs.bash}/bin/bash
+    termdown $1 -s && play ~/notif.wav
+  '';
   configure-gtk = pkgs.writeTextFile {
     name = "configure-gtk";
     destination = "/bin/configure-gtk";
@@ -64,6 +68,10 @@ in {
       media = {
         enable = true;
         rss = true;
+      };
+      encoding = {
+        enable = true;
+        vapourSynth = true;
       };
       fontconfig = {
         enable = true;
@@ -277,7 +285,10 @@ in {
       mame
       transmission-remote-gtk
       termdown
+      tdwrapper
+      sox
       quasselClient
+      mktorrent
     ];
   };
 
