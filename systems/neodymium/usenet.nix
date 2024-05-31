@@ -27,7 +27,7 @@ in {
       PrivateDevices = lib.mkForce false;
       PrivateMounts = lib.mkForce false;
       PrivateUsers = lib.mkForce false;
-      UMask = 011;
+      UMask = 001;
       BindPaths = [
         "/mnt/nas-pool/media/rtorrent"
         "/mnt/nas-pool/media/"

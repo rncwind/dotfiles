@@ -59,8 +59,7 @@ in {
           env = {"TERM" = "xterm-256color";};
 
           font = {
-            family.normal = cfg.font;
-            family.bold = cfg.font;
+            normal.family = "hasklig";
             size = cfg.fontSize;
           };
 

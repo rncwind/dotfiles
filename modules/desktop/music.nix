@@ -35,15 +35,21 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # FIXME: We want evaltime secrets before we can do this properly.
-    # services.mpdscribble = mkIf cfg.enableMpdScribble {
-    #   enable = cfg.enableMpdScribble;
-    #   endpoints = {
-    #     "last.fm" = {
-    #       passwordFile = config.sops.secrets.lastfm_password.path;
-    #     };
-    #   };
-    # };
+    services.mpdscribble = mkIf cfg.enableMpdScribble {
+      enable = cfg.enableMpdScribble;
+      verbose = 1;
+      endpoints = {
+        "libre.fm" = {
+          username = "rncwnd";
+          passwordFile = "/run/secrets/librefm_password";
+        };
+
+        "listenbrainz" = {
+          username = "rncwnd";
+          passwordFile = "/run/secrets/listenbrainz_password";
+        };
+      };
+    };
 
     home-manager.users.${config.user.name} = {
       programs.ncmpcpp = mkIf cfg.enableNcmpcpp {

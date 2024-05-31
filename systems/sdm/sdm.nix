@@ -33,6 +33,7 @@
         enable = true;
         device = "nodev";
         efiSupport = true;
+        configurationLimit = 30;
       };
       efi.canTouchEfiVariables = true;
     };
@@ -57,6 +58,8 @@
     supportedFilesystems = ["ntfs"];
     binfmt.emulatedSystems = ["aarch64-linux"];
   };
+
+  hardware.rtl-sdr.enable = true;
 
   # Use tmpfs
 
@@ -100,6 +103,7 @@
     via
     antimicroX
     usbutils
+    sdrpp
     #deploy-rs
   ];
 
@@ -122,7 +126,7 @@
   services.printing.browsing = true;
   services.printing.allowFrom = ["all"];
 
-  #services.mullvad-vpn.enable = true;
+  services.mullvad-vpn.enable = true;
 
   # Use pipewire because it's best.
   services.pipewire = {
@@ -185,12 +189,39 @@
     source = "${pkgs.gamescope}/bin/gamescope";
   };
 
-  security.pki.certificateFiles = ["/home/patchouli/programming/local_cert/"];
-
   networking = {
     nameservers = ["192.168.1.2"];
     dhcpcd.extraConfig = "nohook resolv.conf";
   };
+  programs.nix-ld = {
+    enable = true;
+
+    libraries = [
+      pkgs.acl
+      pkgs.attr
+      pkgs.bzip2
+      pkgs.curl
+      pkgs.glib
+      pkgs.libglvnd
+      pkgs.libmysqlclient.dev
+      pkgs.libsodium
+      pkgs.libssh
+      pkgs.libxml2
+      pkgs.openssl
+      pkgs.stdenv.cc.cc
+      pkgs.systemd
+      pkgs.util-linux
+      pkgs.xz
+      pkgs.zlib
+      pkgs.zstd
+    ];
+  };
+  services.postgresql = {
+    enable = true;
+    port = 15432;
+  };
+
+  services.flatpak.enable = true;
 
   # I wnat to be able to edit hosts in a way that doesn't
   # require me to tell the world about my infra.

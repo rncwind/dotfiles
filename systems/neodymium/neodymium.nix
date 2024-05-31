@@ -15,14 +15,11 @@
     ./usenet.nix
     ./torrent.nix
     ./jellyfin.nix
+    ./samba.nix
+    ./audiobookshelf.nix
   ];
   networking = {
     hostName = "neodymium"; # Define your hostname.
-    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-    # Configure network proxy if necessary
-    # networking.proxy.default = "http://user:password@proxy:port/";
-    # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   };
 
   boot = {
@@ -88,7 +85,7 @@
   users.groups = {
     pooluser = {
       name = "pooluser";
-      members = ["root" "nessie" "transmission" "flood"];
+      members = ["root" "nessie" "transmission" "flood" "audiobookshelf"];
     };
   };
 
@@ -102,17 +99,9 @@
     fd
     ripgrep
     fzf
+    gdu
+    mediainfo
   ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   services.openssh = {
@@ -128,52 +117,15 @@
     recommendedTlsSettings = true;
   };
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-
   networking.firewall = {
+    # We trust the tailnet.
     trustedInterfaces = ["tailscale0"];
   };
   networking.firewall.enable = false;
-
-  services.samba = {
+  services.tailscale = {
     enable = true;
-    openFirewall = true;
-    extraConfig = ''
-      workgroup = WORKGROUP
-      server string = neodymium_smb
-      netbios name = neodymium_smb
-      security = user
-      hosts allow = 192.168.1. 127.0.0.1 localhost
-      guest account = nobody
-      map to guest bad user
-    '';
-
-    shares = {
-      series = {
-        path = "/mnt/nas-pool/media/complete/Series";
-        browsable = "yes";
-        "read only" = "yes";
-        "guest ok" = "yes";
-      };
-      movies = {
-        path = "/mnt/nas-pool/media/complete/Movies";
-        browsable = "yes";
-        "read only" = "yes";
-        "guest ok" = "yes";
-      };
-      anime = {
-        path = "/mnt/nas-pool/media/rtorrent/anime";
-        browsable = "yes";
-        "read only" = "yes";
-        "guest ok" = "yes";
-      };
-    };
+    useRoutingFeatures = "both";
   };
-
-  services.tailscale.enable = true;
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

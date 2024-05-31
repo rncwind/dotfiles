@@ -24,7 +24,7 @@ in {
 
   config = mkIf cfg.enable {
     user.home.packages = with pkgs;
-      [sops age which coreutils-full sudo htop curl ranger]
+      [sops age which coreutils-full sudo htop curl ranger wget gnupg pinentry]
       ++ (
         if cfg.archives
         then [zip unzip unrar]

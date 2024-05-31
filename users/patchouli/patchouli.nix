@@ -15,19 +15,19 @@
     #!${pkgs.bash}/bin/bash
     termdown $1 -s && play ~/notif.wav
   '';
-  configure-gtk = pkgs.writeTextFile {
-    name = "configure-gtk";
-    destination = "/bin/configure-gtk";
-    executable = true;
-    text = let
-      schema = pkgs.gsettings-desktop-schemas;
-      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-    in ''
-      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-      gnome_schema=org.gnome.desktop.interface
-      gsettings set $gnome_schema gtk-theme 'Dracula'
-    '';
-  };
+  # configure-gtk = pkgs.writeTextFile {
+  #   name = "configure-gtk";
+  #   destination = "/bin/configure-gtk";
+  #   executable = true;
+  #   text = let
+  #     schema = pkgs.gsettings-desktop-schemas;
+  #     datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+  #   in ''
+  #     export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+  #     gnome_schema=org.gnome.desktop.interface
+  #     gsettings set $gnome_schema gtk-theme 'Dracula'
+  #   '';
+  # };
 in {
   modules = {
     core.coretools = {
@@ -70,8 +70,8 @@ in {
         rss = true;
       };
       encoding = {
-        enable = true;
-        vapourSynth = true;
+        enable = false;
+        #vapourSynth = true;
       };
       fontconfig = {
         enable = true;
@@ -83,6 +83,13 @@ in {
       i18n = {
         enable = true;
         useMozc = true;
+      };
+      threed = {
+        enable = true;
+        printers = true;
+        eda = true;
+        openscad = true;
+        freecad = true;
       };
     };
 
@@ -134,6 +141,17 @@ in {
           pyright = true;
           black = true;
           isort = true;
+          lsp = true;
+        };
+        elixir = {
+          enable = true;
+        };
+        db = {
+          enable = true;
+        };
+        markups = {
+          enable = true;
+          yaml = true;
         };
       };
     };
@@ -146,6 +164,7 @@ in {
         lastfm_password = {owner = config.users.users.patchouli.name;};
         librefm_username = {owner = config.users.users.patchouli.name;};
         librefm_password = {owner = config.users.users.patchouli.name;};
+        listenbrainz_password = {owner = config.users.users.patchouli.name;};
         # example_key = {owner = config.users.users.patchouli.name;};
         # another_example = {};
       };
@@ -159,7 +178,7 @@ in {
   # sops.secrets.example_key = {};
 
   user = {
-    extraGroups = ["wheel" "docker" "plugdev" config.users.groups.keys.name];
+    extraGroups = ["wheel" "docker" "plugdev" "gamemode" config.users.groups.keys.name];
     # Packages here don't have a programs.enable or a custom module.
     # In general, this is more of a "grab bag" of random utils etc.
     home.packages = with pkgs; [
@@ -238,16 +257,12 @@ in {
       #Games
 
       # Actual Games
-      (prismlauncher.override {jdks = [adoptopenjdk-hotspot-bin-8 jdk17 jdk19];})
+      (prismlauncher.override {jdks = [adoptopenjdk-hotspot-bin-8 jdk17 jdk22];})
       vintagestory
       xivlauncher
       ffxiv-wrapper
 
-      # Stuff for games
-      jdk19_headless
-      ncurses
-      steamtinkerlaunch
-      gamescope
+      # Stuff for games jdk19_headless ncurses steamtinkerlaunch gamescope-wsi
       #mangohud
       gamemode
       openal
@@ -259,7 +274,7 @@ in {
       nicotine-plus
 
       # Configure GTK
-      configure-gtk
+      #configure-gtk
 
       exactaudiocopy
       libsForQt5.qt5.qtwayland
@@ -279,9 +294,8 @@ in {
       pkg-config
       gimp
       languagetool
-      dbeaver
       pulseview
-      wineWowPackages.waylandFull
+      wineWowPackages.stagingFull
       mame
       transmission-remote-gtk
       termdown
@@ -289,12 +303,35 @@ in {
       sox
       quasselClient
       mktorrent
+      monero-gui
+      pkgs.nodePackages_latest.prettier
+      rabbitmqadmin
+      steamcmd
+      steam-tui
     ];
   };
 
   # This is all temp stuff so i can migrate.
   home-manager.users.${config.user.name} = {
     fonts.fontconfig.enable = true;
+
+    dconf.settings = {
+      "org/gnome/desktop/interface" = {color-scheme = "prefer-dark";};
+    };
+
+    gtk = {
+      enable = true;
+      theme = {
+        name = "Adwaita-dark";
+        package = pkgs.gnome.gnome-themes-extra;
+      };
+    };
+
+    qt = {
+      enable = true;
+      # platformTheme = "qtct";
+      # style.name = "adwaita-dark";
+    };
 
     # Systemd units
     systemd.user.services.sway-session = {
@@ -347,6 +384,7 @@ in {
       EDITOR = "vim";
       RUST_BACKTRACE = 1;
       QT_QPA_PLATFORM = "wayland";
+      QT_QPA_PLATFORMTHEME = "qt5ct";
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "~/.steam/root/compatibilitytools.d";
     };
 

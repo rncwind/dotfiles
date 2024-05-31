@@ -7,7 +7,6 @@
   transmissionPort = 9091;
   floodPort = 9092;
 in {
-
   services.transmission = {
     package = pkgs.transmission_4;
     enable = true;
@@ -51,12 +50,12 @@ in {
     };
   };
 
-  users.users."flood" ={
+  users.users."flood" = {
     isSystemUser = true;
     home = "/var/lib/flood";
     createHome = true;
     group = "flood";
-    extraGroups = [ "pooluser" ];
+    extraGroups = ["pooluser"];
     packages = [
       pkgs.flood
     ];
@@ -68,7 +67,7 @@ in {
 
   systemd.services.flood = {
     description = "Flood";
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
     after = ["network.target"];
     serviceConfig = {
       Type = "simple";

@@ -16,14 +16,14 @@
     '';
   };
 
-  services.gitea = {
+  services.forgejo = {
     enable = true;
-    appName = "Why Doesn't My Code Work? Literal Edition";
     database = {
       type = "postgres";
       passwordFile = config.sops.secrets."gitea/postgresDBPass".path;
     };
     settings = {
+      DEFAULT.APP_NAME = "Why Doesn't My Code Work? Literal Edition";
       server = {
         DOMAIN = "git.whydoesntmycode.work";
         ROOT_URL = "https://git.whydoesntmycode.work/";
@@ -39,9 +39,27 @@
       repository = {
         PREFERRED_LICENSES = lib.strings.concatStringsSep "," ["MPL-2.0" "AGPL-3.0-or-later" "GPL-3.0-or-later" "LGPL-3.0-or-later" "CC0-1.0" "Unlicense"];
       };
-      ui = {
-        THEMES = lib.strings.concatStringsSep "," ["auto" "gitea" "arc-green" "dark-arc" "tangerine-dream" "github-dark" "catppuccin-macchiato-lavender" "catppuccin-frappe-lavender"];
-      };
+    };
+  };
+
+  services.dokuwiki.sites."dokuwiki.localhost" = {
+    enable = true;
+    settings = {
+      title = "Whydoesntmycodework? DokuWiki Service";
+      useacl = true;
+      superuser = "admin";
+      userewrite = true;
+      baseurl = "https://wiki.whydoesntmycode.work";
+      disableactions = ["register"];
+      autopasswd = false;
+    };
+  };
+
+  services.nginx.virtualHosts."wiki.whydoesntmycode.work" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://dokuwiki.localhost";
     };
   };
 

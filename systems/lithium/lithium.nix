@@ -3,8 +3,7 @@
   pkgs,
   inputs,
   ...
-}:
-{
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -61,6 +60,9 @@
       vim
       nodejs_18
       inputs.whydoesntmycodework-blog.packages.${pkgs.system}.default
+      minecraft-server-hibernation
+      jdk17
+      unzip
     ];
   };
   networking = {
@@ -120,7 +122,7 @@
       #owner = config.users.users.gitea.name;
     };
     secrets."gitea/postgresDBPass" = {
-      owner = config.users.users.gitea.name;
+      owner = config.users.users.forgejo.name;
     };
     secrets."mailserver/passwords/rncwnd" = {
       mode = "0444";
@@ -141,6 +143,7 @@
       extraGroups = ["wheel" "gitea" "foundry" "pleroma" "deluge" "blog"];
       packages = [
         pkgs.ranger
+        pkgs.jdk17
       ];
     };
     users."gitea" = {
@@ -148,6 +151,11 @@
       isSystemUser = true;
       group = "gitea";
       passwordFile = config.sops.secrets."gitea/userPassword".path;
+    };
+    users.forgejo = {
+      isNormalUser = false;
+      isSystemUser = true;
+      extraGroups = ["gitea"];
     };
     users."pleroma" = {
       isNormalUser = false;
@@ -175,6 +183,24 @@
 
   environment.variables = {
     EDITOR = "vim";
+  };
+
+  systemd.services.gtnh = {
+    wantedBy = ["multi-user.target"];
+    after = ["network.target"];
+    description = "gtnh";
+    path = [pkgs.jdk17 pkgs.minecraft-server-hibernation];
+    serviceConfig = {
+      Type = "simple";
+      User = "user";
+      WorkingDirectory = "/home/user/gtnh_240";
+      Restart = "always";
+      RestartMaxDelaySec = 600;
+      RestartSteps = 10;
+      ExecStart = ''
+        ${pkgs.minecraft-server-hibernation}/bin/msh
+      '';
+    };
   };
 
   services.tailscale.enable = true;

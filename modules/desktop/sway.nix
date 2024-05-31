@@ -67,10 +67,8 @@ in {
           workspace 1 output DP-1
           smart_gaps on
           smart_borders on
-          bindsym Mod1+0 workspace number 10
           bindsym Print exec 'grim -g "$(slurp)" - | oxipng - --stdout -q -o5 --timeout 3 | wl-copy -t image/png'
           bindsym Shift+Print exec 'grim -g "$(slurp)" - | oxipng - --stdout -q -o5 --timeout 3 > /tmp/screenshot.png'
-          bindsym Mod1+Shift+0 move container to workspace number 10
           bindsym Mod1+Shift+Control+p exec "systemctl poweroff"
           bindsym Mod1+Shift+Control+e exec "emacsclient --eval \"(emacs-everywhere)\""
           exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
@@ -86,6 +84,7 @@ in {
           GTK_IM_MODULE=fcitx
           QT_IM_MODULE=fcitx
           XMODIFIERS=@im=fcitx
+          export _JAVA_AWT_WM_NONREPARENTING=1
         '';
 
         config = {
@@ -94,8 +93,11 @@ in {
           input."*" = {
             xkb_layout = cfg.xkb_layout;
             xkb_options = cfg.xkb_options;
+          };
+          # Disable accel for the trackball.
+          input."1133:16495:Logitech_MX_Ergo" = {
             accel_profile = "flat";
-            pointer_accel = "0.3";
+            pointer_accel = "0.0";
           };
         };
       };

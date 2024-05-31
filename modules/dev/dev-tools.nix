@@ -8,6 +8,7 @@
 with lib; let
   cfg = config.modules.dev.dev-tools;
   gcloudWithPlugins = pkgs.google-cloud-sdk.withExtraComponents [pkgs.google-cloud-sdk.components.gke-gcloud-auth-plugin];
+  #cutterWithPlugins = pkgs.cutter.withPlugins (ps: with ps; [pkgs.cutterPlugins.rz-ghidra pkgs.cutterPlugins.sigdb]);
 in {
   options.modules.dev.dev-tools = {
     enable = mkOption {

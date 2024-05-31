@@ -25,7 +25,7 @@ in {
 
   config = mkIf cfg.enable {
     user.home.packages = with pkgs;
-      [mpv zathura]
+      [mpv zathura okular]
       ++ (
         if cfg.rss
         then [fluent-reader]

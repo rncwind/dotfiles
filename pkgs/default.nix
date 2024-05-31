@@ -3,4 +3,5 @@ final: prev: {
   rsgain = prev.callPackage ./rsgain {};
   kots = prev.callPackage ./kots {};
   replicated-cli = prev.callPackage ./replicated-cli {};
+  rabbitmqadmin = prev.callPackage ./rabbitmqadmin {};
 }

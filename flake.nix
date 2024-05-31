@@ -2,7 +2,6 @@
   description = "This is not a place of honor";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-main.url = "github:nixos/nixpkgs";
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -14,14 +13,14 @@
 
     # Secrets OPerationS. Manages my secrets.
     sops-nix.url = "github:Mic92/sops-nix";
-
     deploy-rs.url = "github:serokell/deploy-rs";
-
-    hyprland.url = "github:hyprwm/Hyprland";
-
+    #hyprland.url = "github:hyprwm/Hyprland";
     simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
-
     vs-overlay.url = "github:sshiroi/vs-overlay";
+    foundryvtt = {
+      url = "github:reckenrode/nix-foundryvtt";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Our own stuff!
     whydoesntmycodework-blog.url = "github:rncwind/whydoesntmycodework";
@@ -42,6 +41,7 @@
           ({pkgs, ...}: {
             nixpkgs.overlays = [
               (import ./pkgs)
+              #(import ./overlays.nix)
               inputs.rust-overlay.overlays.default
               inputs.vs-overlay.overlay
               # Overlay our own packages into nixpkgs.
@@ -59,49 +59,49 @@
       };
 
       # Pi
-      hydrogen = lib.nixosSystem {
-        system = "aarch64-linux";
+      # hydrogen = lib.nixosSystem {
+      #   system = "aarch64-linux";
 
-        modules = [
-          inputs.sops-nix.nixosModules.sops
-          inputs.home-manager.nixosModules.home-manager
-          ./systems/hydrogen/hydrogen.nix
-          ./modules
-        ];
-        specialArgs = {
-          inherit inputs;
-        };
-      };
+      #   modules = [
+      #     inputs.sops-nix.nixosModules.sops
+      #     inputs.home-manager.nixosModules.home-manager
+      #     ./systems/hydrogen/hydrogen.nix
+      #     ./modules
+      #   ];
+      #   specialArgs = {
+      #     inherit inputs;
+      #   };
+      # };
 
       # Dell Laptop
-      helium = lib.nixosSystem {
-        system = "x86_64-linux";
+      # helium = lib.nixosSystem {
+      #   system = "x86_64-linux";
 
-        modules = [
-          # Flake inputs
-          inputs.home-manager.nixosModules.home-manager
-          inputs.sops-nix.nixosModules.sops
-          inputs.hyprland.nixosModules.default
-          {programs.hyprland.package = null;}
-          # Add overlays.
-          ({pkgs, ...}: {
-            nixpkgs.overlays = [
-              #inputs.emacs-overlay.overlays.emacs
-              inputs.rust-overlay.overlays.default
-              # Overlay our own packages into nixpkgs.
-              (import ./pkgs)
-            ];
-          })
+      #   modules = [
+      #     # Flake inputs
+      #     inputs.home-manager.nixosModules.home-manager
+      #     inputs.sops-nix.nixosModules.sops
+      #     inputs.hyprland.nixosModules.default
+      #     {programs.hyprland.package = null;}
+      #     # Add overlays.
+      #     ({pkgs, ...}: {
+      #       nixpkgs.overlays = [
+      #         #inputs.emacs-overlay.overlays.emacs
+      #         inputs.rust-overlay.overlays.default
+      #         # Overlay our own packages into nixpkgs.
+      #         (import ./pkgs)
+      #       ];
+      #     })
 
-          # My stuff.
-          ./systems/helium/helium.nix
-          ./modules
-          ./users/satori/satori.nix
-        ];
-        specialArgs = {
-          inherit inputs;
-        };
-      };
+      #     # My stuff.
+      #     ./systems/helium/helium.nix
+      #     ./modules
+      #     ./users/satori/satori.nix
+      #   ];
+      #   specialArgs = {
+      #     inherit inputs;
+      #   };
+      # };
 
       # Hetzner dedi
       lithium = lib.nixosSystem {
@@ -147,32 +147,33 @@
       };
     };
 
-    deploy.nodes.hydrogen = {
-      hostname = "hydrogen.cinnamon-moth.ts.net";
-      fastConnection = true;
-      remoteBuild = true;
-      profiles.system = {
-        user = "root";
-        sshUser = "root";
-        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hydrogen;
-      };
-    };
+    # deploy.nodes.hydrogen = {
+    #   hostname = "hydrogen.cinnamon-moth.ts.net";
+    #   fastConnection = true;
+    #   remoteBuild = true;
+    #   profiles.system = {
+    #     user = "root";
+    #     sshUser = "root";
+    #     path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hydrogen;
+    #   };
+    # };
 
-    deploy.nodes.helium = {
-      hostname = "helium.cinnamon-moth.ts.net";
-      fastConnection = true;
-      remoteBuild = true;
-      profiles.system = {
-        user = "root";
-        sshUser = "root";
-        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.helium;
-      };
-    };
+    # deploy.nodes.helium = {
+    #   hostname = "helium.cinnamon-moth.ts.net";
+    #   fastConnection = true;
+    #   remoteBuild = true;
+    #   profiles.system = {
+    #     user = "root";
+    #     sshUser = "root";
+    #     path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.helium;
+    #   };
+    # };
 
     deploy.nodes.lithium = {
       hostname = "lithium.cinnamon-moth.ts.net";
       fastConnection = true;
       remoteBuild = true;
+      #sshOpts = ["-p" "13120"];
       profiles.system = {
         user = "root";
         sshUser = "root";

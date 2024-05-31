@@ -1,6 +1,10 @@
-{ config, lib, pkgs, inputs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}: let
   blogdir = inputs.whydoesntmycodework-blog.packages.${pkgs.system}.default;
 
   script = ''
@@ -18,7 +22,7 @@ in {
   users.groups.blog = {};
 
   systemd.services.blog = {
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
 
     serviceConfig = {
       User = "blog";
