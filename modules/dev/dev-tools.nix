@@ -100,7 +100,7 @@ in {
       )
       ++ (
         if cfg.cloudTools
-        then [kubectl k9s gcloudWithPlugins codeship-jet]
+        then [kubectl k9s gcloudWithPlugins codeship-jet dockfmt]
         else []
       )
       ++ (
@@ -110,7 +110,7 @@ in {
       )
       ++ (
         if cfg.grabBag
-        then [jq curl sem socat zellij]
+        then [jq curl sem socat libxml2 editorconfig-core-c tree-sitter]
         else []
       )
       ++ (

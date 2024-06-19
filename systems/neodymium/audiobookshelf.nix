@@ -26,7 +26,7 @@ in {
     };
   };
 
-  services.nginx.virtualHosts."audiobookshelf.local" = {
+  services.nginx.virtualHosts."audiobookshelf.home" = {
     locations."/" = {
       proxyPass = "http://0.0.0.0:${builtins.toString audiobookshelfPort}";
       proxyWebsockets = true;

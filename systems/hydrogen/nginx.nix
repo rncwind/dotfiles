@@ -9,16 +9,16 @@
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
 
-    virtualHosts."hydrogen.local" = {
-      serverName = "hydrogen.local";
+    virtualHosts."hydrogen.home" = {
+      serverName = "hydrogen.home";
       locations."/" = {
         proxyPass = "http://0.0.0.0:9001";
         proxyWebsockets = true;
       };
     };
 
-    virtualHosts."adguard.local" = {
-      serverName = "adguard.local";
+    virtualHosts."adguard.home" = {
+      serverName = "adguard.home";
       locations."/" = {
         proxyPass = "http://0.0.0.0:3000";
         proxyWebsockets = true;
@@ -33,8 +33,8 @@
       };
     };
 
-    virtualHosts."prometheus.local" = {
-      serverName = "prometheus.local";
+    virtualHosts."prometheus.home" = {
+      serverName = "prometheus.home";
       locations."/" = {
         proxyPass = "http://127.0.0.1:${toString config.services.prometheus.port}";
         proxyWebsockets = true;

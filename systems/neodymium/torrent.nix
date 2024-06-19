@@ -44,7 +44,7 @@ in {
   };
   users.users.transmission.extraGroups = ["pooluser"];
 
-  services.nginx.virtualHosts."transmission.local" = {
+  services.nginx.virtualHosts."transmission.home" = {
     locations."/" = {
       proxyPass = "http://0.0.0.0:${builtins.toString transmissionPort}";
     };
@@ -79,7 +79,7 @@ in {
     };
   };
 
-  services.nginx.virtualHosts."flood.local" = {
+  services.nginx.virtualHosts."flood.home" = {
     locations."/" = {
       proxyPass = "http://0.0.0.0:${builtins.toString floodPort}";
     };

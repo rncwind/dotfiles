@@ -21,6 +21,12 @@ in {
       default = false;
       description = "Enable RSS tools";
     };
+
+    documents = mkOption {
+      type = bool;
+      default = false;
+      description = "Enable Document viewing tools";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -29,6 +35,11 @@ in {
       ++ (
         if cfg.rss
         then [fluent-reader]
+        else []
+      )
+      ++ (
+        if cfg.documents
+        then [zathura okular libreoffice pandoc]
         else []
       );
   };

@@ -82,15 +82,15 @@ in {
     enable = true;
     openFirewall = true;
     settings = {
-      bind_host = "192.168.1.2";
-      bind_port = 3000;
+      host = "192.168.1.2";
+      port = 3000;
     };
   };
 
   services.grafana = {
     enable = true;
     settings.server = {
-      domain = "grafana.local";
+      domain = "grafana.home";
       http_port = 3001;
       http_addr = "127.0.0.1";
     };

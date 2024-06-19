@@ -59,19 +59,19 @@
       };
 
       # Pi
-      # hydrogen = lib.nixosSystem {
-      #   system = "aarch64-linux";
+      hydrogen = lib.nixosSystem {
+        system = "aarch64-linux";
 
-      #   modules = [
-      #     inputs.sops-nix.nixosModules.sops
-      #     inputs.home-manager.nixosModules.home-manager
-      #     ./systems/hydrogen/hydrogen.nix
-      #     ./modules
-      #   ];
-      #   specialArgs = {
-      #     inherit inputs;
-      #   };
-      # };
+        modules = [
+          inputs.sops-nix.nixosModules.sops
+          inputs.home-manager.nixosModules.home-manager
+          ./systems/hydrogen/hydrogen.nix
+          ./modules
+        ];
+        specialArgs = {
+          inherit inputs;
+        };
+      };
 
       # Dell Laptop
       # helium = lib.nixosSystem {
@@ -129,10 +129,6 @@
         ];
         specialArgs = {
           inherit inputs;
-          nixpkgs-main = (import inputs.nixpkgs-main) {
-            system = "x86_64-linux";
-            config = {allowUnfree = true;};
-          };
         };
       };
     };
@@ -147,16 +143,16 @@
       };
     };
 
-    # deploy.nodes.hydrogen = {
-    #   hostname = "hydrogen.cinnamon-moth.ts.net";
-    #   fastConnection = true;
-    #   remoteBuild = true;
-    #   profiles.system = {
-    #     user = "root";
-    #     sshUser = "root";
-    #     path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hydrogen;
-    #   };
-    # };
+    deploy.nodes.hydrogen = {
+      hostname = "hydrogen.cinnamon-moth.ts.net";
+      fastConnection = true;
+      remoteBuild = true;
+      profiles.system = {
+        user = "root";
+        sshUser = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hydrogen;
+      };
+    };
 
     # deploy.nodes.helium = {
     #   hostname = "helium.cinnamon-moth.ts.net";
@@ -192,6 +188,6 @@
       };
     };
 
-    checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
+    #checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
   };
 }

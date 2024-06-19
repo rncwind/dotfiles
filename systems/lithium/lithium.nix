@@ -193,7 +193,7 @@
     serviceConfig = {
       Type = "simple";
       User = "user";
-      WorkingDirectory = "/home/user/gtnh_240";
+      WorkingDirectory = "/home/user/gtnh_261";
       Restart = "always";
       RestartMaxDelaySec = 600;
       RestartSteps = 10;

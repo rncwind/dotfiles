@@ -3,7 +3,6 @@
   lib,
   pkgs,
   inputs,
-  nixpkgs-main,
   ...
 }: let
   prowlarrPort = 9696;
@@ -15,7 +14,6 @@ in {
   services.sabnzbd = {
     enable = true;
     group = "pooluser";
-    package = nixpkgs-main.sabnzbd;
   };
 
   systemd.services.sabnzbd = {
@@ -35,7 +33,7 @@ in {
     };
   };
   users.users.sabnzbd.extraGroups = ["pooluser"];
-  services.nginx.virtualHosts."sabnzbd.local" = {
+  services.nginx.virtualHosts."sabnzbd.home" = {
     locations."/" = {
       proxyPass = "http://0.0.0.0:${builtins.toString sabnzbdPort}";
     };
@@ -45,7 +43,7 @@ in {
     enable = true;
     openFirewall = true;
   };
-  services.nginx.virtualHosts."prowlarr.local" = {
+  services.nginx.virtualHosts."prowlarr.home" = {
     locations."/" = {
       proxyPass = "http://0.0.0.0:${builtins.toString prowlarrPort}";
     };
@@ -56,7 +54,7 @@ in {
     group = "pooluser";
     openFirewall = true;
   };
-  services.nginx.virtualHosts."radarr.local" = {
+  services.nginx.virtualHosts."radarr.home" = {
     locations."/" = {
       proxyPass = "http://0.0.0.0:${builtins.toString radarrPort}";
     };
@@ -67,7 +65,7 @@ in {
     group = "pooluser";
     openFirewall = true;
   };
-  services.nginx.virtualHosts."sonarr.local" = {
+  services.nginx.virtualHosts."sonarr.home" = {
     locations."/" = {
       proxyPass = "http://0.0.0.0:${builtins.toString sonarrPort}";
     };
@@ -78,7 +76,7 @@ in {
     group = "pooluser";
     openFirewall = true;
   };
-  services.nginx.virtualHosts."bazarr.local" = {
+  services.nginx.virtualHosts."bazarr.home" = {
     locations."/" = {
       proxyPass = "http://0.0.0.0:${builtins.toString bazarrPort}";
     };

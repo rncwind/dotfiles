@@ -68,6 +68,7 @@ in {
       media = {
         enable = true;
         rss = true;
+        documents = true;
       };
       encoding = {
         enable = false;
@@ -113,7 +114,7 @@ in {
       editors = {
         emacs = {
           enable = true;
-          daemon = true;
+          daemon = false;
         };
       };
 
@@ -165,6 +166,7 @@ in {
         librefm_username = {owner = config.users.users.patchouli.name;};
         librefm_password = {owner = config.users.users.patchouli.name;};
         listenbrainz_password = {owner = config.users.users.patchouli.name;};
+        listenbrainz_user_token = {owner = config.users.users.patchouli.name;};
         # example_key = {owner = config.users.users.patchouli.name;};
         # another_example = {};
       };

@@ -5,7 +5,6 @@
   config,
   pkgs,
   inputs,
-  nixpkgs-main,
   ...
 }: {
   imports = [
@@ -17,6 +16,7 @@
     ./jellyfin.nix
     ./samba.nix
     ./audiobookshelf.nix
+    ./calibre-web.nix
   ];
   networking = {
     hostName = "neodymium"; # Define your hostname.
@@ -115,6 +115,7 @@
     recommendedOptimisation = true;
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
+    clientMaxBodySize = "200m";
   };
 
   networking.firewall = {

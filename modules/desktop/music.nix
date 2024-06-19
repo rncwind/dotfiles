@@ -46,7 +46,7 @@ in {
 
         "listenbrainz" = {
           username = "rncwnd";
-          passwordFile = "/run/secrets/listenbrainz_password";
+          passwordFile = "/run/secrets/listenbrainz_user_token";
         };
       };
     };

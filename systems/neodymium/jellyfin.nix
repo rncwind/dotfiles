@@ -12,7 +12,7 @@ in {
     openFirewall = true;
   };
   users.users.jellyfin.extraGroups = ["pooluser"];
-  services.nginx.virtualHosts."jellyfin.local" = {
+  services.nginx.virtualHosts."jellyfin.home" = {
     locations."/" = {
       proxyPass = "http://0.0.0.0:${builtins.toString jellyfinPort}";
     };

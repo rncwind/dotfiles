@@ -104,6 +104,8 @@
     antimicroX
     usbutils
     sdrpp
+    inotify-tools
+    x11_ssh_askpass
     #deploy-rs
   ];
 
@@ -122,6 +124,7 @@
   services.printing.drivers = [pkgs.brlaser pkgs.brgenml1lpr pkgs.brgenml1cupswrapper];
   services.avahi.enable = true;
   services.avahi.publish.enable = true;
+  services.avahi.nssmdns4 = true;
   #services.avahi.userServices = true;
   services.printing.browsing = true;
   services.printing.allowFrom = ["all"];
