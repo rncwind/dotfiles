@@ -1,0 +1,5 @@
+# key: <xony
+# name: ggplot x against y
+# --
+ggplot(data = $1) +
+  geom_$2(mapping = aes(x = $3, y = $4))$0

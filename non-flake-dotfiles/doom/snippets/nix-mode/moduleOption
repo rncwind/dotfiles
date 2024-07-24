@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: module option
+# key: mo
+# condition: t
+# --
+$1 = mkOption {
+  type = ${2:$$(yas-choose-value '( "bool" "int" "float" "str" "attrs" "path" ))};
+  default = ${3:$$(yas-choose-value '( "true" "false"))};
+  description = $4;
+};

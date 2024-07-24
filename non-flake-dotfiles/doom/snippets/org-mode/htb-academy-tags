@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: htb academy tags
+# key: <htba
+# --
+#+filetags: ComputerScience Infosec HTB HTB-Academy

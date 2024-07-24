@@ -14,6 +14,7 @@
     ./mailserver.nix
     ./deluge.nix
     ./blog.nix
+    ./fail2ban.nix
     #./headscale.nix
   ];
 

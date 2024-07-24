@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+#name: mapl
+#key: mapl
+# --
+(map! :leader
+      (:desc ${1:Description} :prefix ${2:prefix}
+       :desc ${1:Description} :n "${3:Map}" #'${4:Function}))

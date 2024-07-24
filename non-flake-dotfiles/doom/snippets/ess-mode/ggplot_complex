@@ -1,0 +1,12 @@
+# key: <ggp
+# name: GGPlot2 template
+# --
+ggplot(data = $1) +
+  geom_$2(
+    mapping = aes($3),
+    stat = $4,
+    position = $5
+  ) +
+  $6 +
+  $7
+$0

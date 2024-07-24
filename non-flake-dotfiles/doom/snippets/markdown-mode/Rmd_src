@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# key: <rsrc
+# name: RMD r source block
+# --
+\`\`\`{r}
+$0
+\`\`\`

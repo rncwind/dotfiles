@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Verbatim Block
+# key: <verb
+# --
+#+BEGIN_SRC text
+$1
+#+END_SRC

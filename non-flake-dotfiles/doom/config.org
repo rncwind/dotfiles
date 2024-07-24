@@ -1,0 +1,212 @@
+* Rincewind's Doom
+** Who is this for?
+Mostly myself.
+
+I write a lot of Rust these days, and my glue languages are generlly ruby when
+possible, and python when not.
+
+I write as much prose as i have to write as LaTeX documents.
+
+I take notes in org-mode, mostly because of org-babel letting me treat it as a
+better jupyter.
+** How does this config work? Where's your config.el?
+I use org-mode and org-babel to extract the code from the very document you are reading now.
+
+All of the codeblocks are "Untangled" by org at bootup time. This adds a bit to the startup
+time of emacs, but only about 0.4 seconds, this is a fine tradeoff as far as i'm
+concerened.
+
+I'd rather have maintainable configs than go through dotfile bankruptcy
+** What is my system?
+I was cursed by the reproducability gods and use NixOS now.
+If you want to learn about nixos, don't. but if you do, don't ask me about it
+i'm terrible.
+* Misc Tweaks
+** Set font
+#+BEGIN_SRC emacs-lisp :tangle yes
+;; Normal fonts
+(setq doom-font (font-spec :family "hasklig" :size 15)
+      doom-variable-pitch-font (font-spec :family "hasklig")
+      doom-unicode-font (font-spec :family "hasklig")
+      doom-big-font (font-spec :family "hasklig" :size 20))
+
+;; Japanese fonts.
+(set-fontset-font t 'han  (font-spec :family "IPAGothic" :size 14))
+(set-fontset-font t 'kana (font-spec :family "IPAGothic" :size 14))
+(set-fontset-font t 'cjk-misc (font-spec :family "IPAGothic" :size 14))
+#+END_SRC
+** Set colourscheme
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq doom-theme 'doom-horizon)
+#+END_SRC
+** Make emacs use bash, because it chokes on fish.
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq shell-file-name (executable-find "bash"))
+; Make vterm use fish as it's interactive shell.
+(setq-default vterm-shell (executable-find "fish"))
+(setq-default explicit-shell-file-name (executable-find "fish"))
+#+END_SRC
+* Vertico
+I love vertico, but it uses a lot of M-RET, which is shared with my window
+manager!
+** Force complete with C-M-<return>
+The default keybind for this is M-<return> which conflicts hard with my
+"make a new terminal" keybind. To avoid this we rebind it to C-M-<return>
+#+BEGIN_SRC emacs-lisp :tangle yes
+(map! :map vertico-map "C-M-RET" #'vertico-exit-input)
+#+END_SRC
+* Langs
+** Rust
+My main squeeze right now. It's haskell without HKTs and with a more "normal
+person" syntax.
+*** Use rust-analyzer for LSP
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq rustic-lsp-server 'rust-analyzer)
+#+END_SRC
+*** Set tabstop for rustic to 4
+#+BEGIN_SRC emacs-lisp :tangle yes
+(add-hook 'rustic-mode-hook (lambda () (setq rustic-indent-offset 4)))
+#+END_SRC
+*** Enable proc-macros in rust-analyzer
+#+begin_src emacs-lisp :tangle yes
+(after! lsp-rust
+  (setq lsp-rust-analyzer-proc-macro-enable t
+        lsp-rust-analyzer-cargo-load-out-dirs-from-check t
+        lsp-rust-analyzer-cargo-run-build-scripts t))
+#+end_src
+*** Use clippy for cargo-watch
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq lsp-rust-analyzer-cargo-watch-command "clippy")
+#+END_SRC
+** Nix
+*** Use Alejandra as formatter
+Alejandra is an opinionated formater for nix code, it's got basically no config
+it's great.
+#+BEGIN_SRC emacs-lisp :tangle yes
+(set-formatter! 'alejandra '("alejandra" "--quiet") :modes '(nix-mode))
+#+END_SRC
+** Haskell
+A language lazier than me.
+** Enable type lenses always.
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq lsp-haskell-plugin-ghcid-type-lenses-config-mode "always")
+#+END_SRC
+** C/C++
+I rarely use C or C++ these days thankfully. But this is there in case i need to.
+*** c-style
+This is in effect BSD style, but using 4 indent instead of 8.
+#+BEGIN_SRC emacs-lisp :tangle yes
+(c-add-style "rncwnd"
+             '("bsd"
+               (c-basic-offset . 4)
+               (tab-width . 4)
+               (c-offsets-alist
+                (access-label . --))))
+(setq-default c-default-style "rncwnd")
+#+END_SRC
+*** Enable yas
+#+BEGIN_SRC emacs-lisp :tangle yes
+(add-hook 'c++-mode-hook 'yas-minor-mode-on)
+(add-hook 'c-mode-hook 'yas-minor-mode-on)
+#+END_SRC
+** Web
+*** typescript
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq typescript-indent-level 2)
+#+END_SRC
+** Elixir
+*** Fix lsp-elixir-ls
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package! lsp-elixir
+  :init
+  ;; Must be set before lsp-elixir.el loads
+  (setf lsp-elixir-ls-version "v0.21.3")
+  ;; this can be removed when lsp-mode 8.0.1 or greater is released
+  (setf lsp-elixir-ls-download-url
+        (format
+         "https://github.com/elixir-lsp/elixir-ls/releases/download/%1$s/elixir-ls-%1$s.zip"
+         lsp-elixir-ls-version)))
+#+END_SRC
+*** Configure elixir-ls settings
+#+BEGIN_SRC emacs-lisp :tangle yes
+;; Disable spec suggest becuase it's not good.
+(setq lsp-elixir-suggest-specs 'nil)
+#+END_SRC
+
+# *** Add lexical to the list of LSPs
+# #+BEGIN_SRC emacs-lisp :tangle yes
+# (lsp-register-client (make-lsp-client
+#                       :new-connection (lsp-stdio-connection "lexical")
+#                       :major-modes '(elixir-mode)
+#                       :server-id 'lexical))
+# #+END_SRC
+
+* Markups
+Because writing is boring, but it shouldn't be painful!
+** org
+*** Enable auto-break at 80char
+#+BEGIN_SRC emacs-lisp :tangle yes
+(add-hook 'org-mode-hook 'auto-fill-mode)
+#+END_SRC
+*** Set up Roam
+#+begin_src emacs-lisp :tangle yes
+(setq org-roam-directory "~/org/brain")
+(setq org-download-image-dir "~/org/download-images")
+(setq org-attach-id-dir "~/org/attach/id")
+(setq org-attach-directory "~/org/attach")
+#+end_src
+*** Org roam capture template default has a tags heading
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq org-roam-capture-templates '(("d" "default" plain "%?" :target
+  (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags:\n")
+  :unnarrowed t)))
+#+END_SRC
+** Markdown
+*** Enable auto-fill
+#+BEGIN_SRC emacs-lisp :tangle yes
+(add-hook 'markdown-mode-hook 'auto-fill-mode)
+#+END_SRC
+** LaTeX
+*** Enable auto-fill so it's easier to edit with evil keybinds.
+#+BEGIN_SRC emacs-lisp :tangle yes
+(add-hook 'latex-mode-hook 'auto-fill-mode)
+(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+#+END_SRC
+* Additional Packages
+** Disable doom-snippets
+As much as i like yasnippet, i don't really like the ones that ship with doom by
+default. As such i opt out of them here.
+#+BEGIN_SRC emacs-lisp :tangle packages.el
+(package! doom-snippets :ignore t)
+#+END_SRC
+** Support Justfiles
+I use a lot of these in my job, because of this i want syntax highlighting and
+stuff for them.
+#+BEGIN_SRC emacs-lisp :tangle packages.el
+(package! just-mode)
+#+END_SRC
+** Exec-path-from-shell
+This is a little hacky package that better supports nixos by adding NIX_PATH and
+stuff to the env vars emacs will search for.
+#+BEGIN_SRC emacs-lisp :tangle packages.el
+(package! exec-path-from-shell)
+#+END_SRC
+** Protobuf
+#+BEGIN_SRC emacs-lisp :tangle packages.el
+(package! protobuf-mode)
+#+END_SRC
+** SCAD mode
+#+BEGIN_SRC emacs-lisp :tangle packages.el
+(package! scad-mode)
+#+END_SRC
+** Rainbow mode
+Doom deprecated this, so i'm adding it back for myself. Highlights hex colour
+codes.
+#+BEGIN_SRC emacs-lisp :tangle packages.el
+(package! rainbow-mode)
+#+END_SRC
+
+** Unpins
+#+BEGIN_SRC emacs-lisp :tangle packages.el
+(unpin! lsp-mode)
+#+END_SRC

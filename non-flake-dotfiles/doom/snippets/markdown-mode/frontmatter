@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: frontmatter
+# key: <fm
+# condition: t
+# --
+---
+title: $1
+slug: $2
+published: $3
+tags: [$4]
+public: false
+---
